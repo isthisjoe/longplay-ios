@@ -8,11 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		0D401F581B19F74B00E203B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D401F571B19F74B00E203B0 /* AppDelegate.swift */; };
-		0D401F5A1B19F74B00E203B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D401F591B19F74B00E203B0 /* ViewController.swift */; };
-		0D401F5D1B19F74B00E203B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D401F5B1B19F74B00E203B0 /* Main.storyboard */; };
 		0D401F5F1B19F74B00E203B0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D401F5E1B19F74B00E203B0 /* Images.xcassets */; };
 		0D401F621B19F74B00E203B0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D401F601B19F74B00E203B0 /* LaunchScreen.xib */; };
 		0D401F6E1B19F74B00E203B0 /* LongplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D401F6D1B19F74B00E203B0 /* LongplayTests.swift */; };
+		0D401F7A1B19F7D600E203B0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D401F791B19F7D600E203B0 /* LoginViewController.swift */; };
+		0D4D6F491B504C5D00F1E576 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D4D6F481B504C5D00F1E576 /* Spotify.framework */; };
+		0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */; };
+		0D8FB3A61B1A323F00A2E91A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */; };
+		0D8FB3A81B1A324B00A2E91A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */; };
+		0FF066588D9D565D76F805CD /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F317772594C080FCFF692195 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +33,20 @@
 		0D401F521B19F74B00E203B0 /* Longplay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Longplay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D401F561B19F74B00E203B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0D401F571B19F74B00E203B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0D401F591B19F74B00E203B0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0D401F5C1B19F74B00E203B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0D401F5E1B19F74B00E203B0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0D401F611B19F74B00E203B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		0D401F671B19F74B00E203B0 /* LongplayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LongplayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D401F6C1B19F74B00E203B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0D401F6D1B19F74B00E203B0 /* LongplayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongplayTests.swift; sourceTree = "<group>"; };
+		0D401F791B19F7D600E203B0 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		0D401F7B1B19FAF700E203B0 /* Longplay-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Longplay-Bridging-Header.h"; sourceTree = "<group>"; };
+		0D4D6F481B504C5D00F1E576 /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spotify.framework; path = "lib/ios-sdk/Spotify.framework"; sourceTree = "<group>"; };
+		0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumListViewController.swift; sourceTree = "<group>"; };
+		0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		128E7C4710B31CF4C8839A0A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		90B479A16270620E426BEF19 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		F317772594C080FCFF692195 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +54,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D8FB3A81B1A324B00A2E91A /* SystemConfiguration.framework in Frameworks */,
+				0D8FB3A61B1A323F00A2E91A /* AVFoundation.framework in Frameworks */,
+				0FF066588D9D565D76F805CD /* Pods.framework in Frameworks */,
+				0D4D6F491B504C5D00F1E576 /* Spotify.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +77,8 @@
 				0D401F541B19F74B00E203B0 /* Longplay */,
 				0D401F6A1B19F74B00E203B0 /* LongplayTests */,
 				0D401F531B19F74B00E203B0 /* Products */,
+				1FFA5AD0A5E1D08008A9BAE8 /* Pods */,
+				2FFF4C35CF88296957A40979 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,10 +95,11 @@
 			isa = PBXGroup;
 			children = (
 				0D401F571B19F74B00E203B0 /* AppDelegate.swift */,
-				0D401F591B19F74B00E203B0 /* ViewController.swift */,
-				0D401F5B1B19F74B00E203B0 /* Main.storyboard */,
+				0D401F791B19F7D600E203B0 /* LoginViewController.swift */,
+				0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */,
 				0D401F5E1B19F74B00E203B0 /* Images.xcassets */,
 				0D401F601B19F74B00E203B0 /* LaunchScreen.xib */,
+				0D401F7B1B19FAF700E203B0 /* Longplay-Bridging-Header.h */,
 				0D401F551B19F74B00E203B0 /* Supporting Files */,
 			);
 			path = Longplay;
@@ -112,6 +130,26 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		1FFA5AD0A5E1D08008A9BAE8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				128E7C4710B31CF4C8839A0A /* Pods.debug.xcconfig */,
+				90B479A16270620E426BEF19 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		2FFF4C35CF88296957A40979 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */,
+				0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */,
+				F317772594C080FCFF692195 /* Pods.framework */,
+				0D4D6F481B504C5D00F1E576 /* Spotify.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -119,9 +157,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0D401F711B19F74B00E203B0 /* Build configuration list for PBXNativeTarget "Longplay" */;
 			buildPhases = (
+				48D927458407ABFB1A39526D /* Check Pods Manifest.lock */,
 				0D401F4E1B19F74B00E203B0 /* Sources */,
 				0D401F4F1B19F74B00E203B0 /* Frameworks */,
 				0D401F501B19F74B00E203B0 /* Resources */,
+				392816E8D3FF94B7A69337B2 /* Copy Pods Resources */,
+				B14DCF335B268D775B3F3430 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -192,7 +233,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D401F5D1B19F74B00E203B0 /* Main.storyboard in Resources */,
 				0D401F621B19F74B00E203B0 /* LaunchScreen.xib in Resources */,
 				0D401F5F1B19F74B00E203B0 /* Images.xcassets in Resources */,
 			);
@@ -207,12 +247,61 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		392816E8D3FF94B7A69337B2 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		48D927458407ABFB1A39526D /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B14DCF335B268D775B3F3430 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0D401F4E1B19F74B00E203B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D401F5A1B19F74B00E203B0 /* ViewController.swift in Sources */,
+				0D401F7A1B19F7D600E203B0 /* LoginViewController.swift in Sources */,
+				0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */,
 				0D401F581B19F74B00E203B0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,14 +325,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		0D401F5B1B19F74B00E203B0 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0D401F5C1B19F74B00E203B0 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		0D401F601B19F74B00E203B0 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -340,21 +421,36 @@
 		};
 		0D401F721B19F74B00E203B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 128E7C4710B31CF4C8839A0A /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lib/ios-sdk",
+				);
 				INFOPLIST_FILE = Longplay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Longplay/Longplay-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		0D401F731B19F74B00E203B0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90B479A16270620E426BEF19 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lib/ios-sdk",
+				);
 				INFOPLIST_FILE = Longplay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Longplay/Longplay-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -411,6 +507,7 @@
 				0D401F731B19F74B00E203B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0D401F741B19F74B00E203B0 /* Build configuration list for PBXNativeTarget "LongplayTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +516,7 @@
 				0D401F761B19F74B00E203B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

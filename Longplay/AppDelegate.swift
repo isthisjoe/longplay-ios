@@ -12,11 +12,54 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    var session: SPTSession?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        self.window = UIWindow(frame:UIScreen.mainScreen().bounds)
+        if let window = self.window {
+            let loginViewController = LoginViewController()
+            window.rootViewController = loginViewController
+            window.makeKeyAndVisible()
+        }
+        
+        application.statusBarHidden = true
+        
         return true
+    }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+        
+        if (SPTAuth.defaultInstance().canHandleURL(url)) {
+            SPTAuth.defaultInstance().handleAuthCallbackWithTriggeredAuthURL(url,
+                callback: { (error:NSError!, session:SPTSession!) -> Void in
+                    self.handleAuthCallback(session, error: error)
+            })
+        }
+        return false
+    }
+    
+    func handleAuthCallback(session:SPTSession?, error:NSError?) {
+        if error != nil {
+            // TODO: handle error
+        }
+        self.session = session
+        if let window = self.window,
+            loginViewController = window.rootViewController {
+                
+                let albumListViewController = AlbumListViewController(style: UITableViewStyle.Grouped)
+                albumListViewController.session = self.session
+                
+                let navigationController = UINavigationController(rootViewController: albumListViewController)
+                window.rootViewController = navigationController
+                
+                UIView.transitionFromView(loginViewController.view,
+                    toView: albumListViewController.view,
+                    duration: 0.5,
+                    options: UIViewAnimationOptions.TransitionCrossDissolve,
+                    completion: nil)
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {
