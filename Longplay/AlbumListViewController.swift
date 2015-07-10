@@ -32,7 +32,6 @@ class AlbumListViewController: UITableViewController, SPTAudioStreamingDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Recommended Albums"
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: AlbumListCellReuseIdentifier)
         self.setupData()
     }

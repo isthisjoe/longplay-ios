@@ -13,6 +13,9 @@
 		0D401F6E1B19F74B00E203B0 /* LongplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D401F6D1B19F74B00E203B0 /* LongplayTests.swift */; };
 		0D401F7A1B19F7D600E203B0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D401F791B19F7D600E203B0 /* LoginViewController.swift */; };
 		0D4D6F491B504C5D00F1E576 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D4D6F481B504C5D00F1E576 /* Spotify.framework */; };
+		0D4D6F4B1B504E2600F1E576 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */; };
+		0D4D6F4F1B504E4E00F1E576 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */; };
+		0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */; };
 		0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */; };
 		0D8FB3A61B1A323F00A2E91A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */; };
 		0D8FB3A81B1A324B00A2E91A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */; };
@@ -41,6 +44,9 @@
 		0D401F791B19F7D600E203B0 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		0D401F7B1B19FAF700E203B0 /* Longplay-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Longplay-Bridging-Header.h"; sourceTree = "<group>"; };
 		0D4D6F481B504C5D00F1E576 /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spotify.framework; path = "lib/ios-sdk/Spotify.framework"; sourceTree = "<group>"; };
+		0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserNavigationController.swift; sourceTree = "<group>"; };
 		0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumListViewController.swift; sourceTree = "<group>"; };
 		0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -96,7 +102,10 @@
 			children = (
 				0D401F571B19F74B00E203B0 /* AppDelegate.swift */,
 				0D401F791B19F7D600E203B0 /* LoginViewController.swift */,
+				0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */,
+				0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */,
 				0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */,
+				0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */,
 				0D401F5E1B19F74B00E203B0 /* Images.xcassets */,
 				0D401F601B19F74B00E203B0 /* LaunchScreen.xib */,
 				0D401F7B1B19FAF700E203B0 /* Longplay-Bridging-Header.h */,
@@ -300,9 +309,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D4D6F4B1B504E2600F1E576 /* MasterViewController.swift in Sources */,
 				0D401F7A1B19F7D600E203B0 /* LoginViewController.swift in Sources */,
 				0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */,
 				0D401F581B19F74B00E203B0 /* AppDelegate.swift in Sources */,
+				0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */,
+				0D4D6F4F1B504E4E00F1E576 /* PlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
