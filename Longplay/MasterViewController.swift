@@ -23,9 +23,16 @@ class MasterViewController: UIViewController {
         albumListViewController = AlbumListViewController()
         albumListViewController!.title = "Longplay"
         albumListViewController!.session = session
+        albumListViewController!.playAlbumBlock = { (album:SPTAlbum) -> () in
+            if let player = self.player {
+                player.album = album
+            }
+            self.playerAction(nil)
+        }
         browser = BrowserNavigationController(rootViewController: albumListViewController!)
 
         player = PlayerViewController()
+        player!.session = session
     }
 
     override func viewDidLayoutSubviews() {
@@ -69,9 +76,15 @@ class MasterViewController: UIViewController {
                 browserFrame.origin.x = -view.frame.size.width
                 var playerFrame = player.view.frame
                 playerFrame.origin.x = 0.0
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    browser.view.frame = browserFrame
-                    player.view.frame = playerFrame
+                UIView.animateWithDuration(0.3,
+                    animations: { () -> Void in
+                        browser.view.frame = browserFrame
+                        player.view.frame = playerFrame
+                    },
+                    completion: { (finished) -> Void in
+                        if finished {
+                            player.finishedViewTransition()
+                        }
                 })
         }
     }

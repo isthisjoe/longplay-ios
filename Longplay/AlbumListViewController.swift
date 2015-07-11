@@ -13,8 +13,8 @@ let AlbumCollectionViewCellReuseIdentifier = "AlbumCollectionViewCellReuseIdenti
 class AlbumListViewController: UICollectionViewController {
     
     var session: SPTSession?
-    
     var data:Array<Dictionary<String,String>>?
+    var playAlbumBlock:((album:SPTAlbum) -> ())?
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -106,6 +106,11 @@ class AlbumListViewController: UICollectionViewController {
                                 album = album as SPTAlbum!,
                                 navigationController = self.navigationController {
                                     let albumViewController = AlbumViewController(album: album)
+                                    albumViewController.playAlbumBlock = { (album:SPTAlbum) -> () in
+                                        if let playAlbumBlock = self.playAlbumBlock {
+                                            playAlbumBlock(album: album)
+                                        }
+                                    }
                                     navigationController.pushViewController(albumViewController, animated: true)
                             }
                         })

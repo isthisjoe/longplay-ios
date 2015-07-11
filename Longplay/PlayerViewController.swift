@@ -15,7 +15,10 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     var browserButton:UIButton?
     
     var session: SPTSession?
+    var album:SPTAlbum?
     var player: SPTAudioStreamingController?
+    
+    // MARK: Views
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,50 +46,43 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         }
     }
     
+    func finishedViewTransition() {
+        if album != nil {
+            playAlbum(album!)
+        }
+    }
+    
     // MARK: - Spotify 
     
-    func playSpotifyURI(uri:String?) {
+    func playAlbum(album:SPTAlbum) {
         player = SPTAudioStreamingController(clientId: SPTAuth.defaultInstance().clientID)
         if let
-            uri = uri,
             session = session,
-            player = player,
-            url = NSURL(string: uri) {
+            player = player {
                 player.delegate = self
                 player.playbackDelegate = self
-                
-                SPTAlbum.albumWithURI(url,
-                    accessToken: session.accessToken,
-                    market: nil,
-                    callback: { (error:NSError!, result:AnyObject!) -> Void in
-                        
-                        if let album:SPTAlbum = result as? SPTAlbum {
-                            
-                            var trackURIs = [NSURL]()
-                            if let listPage:SPTListPage = album.firstTrackPage,
-                                let items = listPage.items as? [SPTPartialTrack] {
-                                    NSLog("items: %@", items)
-                                    for item:SPTPartialTrack in items {
-                                        trackURIs.append(item.playableUri)
-                                    }
-                            }
-                            
-                            player.loginWithSession(session,
-                                callback: { (error:NSError!) -> Void in
-                                    if error != nil {
-                                        NSLog("error: %@", error)
-                                    }
-                                    NSLog("trackURIs: %@", trackURIs)
-                                    player.playURIs(trackURIs, withOptions: nil,
-                                        callback: { (error:NSError!) -> Void in
-                                            if error != nil {
-                                                NSLog("error: %@", error)
-                                            }
-                                    })
-                            })
+                var trackURIs = [NSURL]()
+                if let listPage:SPTListPage = album.firstTrackPage,
+                    let items = listPage.items as? [SPTPartialTrack] {
+                        NSLog("items: %@", items)
+                        for item:SPTPartialTrack in items {
+                            trackURIs.append(item.playableUri)
                         }
-                })
+                }
                 
+                player.loginWithSession(session,
+                    callback: { (error:NSError!) -> Void in
+                        if error != nil {
+                            NSLog("error: %@", error)
+                        }
+                        NSLog("trackURIs: %@", trackURIs)
+                        player.playURIs(trackURIs, withOptions: nil,
+                            callback: { (error:NSError!) -> Void in
+                                if error != nil {
+                                    NSLog("error: %@", error)
+                                }
+                        })
+                })
         }
     }
     

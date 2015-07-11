@@ -8,12 +8,15 @@
 
 import UIKit
 import SnapKit
+import FontAwesome_swift
 
 class AlbumViewController: UIViewController {
 
     let album:SPTAlbum
+    var playAlbumBlock:((album:SPTAlbum) -> ())?
     
     let coverArtImageView = UIImageView()
+    let playButton = UIButton()
     let nameLabel = UILabel()
     let artistLabel = UILabel()
     
@@ -39,17 +42,31 @@ class AlbumViewController: UIViewController {
     
     func setupViews() {
         view.backgroundColor = UIColor.whiteColor()
+        edgesForExtendedLayout = .None
         
-//        coverArtImageView.backgroundColor = UIColor.darkGrayColor()
         view.addSubview(coverArtImageView)
         coverArtImageView.snp_makeConstraints { (make) -> Void in
             make.top.left.right.equalTo(0)
             make.height.equalTo(view.bounds.size.width)
         }
         
+        playButton.setImage(
+            UIImage.fontAwesomeIconWithName(.Play,
+                textColor: UIColor.whiteColor(),
+                size: CGSizeMake(50, 50)),
+            forState:.Normal)
+        playButton.addTarget(self, action: "playAction:", forControlEvents:.TouchUpInside)
+        playButton.layer.shadowColor = UIColor.darkGrayColor().CGColor
+        playButton.layer.shadowOffset = CGSizeMake(0,0)
+        playButton.layer.shadowOpacity = 3
+        view.addSubview(playButton)
+        playButton.snp_makeConstraints { (make) -> Void in
+            make.center.equalTo(coverArtImageView.snp_center)
+            make.width.height.equalTo(50)
+        }
+        
         let labelSpacing = 8
         let labelHeight = 30
-//        nameLabel.backgroundColor = UIColor.grayColor()
         nameLabel.font = UIFont.systemFontOfSize(16)
         view.addSubview(nameLabel)
         nameLabel.snp_makeConstraints { (make) -> Void in
@@ -58,7 +75,6 @@ class AlbumViewController: UIViewController {
             make.height.equalTo(labelHeight)
         }
         
-//        artistLabel.backgroundColor = UIColor.lightGrayColor()
         artistLabel.font = UIFont.systemFontOfSize(16)
         view.addSubview(artistLabel)
         artistLabel.snp_makeConstraints { (make) -> Void in
@@ -77,6 +93,15 @@ class AlbumViewController: UIViewController {
         if artists.count > 0 {
             let artist = artists[0] as! SPTPartialArtist
             artistLabel.text = artist.name
+        }
+    }
+    
+    // MARK: Actions
+    
+    func playAction(sender:AnyObject?) {
+        if let
+            playAlbumBlock = playAlbumBlock {
+            playAlbumBlock(album: album)
         }
     }
 }
