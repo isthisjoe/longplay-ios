@@ -3,4 +3,5 @@
 //
 
 #import <Spotify/Spotify.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
