@@ -12,6 +12,8 @@ let AlbumCollectionViewCellReuseIdentifier = "AlbumCollectionViewCellReuseIdenti
 
 class AlbumListViewController: UICollectionViewController {
     
+    var session: SPTSession?
+    
     var data:Array<Dictionary<String,String>>?
     
     init() {
@@ -90,6 +92,40 @@ class AlbumListViewController: UICollectionViewController {
                     cell.configureCellWithViewModel(albumViewModel)
             }
             return cell
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let
+            data = data,
+            dictionary = data[indexPath.row] as Dictionary<String,String>? {
+                if let
+                    albumURI = dictionary["uri"] as String!,
+                    albumURL = NSURL(string: albumURI) {
+                        loadSPTAlbum(albumURL, completed: { (album) -> () in
+                            if let
+                                album = album as SPTAlbum!,
+                                navigationController = self.navigationController {
+                                    let albumViewController = AlbumViewController(album: album)
+                                    navigationController.pushViewController(albumViewController, animated: true)
+                            }
+                        })
+                }
+        }
+    }
+    
+    func loadSPTAlbum(albumURL:NSURL, completed: ((album:SPTAlbum?)->())) {
+        if let session = session {
+            SPTAlbum.albumWithURI(albumURL,
+                accessToken: session.accessToken,
+                market: nil,
+                callback: { (error:NSError!, result:AnyObject!) -> Void in
+                    if let album:SPTAlbum = result as? SPTAlbum {
+                        completed(album: album)
+                    } else {
+                        completed(album: nil)
+                    }
+            })
+        }
     }
 }
 

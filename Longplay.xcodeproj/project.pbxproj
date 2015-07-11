@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0D016E3C1B517FDB001AE58A /* AlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */; };
 		0D016E3E1B5180E6001AE58A /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */; };
+		0D016E401B5191D2001AE58A /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */; };
 		0D401F581B19F74B00E203B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D401F571B19F74B00E203B0 /* AppDelegate.swift */; };
 		0D401F5F1B19F74B00E203B0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D401F5E1B19F74B00E203B0 /* Images.xcassets */; };
 		0D401F621B19F74B00E203B0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D401F601B19F74B00E203B0 /* LaunchScreen.xib */; };
@@ -37,6 +38,7 @@
 /* Begin PBXFileReference section */
 		0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
+		0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
 		0D401F521B19F74B00E203B0 /* Longplay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Longplay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D401F561B19F74B00E203B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0D401F571B19F74B00E203B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */,
 				0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */,
 				0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */,
+				0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */,
 				0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */,
 				0D401F5E1B19F74B00E203B0 /* Images.xcassets */,
 				0D401F601B19F74B00E203B0 /* LaunchScreen.xib */,
@@ -318,6 +321,7 @@
 				0D4D6F4B1B504E2600F1E576 /* MasterViewController.swift in Sources */,
 				0D401F7A1B19F7D600E203B0 /* LoginViewController.swift in Sources */,
 				0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */,
+				0D016E401B5191D2001AE58A /* AlbumViewController.swift in Sources */,
 				0D401F581B19F74B00E203B0 /* AppDelegate.swift in Sources */,
 				0D016E3E1B5180E6001AE58A /* AlbumViewModel.swift in Sources */,
 				0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */,

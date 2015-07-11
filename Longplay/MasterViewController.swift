@@ -22,6 +22,7 @@ class MasterViewController: UIViewController {
         super.viewDidLoad()
         albumListViewController = AlbumListViewController()
         albumListViewController!.title = "Longplay"
+        albumListViewController!.session = session
         browser = BrowserNavigationController(rootViewController: albumListViewController!)
 
         player = PlayerViewController()

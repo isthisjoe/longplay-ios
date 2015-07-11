@@ -22,6 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let loginViewController = LoginViewController()
             window.rootViewController = loginViewController
             window.makeKeyAndVisible()
+            
+//            let masterViewController = MasterViewController()
+//            window.rootViewController = masterViewController
+//            window.makeKeyAndVisible()
         }
         
         application.statusBarHidden = true
@@ -47,15 +51,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.session = session
         if let window = self.window,
             loginViewController = window.rootViewController {
-                
-                let albumListViewController = AlbumListViewController(style: UITableViewStyle.Grouped)
-                albumListViewController.session = self.session
-                
-                let navigationController = UINavigationController(rootViewController: albumListViewController)
-                window.rootViewController = navigationController
+                let masterViewController = MasterViewController()
+                masterViewController.session = self.session
+                window.rootViewController = masterViewController
                 
                 UIView.transitionFromView(loginViewController.view,
-                    toView: albumListViewController.view,
+                    toView: masterViewController.view,
                     duration: 0.5,
                     options: UIViewAnimationOptions.TransitionCrossDissolve,
                     completion: nil)
