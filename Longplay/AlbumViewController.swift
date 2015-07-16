@@ -19,6 +19,8 @@ class AlbumViewController: UIViewController {
     let playButton = UIButton()
     let nameLabel = UILabel()
     let artistLabel = UILabel()
+    let albumTrackListingView = UIView()
+    let trackListingViewController = TrackListViewController()
     
     init(album:SPTAlbum) {
         self.album = album
@@ -38,6 +40,7 @@ class AlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        setupTrackListing(album)
     }
     
     func setupViews() {
@@ -93,6 +96,27 @@ class AlbumViewController: UIViewController {
         if artists.count > 0 {
             let artist = artists[0] as! SPTPartialArtist
             artistLabel.text = artist.name
+        }
+    }
+    
+    func setupTrackListing(album:SPTAlbum) {
+        
+        albumTrackListingView.backgroundColor = UIColor.grayColor()
+        view.addSubview(albumTrackListingView)
+        albumTrackListingView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(artistLabel.snp_bottom)
+            make.bottom.equalTo(view.snp_bottom)
+            make.left.equalTo(view.snp_left)
+            make.right.equalTo(view.snp_right)
+        }
+        
+        trackListingViewController.album = album
+        trackListingViewController.willMoveToParentViewController(self)
+        addChildViewController(trackListingViewController)
+        trackListingViewController.didMoveToParentViewController(trackListingViewController)
+        albumTrackListingView.addSubview(trackListingViewController.view)
+        trackListingViewController.view.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(albumTrackListingView)
         }
     }
     

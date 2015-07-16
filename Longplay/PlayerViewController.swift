@@ -21,6 +21,8 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     let coverArtImageView = UIImageView()
     let nameLabel = UILabel()
     let artistLabel = UILabel()
+    let albumTrackListingView = UIView()
+    let trackListingViewController = TrackListViewController()
 
     // MARK: Views
     
@@ -85,11 +87,34 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         }
     }
     
+    func setupTrackListing(album:SPTAlbum) {
+        
+        albumTrackListingView.backgroundColor = UIColor.grayColor()
+        view.addSubview(albumTrackListingView)
+        albumTrackListingView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(artistLabel.snp_bottom)
+            make.bottom.equalTo(view.snp_bottom)
+            make.left.equalTo(view.snp_left)
+            make.right.equalTo(view.snp_right)
+        }
+        
+        trackListingViewController.album = album
+        trackListingViewController.willMoveToParentViewController(self)
+        addChildViewController(trackListingViewController)
+        trackListingViewController.didMoveToParentViewController(trackListingViewController)
+        albumTrackListingView.addSubview(trackListingViewController.view)
+        trackListingViewController.view.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(albumTrackListingView)
+        }
+    }
+    
     // MARK: - Spotify 
     
     func playAlbum(album:SPTAlbum) {
         
         populateAlbumData(album)
+        
+        setupTrackListing(album)
         
         player = SPTAudioStreamingController(clientId: SPTAuth.defaultInstance().clientID)
         if let
@@ -100,7 +125,6 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
                 var trackURIs = [NSURL]()
                 if let listPage:SPTListPage = album.firstTrackPage,
                     let items = listPage.items as? [SPTPartialTrack] {
-                        NSLog("items: %@", items)
                         for item:SPTPartialTrack in items {
                             trackURIs.append(item.playableUri)
                         }
