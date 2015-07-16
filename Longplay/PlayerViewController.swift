@@ -18,11 +18,44 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     var album:SPTAlbum?
     var player: SPTAudioStreamingController?
     
+    let coverArtImageView = UIImageView()
+    let nameLabel = UILabel()
+    let artistLabel = UILabel()
+
     // MARK: Views
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupViews()
         self.setupBrowserButton()
+    }
+    
+    func setupViews() {
+        view.backgroundColor = UIColor.whiteColor()
+        
+        view.addSubview(coverArtImageView)
+        coverArtImageView.snp_makeConstraints { (make) -> Void in
+            make.top.left.right.equalTo(0)
+            make.height.equalTo(view.bounds.size.width)
+        }
+        
+        let labelSpacing = 8
+        let labelHeight = 30
+        nameLabel.font = UIFont.systemFontOfSize(16)
+        view.addSubview(nameLabel)
+        nameLabel.snp_makeConstraints { (make) -> Void in
+            make.left.right.equalTo(coverArtImageView)
+            make.top.equalTo(coverArtImageView.snp_bottom).offset(labelSpacing)
+            make.height.equalTo(labelHeight)
+        }
+        
+        artistLabel.font = UIFont.systemFontOfSize(16)
+        view.addSubview(artistLabel)
+        artistLabel.snp_makeConstraints { (make) -> Void in
+            make.left.right.equalTo(nameLabel)
+            make.top.equalTo(nameLabel.snp_bottom)
+            make.height.equalTo(labelHeight)
+        }
     }
     
     func setupBrowserButton() {
@@ -55,6 +88,9 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     // MARK: - Spotify 
     
     func playAlbum(album:SPTAlbum) {
+        
+        populateAlbumData(album)
+        
         player = SPTAudioStreamingController(clientId: SPTAuth.defaultInstance().clientID)
         if let
             session = session,
@@ -83,6 +119,21 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
                                 }
                         })
                 })
+        }
+    }
+    
+    func populateAlbumData(album:SPTAlbum) {
+        
+        if let albumURL = album.largestCover.imageURL {
+            self.coverArtImageView.sd_setImageWithURL(albumURL)
+        }
+        
+        self.nameLabel.text = album.name
+        
+        let artists = album.artists
+        if artists.count > 0 {
+            let artist = artists[0] as! SPTPartialArtist
+            artistLabel.text = artist.name
         }
     }
     
