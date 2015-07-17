@@ -53,10 +53,11 @@ class AlbumViewController: UIViewController {
             make.height.equalTo(view.bounds.size.width)
         }
         
+        let playButtonSize:CGFloat = 50.0
         playButton.setImage(
             UIImage.fontAwesomeIconWithName(.Play,
                 textColor: UIColor.whiteColor(),
-                size: CGSizeMake(50, 50)),
+                size: CGSizeMake(playButtonSize, playButtonSize)),
             forState:.Normal)
         playButton.addTarget(self, action: "playAction:", forControlEvents:.TouchUpInside)
         playButton.layer.shadowColor = UIColor.darkGrayColor().CGColor
@@ -65,7 +66,7 @@ class AlbumViewController: UIViewController {
         view.addSubview(playButton)
         playButton.snp_makeConstraints { (make) -> Void in
             make.center.equalTo(coverArtImageView.snp_center)
-            make.width.height.equalTo(50)
+            make.width.height.equalTo(playButtonSize)
         }
         
         let labelSpacing = 8

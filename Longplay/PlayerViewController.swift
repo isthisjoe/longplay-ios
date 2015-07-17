@@ -33,6 +33,9 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     let albumTrackListingView = UIView()
     let trackListingViewController = TrackListViewController()
     let progressView = UIProgressView()
+    let controlView = UIView()
+    let playButton = UIButton()
+    var isPlaying:Bool = false
 
     // MARK: Views
     
@@ -83,9 +86,45 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         view.addSubview(progressView)
         progressView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(albumTrackListingView.snp_bottom)
-            make.left.bottom.right.equalTo(view)
+            make.left.right.equalTo(view)
             make.height.equalTo(progressViewHeight)
         }
+        
+        let controlViewHeight = 60.0
+        controlView.backgroundColor = UIColor.darkGrayColor()
+        view.addSubview(controlView)
+        controlView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(progressView.snp_bottom)
+            make.left.bottom.right.equalTo(view)
+            make.height.equalTo(controlViewHeight)
+        }
+        
+        let playButtonSize:CGFloat = 50.0
+        updatePlayButtonToPause()
+        playButton.addTarget(self, action: "playAction:", forControlEvents:.TouchUpInside)
+        controlView.addSubview(playButton)
+        playButton.snp_makeConstraints { (make) -> Void in
+            make.center.equalTo(controlView.snp_center)
+            make.width.height.equalTo(playButtonSize)
+        }
+    }
+    
+    func updatePlayButtonToPause() {
+        let playButtonSize:CGFloat = 50.0
+        playButton.setImage(
+            UIImage.fontAwesomeIconWithName(.Pause,
+                textColor: UIColor.whiteColor(),
+                size: CGSizeMake(playButtonSize, playButtonSize)),
+            forState:.Normal)
+    }
+    
+    func updatePlayButtonToPlay() {
+        let playButtonSize:CGFloat = 50.0
+        playButton.setImage(
+            UIImage.fontAwesomeIconWithName(.Play,
+                textColor: UIColor.whiteColor(),
+                size: CGSizeMake(playButtonSize, playButtonSize)),
+            forState:.Normal)
     }
     
     func setupBrowserButton() {
@@ -127,7 +166,26 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         }
     }
     
-    // MARK: - Spotify 
+    // MARK: Actions
+    
+    func playAction(sender:AnyObject) {
+        NSLog("playAction")
+        if isPlaying {
+            updatePlayButtonToPlay()
+        } else {
+            updatePlayButtonToPause()
+        }
+        isPlaying = !isPlaying
+        if let player = player {
+            player.setIsPlaying(isPlaying, callback: { (error:NSError!) -> Void in
+                if error != nil {
+                    NSLog("playAction error: %@", error)
+                }
+            })
+        }
+    }
+    
+    // MARK: - Spotify
     
     func playAlbum(album:SPTAlbum) {
         
@@ -159,6 +217,8 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
                         self.progressView.setProgress(progress, animated: true)
                     }
                 }
+                
+                isPlaying = true
         }
     }
     
