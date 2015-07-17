@@ -15,7 +15,16 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     var browserButton:UIButton?
     
     var session: SPTSession?
-    var album:SPTAlbum?
+    var album:SPTAlbum? {
+        didSet {
+            albumPlayback = AlbumPlayback(album: self.album!)
+        }
+    }
+    var albumPlayback:AlbumPlayback? {
+        didSet {
+            self.didSetAlbumPlayback()
+        }
+    }
     var player: SPTAudioStreamingController?
     
     let coverArtImageView = UIImageView()
@@ -23,6 +32,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     let artistLabel = UILabel()
     let albumTrackListingView = UIView()
     let trackListingViewController = TrackListViewController()
+    let progressView = UIProgressView()
 
     // MARK: Views
     
@@ -46,17 +56,35 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         nameLabel.font = UIFont.systemFontOfSize(16)
         view.addSubview(nameLabel)
         nameLabel.snp_makeConstraints { (make) -> Void in
-            make.left.right.equalTo(coverArtImageView)
             make.top.equalTo(coverArtImageView.snp_bottom).offset(labelSpacing)
+            make.left.right.equalTo(coverArtImageView)
             make.height.equalTo(labelHeight)
         }
         
         artistLabel.font = UIFont.systemFontOfSize(16)
         view.addSubview(artistLabel)
         artistLabel.snp_makeConstraints { (make) -> Void in
-            make.left.right.equalTo(nameLabel)
             make.top.equalTo(nameLabel.snp_bottom)
+            make.left.right.equalTo(nameLabel)
             make.height.equalTo(labelHeight)
+        }
+        
+        albumTrackListingView.backgroundColor = UIColor.grayColor()
+        view.addSubview(albumTrackListingView)
+        albumTrackListingView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(artistLabel.snp_bottom)
+            make.left.equalTo(view.snp_left)
+            make.right.equalTo(view.snp_right)
+        }
+        
+        let progressViewHeight:CGFloat = 10.0
+        progressView.trackTintColor = UIColor.blueColor()
+        progressView.progressTintColor = UIColor.greenColor()
+        view.addSubview(progressView)
+        progressView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(albumTrackListingView.snp_bottom)
+            make.left.bottom.right.equalTo(view)
+            make.height.equalTo(progressViewHeight)
         }
     }
     
@@ -88,15 +116,6 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     }
     
     func setupTrackListing(album:SPTAlbum) {
-        
-        albumTrackListingView.backgroundColor = UIColor.grayColor()
-        view.addSubview(albumTrackListingView)
-        albumTrackListingView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(artistLabel.snp_bottom)
-            make.bottom.equalTo(view.snp_bottom)
-            make.left.equalTo(view.snp_left)
-            make.right.equalTo(view.snp_right)
-        }
         
         trackListingViewController.album = album
         trackListingViewController.willMoveToParentViewController(self)
@@ -130,20 +149,34 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
                         }
                 }
                 
-                player.loginWithSession(session,
+                playTracks(player, session: session, trackURIs: trackURIs)
+                
+                if let albumPlayback = albumPlayback {
+                    albumPlayback.observeAudioStreamingController(player)
+                    albumPlayback.progressCallback = {
+                        (progress:Float) in
+//                        NSLog("%f", progress)
+                        self.progressView.setProgress(progress, animated: true)
+                    }
+                }
+        }
+    }
+    
+    func playTracks(player:SPTAudioStreamingController, session:SPTSession, trackURIs:Array<NSURL>) {
+        
+        player.loginWithSession(session,
+            callback: { (error:NSError!) -> Void in
+                if error != nil {
+                    NSLog("error: %@", error)
+                }
+                NSLog("trackURIs: %@", trackURIs)
+                player.playURIs(trackURIs, withOptions: nil,
                     callback: { (error:NSError!) -> Void in
                         if error != nil {
                             NSLog("error: %@", error)
                         }
-                        NSLog("trackURIs: %@", trackURIs)
-                        player.playURIs(trackURIs, withOptions: nil,
-                            callback: { (error:NSError!) -> Void in
-                                if error != nil {
-                                    NSLog("error: %@", error)
-                                }
-                        })
                 })
-        }
+        })
     }
     
     func populateAlbumData(album:SPTAlbum) {
@@ -172,7 +205,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     }
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didEncounterError error: NSError!) {
-        NSLog("didEncounterError")
+        NSLog("didEncounterError: %@", error)
     }
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didReceiveMessage message: String!) {
@@ -190,11 +223,47 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         NSLog("didChangePlaybackStatus: %@", isPlaying)
     }
     
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: NSURL!) {
-        NSLog("didStartPlayingTrack: %@", trackUri)
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didSeekToOffset offset: NSTimeInterval) {
+        NSLog("didSeekToOffset: %f", offset)
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangeToTrack trackMetadata: [NSObject : AnyObject]!) {
+        if trackMetadata != nil {
+            NSLog("didChangeToTrack: %@", trackMetadata)
+        }
     }
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didFailToPlayTrack trackUri: NSURL!) {
         NSLog("didFailToPlayTrack: %@", trackUri)
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: NSURL!) {
+        NSLog("didStartPlayingTrack: %@", trackUri)
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: NSURL!) {
+        NSLog("didStopPlayingTrack: %@", trackUri)
+    }
+    
+    func audioStreamingDidSkipToNextTrack(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidSkipToNextTrack")
+    }
+    
+    func audioStreamingDidBecomeActivePlaybackDevice(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidBecomeActivePlaybackDevice")
+    }
+    
+    func audioStreamingDidLosePermissionForPlayback(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidLosePermissionForPlayback")
+    }
+    
+    func audioStreamingDidPopQueue(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidPopQueue")
+    }
+    
+    // MARK: Album Playback
+    
+    func didSetAlbumPlayback() {
+        
     }
 }

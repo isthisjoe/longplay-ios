@@ -53,10 +53,10 @@ class AlbumListViewController: UICollectionViewController {
     
     func setupData() {
         let spotifyURIs = [
-            ["thumb_path": "https://i.scdn.co/image/2bd3041e2a047fd847ab3d95eb2a2b91b68c3780",
-                "name":"TRON: Legacy Reconfigured",
-                "artist":"Daft Punk",
-                "uri":"spotify:album:382ObEPsp2rxGrnsizN5TX"],
+            ["thumb_path": "http://i.scdn.co/image/29f995c8db54cc8de1ac3646aa1f5ca374028ee5",
+                "name":"Earache: The World's Shortest Album",
+                "artist":"Various",
+                "uri":"spotify:album:1vvFmCrWN1OgYCFqPSKa1o"],
             ["thumb_path": "https://i.scdn.co/image/28897846639005afabda0a3136b3ed824ae54bef",
                 "name":"Human After All",
                 "artist":"Daft Punk",
