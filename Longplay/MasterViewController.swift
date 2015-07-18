@@ -26,8 +26,10 @@ class MasterViewController: UIViewController {
         albumListViewController!.playAlbumBlock = { (album:SPTAlbum) -> () in
             if let player = self.player {
                 player.album = album
+                player.stopPlayback({ () -> () in
+                    self.playerAction(nil)
+                })
             }
-            self.playerAction(nil)
         }
         browser = BrowserNavigationController(rootViewController: albumListViewController!)
 
@@ -93,6 +95,7 @@ class MasterViewController: UIViewController {
         if let
             browser = browser,
             player = player {
+                browser.popToRootViewControllerAnimated(false)
                 var browserFrame = browser.view.frame
                 browserFrame.origin.x = 0
                 var playerFrame = player.view.frame

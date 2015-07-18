@@ -15,12 +15,20 @@ class AlbumPlayback:NSObject {
     }
     private var kvoContext: UInt8 = 1
     var progressCallback:((progress:Float)->())?
+    weak var controller:SPTAudioStreamingController?
     
     convenience init(album:SPTAlbum) {
         self.init()
         self.album = album
         calculateAlbumPlaybackData()
         currentAlbumPlaybackPosition = 0
+    }
+    
+    deinit {
+        if let controller = controller {
+            controller.removeObserver(self, forKeyPath: "currentPlaybackPosition", context: &kvoContext)
+            controller.removeObserver(self, forKeyPath: "currentTrackIndex", context: &kvoContext)
+        }
     }
     
     func calculateAlbumPlaybackData() {
@@ -44,6 +52,8 @@ class AlbumPlayback:NSObject {
         //        let options = NSKeyValueObservingOptions([.New, .Old])
         controller.addObserver(self, forKeyPath: "currentPlaybackPosition", options:nil, context: &kvoContext)
         controller.addObserver(self, forKeyPath: "currentTrackIndex", options:nil, context: &kvoContext)
+        
+        self.controller = controller
     }
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
@@ -54,21 +64,21 @@ class AlbumPlayback:NSObject {
                         if previousPlaybackPosition == 0 {
                             previousPlaybackPosition = player.currentPlaybackPosition
                             currentAlbumPlaybackPosition += player.currentPlaybackPosition
-                            NSLog("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
+//                            NSLog("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
                         } else {
                             let delta:NSTimeInterval = player.currentPlaybackPosition - previousPlaybackPosition
                             currentAlbumPlaybackPosition += delta
-                            NSLog("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
+//                            NSLog("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
                             previousPlaybackPosition = player.currentPlaybackPosition
                         }
                     } else {
-                        NSLog("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
+//                        NSLog("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
                     }
                 }
             }
             else if keyPath == "currentTrackIndex" {
                 if let player = object as? SPTAudioStreamingController {
-                    NSLog("currentTrackIndex: %d", player.currentTrackIndex)
+//                    NSLog("currentTrackIndex: %d", player.currentTrackIndex)
                 }
                 previousPlaybackPosition = 0
             }

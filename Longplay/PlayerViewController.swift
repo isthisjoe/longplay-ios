@@ -189,16 +189,24 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     
     func playAlbum(album:SPTAlbum) {
         
+        if let player = player {
+            if player.isPlaying {
+                return
+            }
+        }
+        
         populateAlbumData(album)
         
         setupTrackListing(album)
         
-        player = SPTAudioStreamingController(clientId: SPTAuth.defaultInstance().clientID)
+        if player == nil {
+            player = SPTAudioStreamingController(clientId: SPTAuth.defaultInstance().clientID)
+            player!.delegate = self
+            player!.playbackDelegate = self
+        }
         if let
             session = session,
             player = player {
-                player.delegate = self
-                player.playbackDelegate = self
                 var trackURIs = [NSURL]()
                 if let listPage:SPTListPage = album.firstTrackPage,
                     let items = listPage.items as? [SPTPartialTrack] {
@@ -223,20 +231,27 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     }
     
     func playTracks(player:SPTAudioStreamingController, session:SPTSession, trackURIs:Array<NSURL>) {
-        
-        player.loginWithSession(session,
-            callback: { (error:NSError!) -> Void in
-                if error != nil {
-                    NSLog("error: %@", error)
-                }
-                NSLog("trackURIs: %@", trackURIs)
-                player.playURIs(trackURIs, withOptions: nil,
-                    callback: { (error:NSError!) -> Void in
-                        if error != nil {
-                            NSLog("error: %@", error)
-                        }
-                })
-        })
+
+        let playTrackURIs = { (trackURIs:Array<NSURL>) -> () in
+            player.playURIs(trackURIs, withOptions: nil,
+                callback: { (error:NSError!) -> Void in
+                    if error != nil {
+                        NSLog("error: %@", error)
+                    }
+            })
+        }
+        NSLog("trackURIs: %@", trackURIs)
+        if player.loggedIn {
+            playTrackURIs(trackURIs)
+        } else {
+            player.loginWithSession(session,
+                callback: { (error:NSError!) -> Void in
+                    if error != nil {
+                        NSLog("error: %@", error)
+                    }
+                    playTrackURIs(trackURIs)
+            })
+        }
     }
     
     func populateAlbumData(album:SPTAlbum) {
@@ -324,6 +339,21 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     // MARK: Album Playback
     
     func didSetAlbumPlayback() {
-        
+  
+    }
+    
+    func stopPlayback(callback:(()->())) {
+        if let player = player {
+            if player.isPlaying {
+                player.stop({ (error:NSError!) -> Void in
+                    if error != nil {
+                        NSLog("error: %@", error)
+                    }
+                    callback()
+                })
+            }
+        } else {
+            callback()
+        }
     }
 }
