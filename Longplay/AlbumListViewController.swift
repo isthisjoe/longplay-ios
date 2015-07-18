@@ -53,18 +53,18 @@ class AlbumListViewController: UICollectionViewController {
     
     func setupData() {
         let spotifyURIs = [
-            ["thumb_path": "http://i.scdn.co/image/29f995c8db54cc8de1ac3646aa1f5ca374028ee5",
-                "name":"Earache: The World's Shortest Album",
-                "artist":"Various",
-                "uri":"spotify:album:1vvFmCrWN1OgYCFqPSKa1o"],
-            ["thumb_path": "https://i.scdn.co/image/28897846639005afabda0a3136b3ed824ae54bef",
-                "name":"Human After All",
-                "artist":"Daft Punk",
-                "uri":"spotify:album:1A2GTWGtFfWp7KSQTwWOyo"],
-            ["thumb_path": "https://i.scdn.co/image/8e46b102398b42b322dc1e938eb12e93acceaff2",
-                "name":"Discovery",
-                "artist":"Daft Punk",
-                "uri":"spotify:album:2noRn2Aes5aoNVsU6iWThc"]]
+            ["thumb_path": "https://i.scdn.co/image/73930624d021a616dbf431ec19779b2e635b468c",
+                "name":"Currents",
+                "artist":"Tame Impala",
+                "uri":"spotify:album:79dL7FLiJFOO0EoehUHQBv"],
+            ["thumb_path": "https://i.scdn.co/image/63143db64dd7f83e599b5625ffc8e051d72bda38",
+                "name":"Wildheart",
+                "artist":"Miguel",
+                "uri":"spotify:album:6b5WANFyoXhaMTXPqLF6ez"],
+            ["thumb_path": "https://i.scdn.co/image/46055422ddb4839f5ec9125c7752ab9391311bcb",
+                "name":"Summertime '06",
+                "artist":"Vince Staples",
+                "uri":"spotify:album:4Csoz10NhNJOrCTUoPBdUD"]]
         data = spotifyURIs
     }
     
