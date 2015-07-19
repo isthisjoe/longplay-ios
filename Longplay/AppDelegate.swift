@@ -14,23 +14,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     var session: SPTSession?
+    var loginViewController:LoginViewController?
+    var masterViewController:MasterViewController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         self.window = UIWindow(frame:UIScreen.mainScreen().bounds)
         if let window = self.window {
-            let loginViewController = LoginViewController()
-            window.rootViewController = loginViewController
-            window.makeKeyAndVisible()
-            
-//            let masterViewController = MasterViewController()
-//            window.rootViewController = masterViewController
-//            window.makeKeyAndVisible()
+            setupSpotifySession({ (didLogin:Bool, session:SPTSession?) -> () in
+                if !didLogin {
+                    self.loginViewController = LoginViewController()
+                    window.rootViewController = self.loginViewController
+                    window.makeKeyAndVisible()
+                } else {
+                    self.transitionToMasterViewController(session)
+                    window.makeKeyAndVisible()
+                }
+            })
         }
         
         application.statusBarHidden = true
         
         return true
+    }
+    
+    func setupSpotifySession(callback:((didLogin:Bool, session:SPTSession?) -> ())) {
+        if let sessionValues = NSUserDefaults.standardUserDefaults().objectForKey("SpotifySessionValues") as? NSDictionary {
+            if let
+                username = sessionValues["username"] as? String,
+                accessToken = sessionValues["accessToken"] as? String,
+                expirationDate = sessionValues["expirationDate"] as? NSDate {
+                    let session = SPTSession(userName: username, accessToken: accessToken, expirationDate: expirationDate)
+                    if session.isValid() {
+                        callback(didLogin: true, session:session)
+                    } else {
+                        SPTAuth.defaultInstance().renewSession(session,
+                            callback: {
+                                (error:NSError!, session:SPTSession!) -> Void in
+                                if error != nil {
+                                    NSLog("error: %@", error)
+                                    callback(didLogin: false, session:session)
+                                } else {
+                                    callback(didLogin: true, session:session)
+                                }
+                                
+                        })
+                    }
+            }
+        } else {
+            callback(didLogin: false, session:session)
+        }
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
@@ -49,17 +82,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // TODO: handle error
         }
         self.session = session
-        if let window = self.window,
-            loginViewController = window.rootViewController {
-                let masterViewController = MasterViewController()
-                masterViewController.session = self.session
-                window.rootViewController = masterViewController
-                
+        if let session = session {
+            NSUserDefaults.standardUserDefaults().setObject(
+                ["username": session.canonicalUsername,
+                "accessToken": session.accessToken,
+                "expirationDate": session.expirationDate],
+                forKey: "SpotifySessionValues")
+        }
+        transitionToMasterViewController(session)
+        if let loginViewController = loginViewController,
+            masterViewController = masterViewController{
                 UIView.transitionFromView(loginViewController.view,
                     toView: masterViewController.view,
                     duration: 0.5,
                     options: UIViewAnimationOptions.TransitionCrossDissolve,
                     completion: nil)
+        }
+    }
+    
+    func transitionToMasterViewController(session:SPTSession?) {
+        if let window = self.window {
+            masterViewController = MasterViewController()
+            masterViewController!.session = session
+            window.rootViewController = masterViewController!
         }
     }
 
