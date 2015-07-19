@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import FontAwesome_swift
+import MediaPlayer
 
 class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
 
@@ -43,6 +44,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         super.viewDidLoad()
         self.setupViews()
         self.setupBrowserButton()
+        self.handleRemoteControlEvents()
     }
     
     func setupViews() {
@@ -305,6 +307,11 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangeToTrack trackMetadata: [NSObject : AnyObject]!) {
         if trackMetadata != nil {
             NSLog("didChangeToTrack: %@", trackMetadata)
+            if let
+                title = trackMetadata["SPTAudioStreamingMetadataTrackName"] as? String,
+                artist = trackMetadata["SPTAudioStreamingMetadataArtistName"] as? String {
+                    configureNowPlayingInfo(title, artist: artist, playbackRate: 1)
+            }
         }
     }
     
@@ -355,5 +362,78 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         } else {
             callback()
         }
+    }
+    
+    func play() {
+        if let player = player {
+            if !player.isPlaying {
+                player.setIsPlaying(true, callback: { (error:NSError!) -> Void in
+                    if error != nil {
+                        NSLog("play error: %@", error)
+                    }
+                    self.updatePlayButtonToPause()
+                })
+            }
+        }
+    }
+    
+    func pause() {
+        if let player = player {
+            if player.isPlaying {
+                player.setIsPlaying(false, callback: { (error:NSError!) -> Void in
+                    if error != nil {
+                        NSLog("pause error: %@", error)
+                    }
+                    self.updatePlayButtonToPlay()
+                })
+            }
+        }
+    }
+    
+    func togglePlayPause() {
+        if let player = player {
+            let isPlaying = !player.isPlaying
+            player.setIsPlaying(isPlaying, callback: { (error:NSError!) -> Void in
+                if error != nil {
+                    NSLog("togglePlayPause error: %@", error)
+                }
+                if isPlaying {
+                    self.updatePlayButtonToPause()
+                } else {
+                    self.updatePlayButtonToPlay()
+                }
+            })
+        }
+    }
+    
+    // MARK: Remote control events
+    
+    func handleRemoteControlEvents() {
+        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
+        commandCenter.playCommand.addTargetWithHandler {
+            (event:MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
+            self.play()
+            return .Success
+        }
+        commandCenter.pauseCommand.addTargetWithHandler {
+            (event:MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
+            self.pause()
+            return .Success
+        }
+        commandCenter.togglePlayPauseCommand.addTargetWithHandler {
+            (event:MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
+            self.togglePlayPause()
+            return .Success
+        }
+    }
+    
+    // MARK: Now Playing Info Center
+    
+    func configureNowPlayingInfo(title:String, artist:String, playbackRate:Int) {
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = [
+            MPMediaItemPropertyTitle: title,
+            MPMediaItemPropertyArtist: artist,
+            MPNowPlayingInfoPropertyPlaybackRate: playbackRate
+        ]
     }
 }
