@@ -54,10 +54,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 if error != nil {
                                     NSLog("error: %@", error)
                                     callback(didLogin: false, session:session)
+                                } else if session == nil {
+                                    NSLog("session is nil")
+                                    callback(didLogin: false, session:session)
                                 } else {
                                     callback(didLogin: true, session:session)
                                 }
-                                
                         })
                     }
             }
@@ -71,6 +73,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (SPTAuth.defaultInstance().canHandleURL(url)) {
             SPTAuth.defaultInstance().handleAuthCallbackWithTriggeredAuthURL(url,
                 callback: { (error:NSError!, session:SPTSession!) -> Void in
+                    
+//                    if let session = session {
+//                        NSLog("%@", session)
+//                        NSLog("canonicalUsername: %@", session.canonicalUsername)
+//                        NSLog("accessToken: %@", session.accessToken)
+//                        if let encryptedRefreshToken = session.encryptedRefreshToken {
+//                            NSLog("encryptedRefreshToken: %@", encryptedRefreshToken)
+//                        }
+//                        if let expirationDate = session.expirationDate {
+//                            NSLog("expirationDate: %@", expirationDate)
+//                        }
+//                        if let tokenType = session.tokenType {
+//                            NSLog("tokenType: %@", tokenType)
+//                        }
+//                    }
+//                    if let tokenSwapURL = SPTAuth.defaultInstance().tokenSwapURL {
+//                        NSLog("tokenSwapURL: %@", tokenSwapURL)
+//                    }
+//                    if let tokenRefreshURL = SPTAuth.defaultInstance().tokenRefreshURL {
+//                        NSLog("tokenRefreshURL: %@", tokenRefreshURL)
+//                    }
+                    
                     self.handleAuthCallback(session, error: error)
             })
         }
@@ -85,8 +109,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let session = session {
             NSUserDefaults.standardUserDefaults().setObject(
                 ["username": session.canonicalUsername,
-                "accessToken": session.accessToken,
-                "expirationDate": session.expirationDate],
+                    "accessToken": session.accessToken,
+//                    "encryptedRefreshToken": session.encryptedRefreshToken,
+                    "expirationDate": session.expirationDate],
                 forKey: "SpotifySessionValues")
         }
         transitionToMasterViewController(session)
