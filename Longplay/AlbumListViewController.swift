@@ -53,6 +53,18 @@ class AlbumListViewController: UICollectionViewController {
     
     func setupData() {
         let spotifyURIs = [
+            ["thumb_path": "https://i.scdn.co/image/7d6bdfa7a2e53574f9a6dad8c699df86865df652",
+                "name":"All In All",
+                "artist":"Bob Moses",
+                "uri":"spotify:album:3OMktTWq6op5qTgMsvlRtN"],
+            ["thumb_path": "https://i.scdn.co/image/5020a71a285a2063573d388167471c84678e3e71",
+                "name":"In Colour",
+                "artist":"Jamie xx",
+                "uri":"spotify:album:0AVPusXNzK1jWwefBiPJ5I"],
+            ["thumb_path": "https://i.scdn.co/image/1ecf766883e94af4a8a9145a4ff93f7e30872cb8",
+                "name":"Xen",
+                "artist":"Arca",
+                "uri":"spotify:album:5FLsmazQWaDK9JGqdzHlN4"],
             ["thumb_path": "https://i.scdn.co/image/73930624d021a616dbf431ec19779b2e635b468c",
                 "name":"Currents",
                 "artist":"Tame Impala",
