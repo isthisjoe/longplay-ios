@@ -39,12 +39,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setupSpotifySession(callback:((didLogin:Bool, session:SPTSession?) -> ())) {
+        
+        SPTAuth.defaultInstance().clientID = "d1ee9fb41d4245fe8f7ec6a5a7298c75"
+        SPTAuth.defaultInstance().redirectURL = NSURL(string: "longplay-app://login-callback")
+        SPTAuth.defaultInstance().requestedScopes = [SPTAuthStreamingScope,SPTAuthUserLibraryReadScope,SPTAuthUserLibraryModifyScope]
+        SPTAuth.defaultInstance().tokenSwapURL = NSURL(string: "https://blooming-hollows-5367.herokuapp.com/swap")
+        SPTAuth.defaultInstance().tokenRefreshURL = NSURL(string: "https://blooming-hollows-5367.herokuapp.com/refresh")
+
         if let sessionValues = NSUserDefaults.standardUserDefaults().objectForKey("SpotifySessionValues") as? NSDictionary {
             if let
                 username = sessionValues["username"] as? String,
                 accessToken = sessionValues["accessToken"] as? String,
+                encryptedRefreshToken = sessionValues["encryptedRefreshToken"] as? String,
                 expirationDate = sessionValues["expirationDate"] as? NSDate {
-                    let session = SPTSession(userName: username, accessToken: accessToken, expirationDate: expirationDate)
+                    let session = SPTSession(userName: username,
+                        accessToken: accessToken,
+                        encryptedRefreshToken:encryptedRefreshToken,
+                        expirationDate: expirationDate)
                     if session.isValid() {
                         callback(didLogin: true, session:session)
                     } else {
@@ -73,7 +84,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (SPTAuth.defaultInstance().canHandleURL(url)) {
             SPTAuth.defaultInstance().handleAuthCallbackWithTriggeredAuthURL(url,
                 callback: { (error:NSError!, session:SPTSession!) -> Void in
-                    
 //                    if let session = session {
 //                        NSLog("%@", session)
 //                        NSLog("canonicalUsername: %@", session.canonicalUsername)
@@ -94,7 +104,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                    if let tokenRefreshURL = SPTAuth.defaultInstance().tokenRefreshURL {
 //                        NSLog("tokenRefreshURL: %@", tokenRefreshURL)
 //                    }
-                    
                     self.handleAuthCallback(session, error: error)
             })
         }
@@ -107,12 +116,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         self.session = session
         if let session = session {
-            NSUserDefaults.standardUserDefaults().setObject(
-                ["username": session.canonicalUsername,
-                    "accessToken": session.accessToken,
-//                    "encryptedRefreshToken": session.encryptedRefreshToken,
-                    "expirationDate": session.expirationDate],
-                forKey: "SpotifySessionValues")
+            var sessionValues = ["username": session.canonicalUsername,
+                "accessToken": session.accessToken,
+                "expirationDate": session.expirationDate]
+            if let encryptedRefreshToken = session.encryptedRefreshToken {
+                sessionValues["encryptedRefreshToken"] = encryptedRefreshToken
+            }
+            NSUserDefaults.standardUserDefaults().setObject(sessionValues, forKey: "SpotifySessionValues")
         }
         transitionToMasterViewController(session)
         if let loginViewController = loginViewController,

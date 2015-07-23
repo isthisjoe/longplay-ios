@@ -16,11 +16,6 @@ class LoginViewController: UIViewController {
     }
     
     func setupSpotify() {
-        SPTAuth.defaultInstance().clientID = "d1ee9fb41d4245fe8f7ec6a5a7298c75"
-        SPTAuth.defaultInstance().redirectURL = NSURL(string: "longplay-app://login-callback")
-        SPTAuth.defaultInstance().requestedScopes = [SPTAuthStreamingScope,SPTAuthUserLibraryReadScope,SPTAuthUserLibraryModifyScope]
-        SPTAuth.defaultInstance().tokenSwapURL = NSURL(string: "https://blooming-hollows-5367.herokuapp.com/swap")
-        SPTAuth.defaultInstance().tokenRefreshURL = NSURL(string: "https://blooming-hollows-5367.herokuapp.com/refresh")
         var loginURL:NSURL = SPTAuth.defaultInstance().loginURL
         UIApplication.sharedApplication().openURL(loginURL)
     }
