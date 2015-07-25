@@ -20,6 +20,7 @@
 		0D4D6F4B1B504E2600F1E576 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */; };
 		0D4D6F4F1B504E4E00F1E576 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */; };
 		0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */; };
+		0D5E9A2D1B6428CA0035B63F /* albums.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D5E9A2C1B6428C90035B63F /* albums.plist */; };
 		0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */; };
 		0D8FB3A61B1A323F00A2E91A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */; };
 		0D8FB3A81B1A324B00A2E91A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */; };
@@ -58,6 +59,7 @@
 		0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserNavigationController.swift; sourceTree = "<group>"; };
+		0D5E9A2C1B6428C90035B63F /* albums.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = albums.plist; sourceTree = "<group>"; };
 		0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumListViewController.swift; sourceTree = "<group>"; };
 		0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -116,6 +118,7 @@
 		0D401F541B19F74B00E203B0 /* Longplay */ = {
 			isa = PBXGroup;
 			children = (
+				0D5E9A2C1B6428C90035B63F /* albums.plist */,
 				0D401F571B19F74B00E203B0 /* AppDelegate.swift */,
 				0D401F791B19F7D600E203B0 /* LoginViewController.swift */,
 				0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */,
@@ -272,6 +275,7 @@
 			files = (
 				0D401F621B19F74B00E203B0 /* LaunchScreen.xib in Resources */,
 				0D401F5F1B19F74B00E203B0 /* Images.xcassets in Resources */,
+				0D5E9A2D1B6428CA0035B63F /* albums.plist in Resources */,
 				0DB7A86C1B595978005AF0ED /* AlbumPlayback.swift in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
