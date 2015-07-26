@@ -13,7 +13,7 @@ let AlbumCollectionViewCellReuseIdentifier = "AlbumCollectionViewCellReuseIdenti
 class AlbumListViewController: UICollectionViewController {
     
     var session: SPTSession?
-    var data:Array<Dictionary<String,String>>?
+    var data:[SPTAlbum]?
     var playAlbumBlock:((album:SPTAlbum) -> ())?
     
     init() {
@@ -48,16 +48,28 @@ class AlbumListViewController: UICollectionViewController {
         self.collectionView!.registerClass(AlbumCollectionViewCell.self,
             forCellWithReuseIdentifier: AlbumCollectionViewCellReuseIdentifier)
         self.setupData()
-        self.collectionView!.reloadData()
     }
     
     func setupData() {
         var albumsList: NSArray?
-        if let path = NSBundle.mainBundle().pathForResource("albums", ofType: "plist") {
+        if let path = NSBundle.mainBundle().pathForResource("album_ids", ofType: "plist") {
             albumsList = NSArray(contentsOfFile: path)
         }
-        if let album = albumsList as? Array<Dictionary<String,String>> {
-            data = album
+        if let
+            albumsList = albumsList as? Array<Dictionary<String,String>>,
+            session = session,
+            accessToken = session.accessToken {
+                let albumURIs = albumsList.map({NSURL(string:$0["uri"]! as String)!})
+                SPTAlbum.albumsWithURIs(albumURIs,
+                    accessToken: accessToken,
+                    market: nil,
+                    callback: {
+                        (error:NSError!, result:AnyObject!) -> Void in
+                        if let result = result as? [SPTAlbum] {
+                            self.data = result
+                            self.collectionView!.reloadData()
+                        }
+                })
         }
     }
     
@@ -80,8 +92,8 @@ class AlbumListViewController: UICollectionViewController {
                 forIndexPath: indexPath) as! AlbumCollectionViewCell
             if let
                 data = data,
-                dictionary = data[indexPath.row] as Dictionary<String,String>? {
-                    let albumViewModel = AlbumViewModel(dictionary:dictionary)
+                album = data[indexPath.row] as SPTAlbum? {
+                    let albumViewModel = AlbumViewModel(album:album)
                     cell.configureCellWithViewModel(albumViewModel)
             }
             return cell
@@ -90,10 +102,9 @@ class AlbumListViewController: UICollectionViewController {
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let
             data = data,
-            dictionary = data[indexPath.row] as Dictionary<String,String>? {
+            album = data[indexPath.row] as SPTAlbum? {
                 if let
-                    albumURI = dictionary["uri"] as String!,
-                    albumURL = NSURL(string: albumURI) {
+                    albumURL = album.uri {
                         loadSPTAlbum(albumURL, completed: { (album) -> () in
                             if let
                                 album = album as SPTAlbum!,

@@ -14,12 +14,22 @@ class AlbumViewModel: NSObject {
     var title:String?
     var artistName:String?
     
-    init(dictionary:Dictionary<String,String>) {
+    init(album:SPTAlbum) {
         super.init()
-        if let thumbPath = dictionary["thumb_path"] as String! {
-            coverThumbURL = NSURL(string: thumbPath)
+        if album.largestCover != nil {
+            let smallestCover = album.largestCover
+            if smallestCover.imageURL != nil {
+                let imageURL = smallestCover.imageURL as NSURL
+                coverThumbURL = imageURL
+            }
         }
-        title = dictionary["name"] as String!
-        artistName = dictionary["artist"] as String!
+        if album.name != nil {
+            title = album.name
+        }
+        if album.artists != nil &&
+            album.artists.count > 0 {
+                let firstArtist = album.artists.first as! SPTPartialArtist
+                artistName = firstArtist.name
+        }
     }
 }
