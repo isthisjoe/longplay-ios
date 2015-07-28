@@ -378,7 +378,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         }
     }
     
-    func play() {
+    func play(completedBlock:(()->())?) {
         if let player = player {
             if !player.isPlaying {
                 player.setIsPlaying(true, callback: { (error:NSError!) -> Void in
@@ -386,12 +386,15 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
                         NSLog("play error: %@", error)
                     }
                     self.updatePlayButtonToPause()
+                    if let completedBlock = completedBlock {
+                        completedBlock()
+                    }                    
                 })
             }
         }
     }
     
-    func pause() {
+    func pause(completedBlock:(()->())?) {
         if let player = player {
             if player.isPlaying {
                 player.setIsPlaying(false, callback: { (error:NSError!) -> Void in
@@ -399,6 +402,9 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
                         NSLog("pause error: %@", error)
                     }
                     self.updatePlayButtonToPlay()
+                    if let completedBlock = completedBlock {
+                        completedBlock()
+                    }
                 })
             }
         }
@@ -426,12 +432,12 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
         commandCenter.playCommand.addTargetWithHandler {
             (event:MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
-            self.play()
+            self.play(nil)
             return .Success
         }
         commandCenter.pauseCommand.addTargetWithHandler {
             (event:MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
-            self.pause()
+            self.pause(nil)
             return .Success
         }
         commandCenter.togglePlayPauseCommand.addTargetWithHandler {
