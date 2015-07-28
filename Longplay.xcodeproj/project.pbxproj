@@ -28,6 +28,7 @@
 		0D8B45141B67CAA9000ED72C /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B45111B67CAA9000ED72C /* ionicons.ttf */; };
 		0D8B45161B67CB17000ED72C /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8B45151B67CB17000ED72C /* UIFont.swift */; };
 		0D8B45181B67CE28000ED72C /* Frutiger CE 65 Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B45171B67CDE8000ED72C /* Frutiger CE 65 Bold.ttf */; };
+		0D8B451C1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8B451B1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift */; };
 		0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */; };
 		0D8FB3A61B1A323F00A2E91A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */; };
 		0D8FB3A81B1A324B00A2E91A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */; };
@@ -74,6 +75,7 @@
 		0D8B45111B67CAA9000ED72C /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ionicons.ttf; sourceTree = "<group>"; };
 		0D8B45151B67CB17000ED72C /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		0D8B45171B67CDE8000ED72C /* Frutiger CE 65 Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Frutiger CE 65 Bold.ttf"; sourceTree = "<group>"; };
+		0D8B451B1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCollectionHeaderView.swift; sourceTree = "<group>"; };
 		0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumListViewController.swift; sourceTree = "<group>"; };
 		0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -141,6 +143,7 @@
 				0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */,
 				0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */,
 				0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */,
+				0D8B451B1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift */,
 				0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */,
 				0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */,
 				0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */,
@@ -389,6 +392,7 @@
 				0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */,
 				0D016E401B5191D2001AE58A /* AlbumViewController.swift in Sources */,
 				0D401F581B19F74B00E203B0 /* AppDelegate.swift in Sources */,
+				0D8B451C1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift in Sources */,
 				0D016E3E1B5180E6001AE58A /* AlbumViewModel.swift in Sources */,
 				0D47959D1B596A7600DAD91E /* AlbumPlayback.swift in Sources */,
 				0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */,

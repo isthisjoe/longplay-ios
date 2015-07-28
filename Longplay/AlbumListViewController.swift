@@ -9,11 +9,14 @@
 import UIKit
 
 let AlbumCollectionViewCellReuseIdentifier = "AlbumCollectionViewCellReuseIdentifier"
+let AlbumCollectionHeaderViewReuseIdentifier = "AlbumCollectionHeaderViewReuseIdentifier"
+let AlbumCollectionFooterViewReuseIdentifier = "AlbumCollectionFooterViewReuseIdentifier"
+let AlbumCollectionFooterViewHeight:CGFloat = 0.5
 
-class AlbumListViewController: UICollectionViewController {
+class AlbumListViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var session: SPTSession?
-    var data:[SPTAlbum]?
+    var data:[[SPTAlbum]]?
     var playAlbumBlock:((album:SPTAlbum) -> ())?
     var didSelectAlbumBlock:((album:SPTAlbum)->())?
     
@@ -21,13 +24,15 @@ class AlbumListViewController: UICollectionViewController {
         let layout = UICollectionViewFlowLayout()
         let screenWidth = UIScreen.mainScreen().bounds.size.width
         let spacing:CGFloat = 10
+        let sectionSpacing:CGFloat = 10
         let numberOfItemsPerRow:CGFloat = 3
         let itemSizeWidth:CGFloat = (screenWidth - (spacing * (numberOfItemsPerRow + 1)))/numberOfItemsPerRow
         let itemSizeHeight:CGFloat = itemSizeWidth + (itemSizeWidth * 0.3)
         layout.itemSize = CGSizeMake(itemSizeWidth, itemSizeHeight)
         layout.minimumLineSpacing = spacing
         layout.minimumInteritemSpacing = spacing/2
-        layout.sectionInset = UIEdgeInsetsMake(spacing, spacing, spacing, spacing)
+        layout.sectionInset = UIEdgeInsetsMake(0, spacing, spacing, spacing)
+        layout.headerReferenceSize = CGSizeMake(UIScreen.mainScreen().bounds.size.width, AlbumCollectionHeaderViewHeight)
         super.init(collectionViewLayout: layout)
     }
     
@@ -45,9 +50,17 @@ class AlbumListViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView!.backgroundColor = UIColor.whiteColor()
-        self.collectionView!.registerClass(AlbumCollectionViewCell.self,
-            forCellWithReuseIdentifier: AlbumCollectionViewCellReuseIdentifier)
+        if let collectionView = collectionView {
+            collectionView.backgroundColor = UIColor.whiteColor()
+            collectionView.registerClass(AlbumCollectionViewCell.self,
+                forCellWithReuseIdentifier: AlbumCollectionViewCellReuseIdentifier)
+            collectionView.registerClass(AlbumCollectionHeaderView.self,
+                forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                withReuseIdentifier: AlbumCollectionHeaderViewReuseIdentifier)
+            collectionView.registerClass(UICollectionReusableView.self,
+                forSupplementaryViewOfKind: UICollectionElementKindSectionFooter,
+                withReuseIdentifier: AlbumCollectionFooterViewReuseIdentifier)
+        }
         self.setupData()
     }
     
@@ -57,43 +70,109 @@ class AlbumListViewController: UICollectionViewController {
             albumsList = NSArray(contentsOfFile: path)
         }
         if let
-            albumsList = albumsList as? Array<Dictionary<String,String>>,
+            albumsList = albumsList as? [[[String:String]]],
             session = session,
             accessToken = session.accessToken {
-                let albumURIs = albumsList.map({NSURL(string:$0["uri"]! as String)!})
-                SPTAlbum.albumsWithURIs(albumURIs,
-                    accessToken: accessToken,
-                    market: nil,
-                    callback: {
-                        (error:NSError!, result:AnyObject!) -> Void in
-                        if let result = result as? [SPTAlbum] {
-                            self.data = result
-                            self.collectionView!.reloadData()
-                        }
+                // populate data with empty arrays
+                var collectionCount = 0
+                data = []
+                while data!.count < albumsList.count {
+                    data!.append([])
+                }
+                // dispatch group for async processing
+                let group = dispatch_group_create()
+                var count = 0
+                for collection in albumsList {
+                    dispatch_group_enter(group)
+                    let albumURIs = collection.map({NSURL(string:$0["uri"]! as String)!})
+                    let index = count
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
+                        SPTAlbum.albumsWithURIs(albumURIs,
+                            accessToken: accessToken,
+                            market: nil,
+                            callback: {
+                                (error:NSError!, result:AnyObject!) -> Void in
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    if let result = result as? [SPTAlbum] {
+                                        self.data![index] = result
+                                    }
+                                    dispatch_group_leave(group)
+                                })
+                        })
+                    })
+                    count++
+                }
+                // reload data when all album data received
+                dispatch_group_notify(group, dispatch_get_main_queue(), { () -> Void in
+                    self.collectionView!.reloadData()
                 })
         }
     }
     
     // MARK: UICollectionViewDataSource
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         if let data = data {
             return data.count
-        } else {
-            return 0
         }
+        return 0
+    }
+    
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let data = data,
+            collection = data[section] as [SPTAlbum]? {
+                return collection.count
+        }
+        return 0
     }
     
     // MARK: UICollectionViewDelegate
     
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        
+        var reusableView:UICollectionReusableView? = nil
+        if kind == UICollectionElementKindSectionHeader {
+            if let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader,
+                withReuseIdentifier: AlbumCollectionHeaderViewReuseIdentifier,
+                forIndexPath: indexPath) as? AlbumCollectionHeaderView {
+                    switch indexPath.section {
+                    case 0:
+                        headerView.titleLabel.text = "LATEST"
+                        break
+                    case 1:
+                        headerView.titleLabel.text = "CLASSICS"
+                        break
+                    default:
+                        break
+                    }
+                    reusableView = headerView
+            }
+        }
+        if kind == UICollectionElementKindSectionFooter {
+            if let footerView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter,
+                withReuseIdentifier: AlbumCollectionFooterViewReuseIdentifier,
+                forIndexPath: indexPath) as? UICollectionReusableView {
+                    let lineView = UIView()
+                    lineView.backgroundColor = UIColor.darkGrayColor()
+                    footerView.addSubview(lineView)
+                    lineView.snp_makeConstraints({ (make) -> Void in
+                        make.edges.equalTo(footerView).insets(UIEdgeInsetsMake(0, 10, 0, 10))
+                    })
+                    reusableView = footerView
+            }
+        }
+        return reusableView!
+    }
+    
     override func collectionView(collectionView: UICollectionView,
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+            
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
                 AlbumCollectionViewCellReuseIdentifier,
                 forIndexPath: indexPath) as! AlbumCollectionViewCell
-            if let
-                data = data,
-                album = data[indexPath.row] as SPTAlbum? {
+            if let data = data,
+                collection = data[indexPath.section] as [SPTAlbum]?,
+                album = collection[indexPath.row] as SPTAlbum? {
                     let albumViewModel = AlbumViewModel(album:album)
                     cell.configureCellWithViewModel(albumViewModel)
             }
@@ -102,13 +181,24 @@ class AlbumListViewController: UICollectionViewController {
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        if let
-            data = data,
-            album = data[indexPath.row] as SPTAlbum? {
+        if let data = data,
+            collection = data[indexPath.section] as [SPTAlbum]?,
+            album = collection[indexPath.row] as SPTAlbum? {
                 if let didSelectAlbumBlock = didSelectAlbumBlock {
                     didSelectAlbumBlock(album: album)
                 }
         }
+    }
+    
+    // MARK: UICollectionViewDelegateFlowLayout
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        if let data = data {
+            if section < data.count - 1 {
+                return CGSizeMake(UIScreen.mainScreen().bounds.size.width, AlbumCollectionFooterViewHeight)
+            }
+        }
+        return CGSizeZero
     }
 }
 
