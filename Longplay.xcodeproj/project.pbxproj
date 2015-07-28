@@ -20,7 +20,6 @@
 		0D4D6F4B1B504E2600F1E576 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */; };
 		0D4D6F4F1B504E4E00F1E576 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */; };
 		0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */; };
-		0D5E9A2D1B6428CA0035B63F /* albums.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D5E9A2C1B6428C90035B63F /* albums.plist */; };
 		0D5E9A2F1B6448CD0035B63F /* album_ids.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D5E9A2E1B6448CD0035B63F /* album_ids.plist */; };
 		0D8B450A1B657A87000ED72C /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8B45091B657A87000ED72C /* NavigationView.swift */; };
 		0D8B45121B67CAA9000ED72C /* Frutiger CE 45 Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B450F1B67CAA9000ED72C /* Frutiger CE 45 Light.ttf */; };
@@ -67,7 +66,6 @@
 		0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserNavigationController.swift; sourceTree = "<group>"; };
-		0D5E9A2C1B6428C90035B63F /* albums.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = albums.plist; sourceTree = "<group>"; };
 		0D5E9A2E1B6448CD0035B63F /* album_ids.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = album_ids.plist; sourceTree = "<group>"; };
 		0D8B45091B657A87000ED72C /* NavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		0D8B450F1B67CAA9000ED72C /* Frutiger CE 45 Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Frutiger CE 45 Light.ttf"; sourceTree = "<group>"; };
@@ -134,26 +132,13 @@
 		0D401F541B19F74B00E203B0 /* Longplay */ = {
 			isa = PBXGroup;
 			children = (
-				0D5E9A2C1B6428C90035B63F /* albums.plist */,
-				0D5E9A2E1B6448CD0035B63F /* album_ids.plist */,
 				0D401F571B19F74B00E203B0 /* AppDelegate.swift */,
-				0D401F791B19F7D600E203B0 /* LoginViewController.swift */,
-				0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */,
-				0D8B45091B657A87000ED72C /* NavigationView.swift */,
-				0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */,
-				0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */,
-				0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */,
-				0D8B451B1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift */,
-				0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */,
-				0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */,
-				0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */,
-				0DB7A86B1B595978005AF0ED /* AlbumPlayback.swift */,
-				0DB7A8671B58122A005AF0ED /* TrackListViewController.swift */,
-				0DB7A8691B583C01005AF0ED /* TrackListCollectionViewCell.swift */,
-				0D8B45151B67CB17000ED72C /* UIFont.swift */,
 				0D401F5E1B19F74B00E203B0 /* Images.xcassets */,
 				0D401F601B19F74B00E203B0 /* LaunchScreen.xib */,
 				0D401F7B1B19FAF700E203B0 /* Longplay-Bridging-Header.h */,
+				0DD3E61B1B67F4790080ED38 /* Models */,
+				0DD3E61A1B67F4760080ED38 /* Controllers */,
+				0DD3E6191B67F46F0080ED38 /* Views */,
 				0D8B450D1B67CAA9000ED72C /* Resources */,
 				0D401F551B19F74B00E203B0 /* Supporting Files */,
 			);
@@ -202,6 +187,42 @@
 				0D8B45111B67CAA9000ED72C /* ionicons.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		0DD3E6191B67F46F0080ED38 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0D8B45151B67CB17000ED72C /* UIFont.swift */,
+				0D8B45091B657A87000ED72C /* NavigationView.swift */,
+				0D8B451B1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift */,
+				0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */,
+				0DB7A8691B583C01005AF0ED /* TrackListCollectionViewCell.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		0DD3E61A1B67F4760080ED38 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0D401F791B19F7D600E203B0 /* LoginViewController.swift */,
+				0D4D6F4A1B504E2600F1E576 /* MasterViewController.swift */,
+				0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */,
+				0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */,
+				0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */,
+				0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */,
+				0DB7A86B1B595978005AF0ED /* AlbumPlayback.swift */,
+				0DB7A8671B58122A005AF0ED /* TrackListViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		0DD3E61B1B67F4790080ED38 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0D5E9A2E1B6448CD0035B63F /* album_ids.plist */,
+				0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		1FFA5AD0A5E1D08008A9BAE8 /* Pods */ = {
@@ -319,7 +340,6 @@
 				0D401F5F1B19F74B00E203B0 /* Images.xcassets in Resources */,
 				0D8B45121B67CAA9000ED72C /* Frutiger CE 45 Light.ttf in Resources */,
 				0D8B45131B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf in Resources */,
-				0D5E9A2D1B6428CA0035B63F /* albums.plist in Resources */,
 				0D8B45181B67CE28000ED72C /* Frutiger CE 65 Bold.ttf in Resources */,
 				0DB7A86C1B595978005AF0ED /* AlbumPlayback.swift in Resources */,
 			);
