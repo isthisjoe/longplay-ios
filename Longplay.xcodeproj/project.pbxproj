@@ -21,6 +21,7 @@
 		0D4D6F4F1B504E4E00F1E576 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */; };
 		0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */; };
 		0D5E9A2F1B6448CD0035B63F /* albumData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D5E9A2E1B6448CD0035B63F /* albumData.plist */; };
+		0D61CAB41B681B870097BDC0 /* Frutiger LT 57 Condensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D61CAB31B681B870097BDC0 /* Frutiger LT 57 Condensed.ttf */; };
 		0D8B450A1B657A87000ED72C /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8B45091B657A87000ED72C /* NavigationView.swift */; };
 		0D8B45121B67CAA9000ED72C /* Frutiger CE 45 Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B450F1B67CAA9000ED72C /* Frutiger CE 45 Light.ttf */; };
 		0D8B45131B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B45101B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf */; };
@@ -67,6 +68,7 @@
 		0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		0D4D6F501B504E6C00F1E576 /* BrowserNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserNavigationController.swift; sourceTree = "<group>"; };
 		0D5E9A2E1B6448CD0035B63F /* albumData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = albumData.plist; sourceTree = "<group>"; };
+		0D61CAB31B681B870097BDC0 /* Frutiger LT 57 Condensed.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Frutiger LT 57 Condensed.ttf"; sourceTree = "<group>"; };
 		0D8B45091B657A87000ED72C /* NavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		0D8B450F1B67CAA9000ED72C /* Frutiger CE 45 Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Frutiger CE 45 Light.ttf"; sourceTree = "<group>"; };
 		0D8B45101B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Frutiger LT 87 Extra Black Condensed.ttf"; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			children = (
 				0D8B450F1B67CAA9000ED72C /* Frutiger CE 45 Light.ttf */,
 				0D8B45171B67CDE8000ED72C /* Frutiger CE 65 Bold.ttf */,
+				0D61CAB31B681B870097BDC0 /* Frutiger LT 57 Condensed.ttf */,
 				0D8B45101B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf */,
 				0D8B45111B67CAA9000ED72C /* ionicons.ttf */,
 			);
@@ -336,6 +339,7 @@
 			files = (
 				0D5E9A2F1B6448CD0035B63F /* albumData.plist in Resources */,
 				0D401F621B19F74B00E203B0 /* LaunchScreen.xib in Resources */,
+				0D61CAB41B681B870097BDC0 /* Frutiger LT 57 Condensed.ttf in Resources */,
 				0D8B45141B67CAA9000ED72C /* ionicons.ttf in Resources */,
 				0D401F5F1B19F74B00E203B0 /* Images.xcassets in Resources */,
 				0D8B45121B67CAA9000ED72C /* Frutiger CE 45 Light.ttf in Resources */,

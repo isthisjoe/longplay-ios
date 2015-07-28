@@ -18,6 +18,10 @@ extension UIFont {
         return UIFont(name: "FrutigerCE-Bold", size: size)!
     }
     
+    class func buttonFontWithSize(size:CGFloat) -> UIFont {
+        return UIFont(name: "FrutigerLT-Cn", size: size)!
+    }
+    
     class func titleFontWithSize(size:CGFloat) -> UIFont {
         return UIFont(name: "FrutigerLT-ExtraBlackCn", size: size)!
     }

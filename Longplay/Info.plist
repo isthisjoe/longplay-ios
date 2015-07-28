@@ -39,6 +39,7 @@
 	<array>
 		<string>Frutiger CE 45 Light.ttf</string>
 		<string>Frutiger CE 65 Bold.ttf</string>
+		<string>Frutiger LT 57 Condensed.ttf</string>
 		<string>Frutiger LT 87 Extra Black Condensed.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
