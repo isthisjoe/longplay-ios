@@ -16,6 +16,8 @@ let AlbumCollectionFooterViewHeight:CGFloat = 0.5
 class AlbumListViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var session: SPTSession?
+    var albumData: [[[String:String]]]?
+    var flattenedAlbumData: [[String:String]]?
     var data:[[SPTAlbum]]?
     var playAlbumBlock:((album:SPTAlbum) -> ())?
     var didSelectAlbumBlock:((album:SPTAlbum)->())?
@@ -65,24 +67,25 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
     }
     
     func setupData() {
-        var albumsList: NSArray?
-        if let path = NSBundle.mainBundle().pathForResource("album_ids", ofType: "plist") {
-            albumsList = NSArray(contentsOfFile: path)
+        if let path = NSBundle.mainBundle().pathForResource("albumData", ofType: "plist") {
+            albumData = NSArray(contentsOfFile: path) as? [[[String:String]]]
         }
         if let
-            albumsList = albumsList as? [[[String:String]]],
+            albumData = albumData,
             session = session,
             accessToken = session.accessToken {
+                // flatten the albumData array 
+                self.flattenedAlbumData = albumData.flatMap { $0 }
                 // populate data with empty arrays
                 var collectionCount = 0
                 data = []
-                while data!.count < albumsList.count {
+                while data!.count < albumData.count {
                     data!.append([])
                 }
                 // dispatch group for async processing
                 let group = dispatch_group_create()
                 var count = 0
-                for collection in albumsList {
+                for collection in albumData {
                     dispatch_group_enter(group)
                     let albumURIs = collection.map({NSURL(string:$0["uri"]! as String)!})
                     let index = count
