@@ -13,7 +13,6 @@ import MediaPlayer
 
 class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
 
-    var browserButton:UIButton?
     
     var session: SPTSession?
     var album:SPTAlbum? {
@@ -35,6 +34,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     let trackListingViewController = TrackListViewController()
     let progressView = UIProgressView()
     let controlView = UIView()
+    let browserButton = UIButton()
     let playButton = UIButton()
     var isPlaying:Bool = false
 
@@ -43,7 +43,6 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupViews()
-        self.setupBrowserButton()
         self.handleRemoteControlEvents()
     }
     
@@ -58,15 +57,17 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         
         let labelSpacing = 8
         let labelHeight = 30
-        nameLabel.font = UIFont.systemFontOfSize(16)
+        let sideSpacing:CGFloat = 14
+        nameLabel.font = UIFont.primaryBoldFontWithSize(20)
         view.addSubview(nameLabel)
         nameLabel.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(coverArtImageView.snp_bottom).offset(labelSpacing)
-            make.left.right.equalTo(coverArtImageView)
+            make.left.equalTo(coverArtImageView).offset(sideSpacing)
+            make.right.equalTo(coverArtImageView).offset(-sideSpacing)
             make.height.equalTo(labelHeight)
         }
         
-        artistLabel.font = UIFont.systemFontOfSize(16)
+        artistLabel.font = UIFont.primaryFontWithSize(20)
         view.addSubview(artistLabel)
         artistLabel.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(nameLabel.snp_bottom)
@@ -74,17 +75,16 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
             make.height.equalTo(labelHeight)
         }
         
-        albumTrackListingView.backgroundColor = UIColor.grayColor()
+        albumTrackListingView.backgroundColor = UIColor.whiteColor()
         view.addSubview(albumTrackListingView)
         albumTrackListingView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(artistLabel.snp_bottom)
-            make.left.equalTo(view.snp_left)
-            make.right.equalTo(view.snp_right)
+            make.top.equalTo(artistLabel.snp_bottom).offset(14)
+            make.left.right.equalTo(view)
         }
         
         let progressViewHeight:CGFloat = 10.0
-        progressView.trackTintColor = UIColor.blueColor()
-        progressView.progressTintColor = UIColor.greenColor()
+        progressView.trackTintColor = UIColor(red: 255/255, green: 212/255, blue: 200/255, alpha: 1)
+        progressView.progressTintColor = UIColor(red: 255/255, green: 55/255, blue: 0/255, alpha: 1)
         view.addSubview(progressView)
         progressView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(albumTrackListingView.snp_bottom)
@@ -92,8 +92,8 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
             make.height.equalTo(progressViewHeight)
         }
         
-        let controlViewHeight = 60.0
-        controlView.backgroundColor = UIColor.darkGrayColor()
+        let controlViewHeight = 72.0
+        controlView.backgroundColor = UIColor.whiteColor()
         view.addSubview(controlView)
         controlView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(progressView.snp_bottom)
@@ -101,7 +101,17 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
             make.height.equalTo(controlViewHeight)
         }
         
-        let playButtonSize:CGFloat = 50.0
+        let browserIcon = FAKIonIcons.naviconRoundIconWithSize(28)
+        browserIcon.setAttributes([NSForegroundColorAttributeName: UIColor.blackColor()])
+        browserButton.setAttributedTitle(browserIcon.attributedString(), forState: .Normal)
+        controlView.addSubview(browserButton)
+        browserButton.snp_makeConstraints({ (make) -> Void in
+            make.left.equalTo(controlView).offset(29)
+            make.bottom.equalTo(controlView).offset(-19)
+            make.width.height.equalTo(32)
+        })
+        
+        let playButtonSize:CGFloat = 52
         updatePlayButtonToPause()
         playButton.addTarget(self, action: "playAction:", forControlEvents:.TouchUpInside)
         controlView.addSubview(playButton)
@@ -112,38 +122,25 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     }
     
     func updatePlayButtonToPause() {
-        let playButtonSize:CGFloat = 50.0
+        let playButtonSize:CGFloat = 48
+        let icon = FAKIonIcons.pauseIconWithSize(playButtonSize)
+        icon.setAttributes([NSForegroundColorAttributeName:UIColor.blackColor()])
         playButton.setImage(
-            FAKIonIcons.pauseIconWithSize(playButtonSize).imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
+            icon.imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
             forState:.Normal)
     }
     
     func updatePlayButtonToPlay() {
-        let playButtonSize:CGFloat = 50.0
+        let playButtonSize:CGFloat = 48
+        let icon = FAKIonIcons.playIconWithSize(playButtonSize)
+        icon.setAttributes([NSForegroundColorAttributeName:UIColor.blackColor()])
         playButton.setImage(
-            FAKIonIcons.playIconWithSize(playButtonSize).imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
+            icon.imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
             forState:.Normal)
     }
     
-    func setupBrowserButton() {
-        browserButton = UIButton()
-        if let browserButton = browserButton {
-            let icon = FAKIonIcons.naviconRoundIconWithSize(30)
-            browserButton.setAttributedTitle(icon.attributedString(), forState: .Normal)
-            view.addSubview(browserButton)
-            browserButton.snp_makeConstraints({ (make) -> Void in
-                make.width.equalTo(50)
-                make.height.equalTo(50)
-                make.top.equalTo(20)
-                make.left.equalTo(20)
-            })
-        }
-    }
-    
     func addTargetToBrowserButton(target:AnyObject, action:Selector) {
-        if let browserButton = browserButton {
-            browserButton.addTarget(target, action:action, forControlEvents:.TouchUpInside)
-        }
+        browserButton.addTarget(target, action:action, forControlEvents:.TouchUpInside)
     }
     
     func finishedViewTransition() {
@@ -230,6 +227,8 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
                 
                 isPlaying = true
                 
+                self.updatePlayButtonToPause()
+                
                 if let didStartPlaying = didStartPlaying,
                     firstTrackName = firstTrackName {
                         didStartPlaying(firstTrackName:firstTrackName)
@@ -283,79 +282,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         }
     }
     
-    // MARK: - SPTAudioStreamingDelegate
-    
-    func audioStreamingDidLogin(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidLogin")
-    }
-    
-    func audioStreamingDidEncounterTemporaryConnectionError(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidEncounterTemporaryConnectionError")
-    }
-    
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didEncounterError error: NSError!) {
-        NSLog("didEncounterError: %@", error)
-    }
-    
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didReceiveMessage message: String!) {
-        NSLog("didReceiveMessage: %@", message)
-    }
-    
-    func audioStreamingDidDisconnect(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidDisconnect")
-    }
-    
-    
-    // MARK: - SPTAudioStreamingPlaybackDelegate
-    
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
-        NSLog("didChangePlaybackStatus: %@", isPlaying)
-    }
-    
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didSeekToOffset offset: NSTimeInterval) {
-        NSLog("didSeekToOffset: %f", offset)
-    }
-    
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangeToTrack trackMetadata: [NSObject : AnyObject]!) {
-        if trackMetadata != nil {
-            NSLog("didChangeToTrack: %@", trackMetadata)
-            if let
-                title = trackMetadata["SPTAudioStreamingMetadataTrackName"] as? String,
-                artist = trackMetadata["SPTAudioStreamingMetadataArtistName"] as? String {
-                    configureNowPlayingInfo(title, artist: artist, playbackRate: 1)
-            }
-        }
-    }
-    
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didFailToPlayTrack trackUri: NSURL!) {
-        NSLog("didFailToPlayTrack: %@", trackUri)
-    }
-    
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: NSURL!) {
-        NSLog("didStartPlayingTrack: %@", trackUri)
-    }
-    
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: NSURL!) {
-        NSLog("didStopPlayingTrack: %@", trackUri)
-    }
-    
-    func audioStreamingDidSkipToNextTrack(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidSkipToNextTrack")
-    }
-    
-    func audioStreamingDidBecomeActivePlaybackDevice(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidBecomeActivePlaybackDevice")
-    }
-    
-    func audioStreamingDidLosePermissionForPlayback(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidLosePermissionForPlayback")
-    }
-    
-    func audioStreamingDidPopQueue(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidPopQueue")
-    }
-    
-    // MARK: Album Playback
+    // MARK: - Album Playback
     
     func didSetAlbumPlayback() {
   
@@ -455,5 +382,76 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
             MPMediaItemPropertyArtist: artist,
             MPNowPlayingInfoPropertyPlaybackRate: playbackRate
         ]
+    }
+    // MARK: - SPTAudioStreamingDelegate
+    
+    func audioStreamingDidLogin(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidLogin")
+    }
+    
+    func audioStreamingDidEncounterTemporaryConnectionError(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidEncounterTemporaryConnectionError")
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didEncounterError error: NSError!) {
+        NSLog("didEncounterError: %@", error)
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didReceiveMessage message: String!) {
+        NSLog("didReceiveMessage: %@", message)
+    }
+    
+    func audioStreamingDidDisconnect(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidDisconnect")
+    }
+    
+    
+    // MARK: - SPTAudioStreamingPlaybackDelegate
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
+        NSLog("didChangePlaybackStatus: %@", isPlaying)
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didSeekToOffset offset: NSTimeInterval) {
+        NSLog("didSeekToOffset: %f", offset)
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangeToTrack trackMetadata: [NSObject : AnyObject]!) {
+        if trackMetadata != nil {
+            NSLog("didChangeToTrack: %@", trackMetadata)
+            if let
+                title = trackMetadata["SPTAudioStreamingMetadataTrackName"] as? String,
+                artist = trackMetadata["SPTAudioStreamingMetadataArtistName"] as? String {
+                    configureNowPlayingInfo(title, artist: artist, playbackRate: 1)
+            }
+        }
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didFailToPlayTrack trackUri: NSURL!) {
+        NSLog("didFailToPlayTrack: %@", trackUri)
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: NSURL!) {
+        NSLog("didStartPlayingTrack: %@", trackUri)
+    }
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: NSURL!) {
+        NSLog("didStopPlayingTrack: %@", trackUri)
+    }
+    
+    func audioStreamingDidSkipToNextTrack(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidSkipToNextTrack")
+    }
+    
+    func audioStreamingDidBecomeActivePlaybackDevice(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidBecomeActivePlaybackDevice")
+    }
+    
+    func audioStreamingDidLosePermissionForPlayback(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidLosePermissionForPlayback")
+    }
+    
+    func audioStreamingDidPopQueue(audioStreaming: SPTAudioStreamingController!) {
+        NSLog("audioStreamingDidPopQueue")
     }
 }

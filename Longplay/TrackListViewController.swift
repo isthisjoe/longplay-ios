@@ -59,7 +59,7 @@ class TrackListViewController: UICollectionViewController {
         
         super.viewDidLoad()
         
-        self.collectionView!.backgroundColor = UIColor.lightGrayColor()
+        self.collectionView!.backgroundColor = UIColor.whiteColor()
 
         // Register cell classes
         self.collectionView!.registerClass(TrackListCollectionViewCell.self,

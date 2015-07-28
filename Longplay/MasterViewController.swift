@@ -68,6 +68,7 @@ class MasterViewController: UIViewController {
                 make.left.right.equalTo(view)
                 make.top.equalTo(view.snp_bottom).offset(-NavigationViewHeight)
             }
+            player.addTargetToBrowserButton(self, action: "tappedNavigationMiddleButton:")
         }
         
         // navigation view
@@ -165,13 +166,15 @@ class MasterViewController: UIViewController {
                 leftButton.addTarget(self, action: "pushToSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
             }
             // middle
-            navigationView.hideMiddleButtonText()
-            navigationView.showAlbumDetails()
-            if let middleButton = navigationView.middleButton {
-                for target in middleButton.allTargets() {
-                    middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+            if isPlayingAlbum() {
+                navigationView.hideMiddleButtonText()
+                navigationView.showAlbumDetails()
+                if let middleButton = navigationView.middleButton {
+                    for target in middleButton.allTargets() {
+                        middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                    }
+                    middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
                 }
-                middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
             }
             // right
             navigationView.hideRightButton()
@@ -204,6 +207,7 @@ class MasterViewController: UIViewController {
             }
             // middle
             navigationView.hideMiddleButton()
+            navigationView.hideAlbumDetails()
             // right
             navigationView.showChevronInRightButton()
         }
@@ -234,6 +238,8 @@ class MasterViewController: UIViewController {
                         options: UIViewAnimationOptions(0),
                         animations: { () -> Void in
                             self.view.layoutIfNeeded()
+                            // show navigation
+                            navigationView.alpha = 1.0
                         },
                         completion: nil)
                     isShowingPlayer = false
@@ -262,6 +268,8 @@ class MasterViewController: UIViewController {
                         options: UIViewAnimationOptions(0),
                         animations: { () -> Void in
                             self.view.layoutIfNeeded()
+                            // hide navigation
+                            navigationView.alpha = 0.0
                         },
                         completion: nil)
                     isShowingPlayer = true

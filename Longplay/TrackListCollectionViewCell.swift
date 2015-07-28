@@ -29,11 +29,11 @@ class TrackListCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
 
         if !didLayoutSubviews {
-            titleLabel.font = UIFont.systemFontOfSize(14.0)
+            titleLabel.font = UIFont.primaryFontWithSize(14)
             addSubview(titleLabel)
             let titleLabelOffset:CGFloat = 2.0
             titleLabel.snp_makeConstraints({ (make) -> Void in
-                make.edges.equalTo(self).insets(UIEdgeInsetsMake(titleLabelOffset, titleLabelOffset, titleLabelOffset, titleLabelOffset))
+                make.edges.equalTo(self).insets(UIEdgeInsetsMake(titleLabelOffset, 14, titleLabelOffset, 14))
             })
         }
     }

@@ -203,6 +203,15 @@ class NavigationView: UIView {
         }
     }
     
+    func hideAlbumDetails() {
+        if let albumTopLabel = albumTopLabel {
+            albumTopLabel.alpha = 0.0
+        }
+        if let albumBottomLabel = albumBottomLabel {
+            albumBottomLabel.alpha = 0.0
+        }
+    }
+    
     func populateAlbumDetails(topLabelText:String, bottomLabelText:String) {
         if let middleButton = middleButton {
             middleButton.setAttributedTitle(nil, forState: UIControlState.Normal)
