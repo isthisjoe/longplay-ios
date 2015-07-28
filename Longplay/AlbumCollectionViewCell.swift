@@ -30,7 +30,7 @@ class AlbumCollectionViewCell: UICollectionViewCell {
             let labelSpacing = labelContentHeight * 0.05
             let labelHeight = labelContentHeight * 0.475
             
-            nameLabel.font = UIFont.systemFontOfSize(12)
+            nameLabel.font = UIFont.primaryBoldFontWithSize(11)
             addSubview(nameLabel)
             nameLabel.snp_makeConstraints { (make) -> Void in
                 make.left.right.equalTo(thumbImageView)
@@ -38,7 +38,7 @@ class AlbumCollectionViewCell: UICollectionViewCell {
                 make.height.equalTo(labelHeight)
             }
             
-            artistLabel.font = UIFont.systemFontOfSize(12)
+            artistLabel.font = UIFont.primaryFontWithSize(11)
             addSubview(artistLabel)
             artistLabel.snp_makeConstraints { (make) -> Void in
                 make.left.right.equalTo(nameLabel)

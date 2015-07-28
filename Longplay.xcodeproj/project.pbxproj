@@ -23,7 +23,11 @@
 		0D5E9A2D1B6428CA0035B63F /* albums.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D5E9A2C1B6428C90035B63F /* albums.plist */; };
 		0D5E9A2F1B6448CD0035B63F /* album_ids.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D5E9A2E1B6448CD0035B63F /* album_ids.plist */; };
 		0D8B450A1B657A87000ED72C /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8B45091B657A87000ED72C /* NavigationView.swift */; };
-		0D8B450C1B66AEB2000ED72C /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B450B1B66AEAD000ED72C /* ionicons.ttf */; };
+		0D8B45121B67CAA9000ED72C /* Frutiger CE 45 Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B450F1B67CAA9000ED72C /* Frutiger CE 45 Light.ttf */; };
+		0D8B45131B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B45101B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf */; };
+		0D8B45141B67CAA9000ED72C /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B45111B67CAA9000ED72C /* ionicons.ttf */; };
+		0D8B45161B67CB17000ED72C /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8B45151B67CB17000ED72C /* UIFont.swift */; };
+		0D8B45181B67CE28000ED72C /* Frutiger CE 65 Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8B45171B67CDE8000ED72C /* Frutiger CE 65 Bold.ttf */; };
 		0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */; };
 		0D8FB3A61B1A323F00A2E91A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */; };
 		0D8FB3A81B1A324B00A2E91A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */; };
@@ -65,7 +69,11 @@
 		0D5E9A2C1B6428C90035B63F /* albums.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = albums.plist; sourceTree = "<group>"; };
 		0D5E9A2E1B6448CD0035B63F /* album_ids.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = album_ids.plist; sourceTree = "<group>"; };
 		0D8B45091B657A87000ED72C /* NavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
-		0D8B450B1B66AEAD000ED72C /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ionicons.ttf; sourceTree = "<group>"; };
+		0D8B450F1B67CAA9000ED72C /* Frutiger CE 45 Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Frutiger CE 45 Light.ttf"; sourceTree = "<group>"; };
+		0D8B45101B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Frutiger LT 87 Extra Black Condensed.ttf"; sourceTree = "<group>"; };
+		0D8B45111B67CAA9000ED72C /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ionicons.ttf; sourceTree = "<group>"; };
+		0D8B45151B67CB17000ED72C /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		0D8B45171B67CDE8000ED72C /* Frutiger CE 65 Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Frutiger CE 65 Bold.ttf"; sourceTree = "<group>"; };
 		0D8FB3A31B1A2B3B00A2E91A /* AlbumListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumListViewController.swift; sourceTree = "<group>"; };
 		0D8FB3A51B1A323E00A2E91A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -139,10 +147,11 @@
 				0DB7A86B1B595978005AF0ED /* AlbumPlayback.swift */,
 				0DB7A8671B58122A005AF0ED /* TrackListViewController.swift */,
 				0DB7A8691B583C01005AF0ED /* TrackListCollectionViewCell.swift */,
+				0D8B45151B67CB17000ED72C /* UIFont.swift */,
 				0D401F5E1B19F74B00E203B0 /* Images.xcassets */,
 				0D401F601B19F74B00E203B0 /* LaunchScreen.xib */,
 				0D401F7B1B19FAF700E203B0 /* Longplay-Bridging-Header.h */,
-				0D8B450B1B66AEAD000ED72C /* ionicons.ttf */,
+				0D8B450D1B67CAA9000ED72C /* Resources */,
 				0D401F551B19F74B00E203B0 /* Supporting Files */,
 			);
 			path = Longplay;
@@ -171,6 +180,25 @@
 				0D401F6C1B19F74B00E203B0 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0D8B450D1B67CAA9000ED72C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0D8B450E1B67CAA9000ED72C /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0D8B450E1B67CAA9000ED72C /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				0D8B450F1B67CAA9000ED72C /* Frutiger CE 45 Light.ttf */,
+				0D8B45171B67CDE8000ED72C /* Frutiger CE 65 Bold.ttf */,
+				0D8B45101B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf */,
+				0D8B45111B67CAA9000ED72C /* ionicons.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		1FFA5AD0A5E1D08008A9BAE8 /* Pods */ = {
@@ -282,11 +310,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D8B450C1B66AEB2000ED72C /* ionicons.ttf in Resources */,
 				0D5E9A2F1B6448CD0035B63F /* album_ids.plist in Resources */,
 				0D401F621B19F74B00E203B0 /* LaunchScreen.xib in Resources */,
+				0D8B45141B67CAA9000ED72C /* ionicons.ttf in Resources */,
 				0D401F5F1B19F74B00E203B0 /* Images.xcassets in Resources */,
+				0D8B45121B67CAA9000ED72C /* Frutiger CE 45 Light.ttf in Resources */,
+				0D8B45131B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf in Resources */,
 				0D5E9A2D1B6428CA0035B63F /* albums.plist in Resources */,
+				0D8B45181B67CE28000ED72C /* Frutiger CE 65 Bold.ttf in Resources */,
 				0DB7A86C1B595978005AF0ED /* AlbumPlayback.swift in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,6 +394,7 @@
 				0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */,
 				0D4D6F4F1B504E4E00F1E576 /* PlayerViewController.swift in Sources */,
 				0D8B450A1B657A87000ED72C /* NavigationView.swift in Sources */,
+				0D8B45161B67CB17000ED72C /* UIFont.swift in Sources */,
 				0DB7A8681B58122A005AF0ED /* TrackListViewController.swift in Sources */,
 				0DB7A86A1B583C01005AF0ED /* TrackListCollectionViewCell.swift in Sources */,
 				0D016E3C1B517FDB001AE58A /* AlbumCollectionViewCell.swift in Sources */,
