@@ -1,17 +1,31 @@
 PODS:
-  - FontAwesome.swift (0.4.3)
+  - FontAwesomeKit (2.2.0):
+    - FontAwesomeKit/Core (= 2.2.0)
+    - FontAwesomeKit/FontAwesome (= 2.2.0)
+    - FontAwesomeKit/FoundationIcons (= 2.2.0)
+    - FontAwesomeKit/IonIcons (= 2.2.0)
+    - FontAwesomeKit/Zocial (= 2.2.0)
+  - FontAwesomeKit/Core (2.2.0)
+  - FontAwesomeKit/FontAwesome (2.2.0):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/FoundationIcons (2.2.0):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/IonIcons (2.2.0):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/Zocial (2.2.0):
+    - FontAwesomeKit/Core
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
   - SDWebImage/Core (3.7.2)
   - SnapKit (0.12.0)
 
 DEPENDENCIES:
-  - FontAwesome.swift (~> 0.4)
+  - FontAwesomeKit (~> 2.2)
   - SDWebImage (~> 3.7)
   - SnapKit (~> 0.12)
 
 SPEC CHECKSUMS:
-  FontAwesome.swift: 4f3dbf913b9ef9db275d02b75f6b794fa3bcbabc
+  FontAwesomeKit: 025fd4dd1017fe4e3f8d47b03e024deedbb33cd4
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SnapKit: 00c388aa3bf1944c1b55472f31e841f75bd83882
 

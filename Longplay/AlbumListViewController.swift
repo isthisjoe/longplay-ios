@@ -15,6 +15,7 @@ class AlbumListViewController: UICollectionViewController {
     var session: SPTSession?
     var data:[SPTAlbum]?
     var playAlbumBlock:((album:SPTAlbum) -> ())?
+    var didSelectAlbumBlock:((album:SPTAlbum)->())?
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -100,40 +101,13 @@ class AlbumListViewController: UICollectionViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
         if let
             data = data,
             album = data[indexPath.row] as SPTAlbum? {
-                if let
-                    albumURL = album.uri {
-                        loadSPTAlbum(albumURL, completed: { (album) -> () in
-                            if let
-                                album = album as SPTAlbum!,
-                                navigationController = self.navigationController {
-                                    let albumViewController = AlbumViewController(album: album)
-                                    albumViewController.playAlbumBlock = { (album:SPTAlbum) -> () in
-                                        if let playAlbumBlock = self.playAlbumBlock {
-                                            playAlbumBlock(album: album)
-                                        }
-                                    }
-                                    navigationController.pushViewController(albumViewController, animated: true)
-                            }
-                        })
+                if let didSelectAlbumBlock = didSelectAlbumBlock {
+                    didSelectAlbumBlock(album: album)
                 }
-        }
-    }
-    
-    func loadSPTAlbum(albumURL:NSURL, completed: ((album:SPTAlbum?)->())) {
-        if let session = session {
-            SPTAlbum.albumWithURI(albumURL,
-                accessToken: session.accessToken,
-                market: nil,
-                callback: { (error:NSError!, result:AnyObject!) -> Void in
-                    if let album:SPTAlbum = result as? SPTAlbum {
-                        completed(album: album)
-                    } else {
-                        completed(album: nil)
-                    }
-            })
         }
     }
 }

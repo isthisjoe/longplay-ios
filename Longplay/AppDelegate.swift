@@ -32,9 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             })
         }
-        
         application.statusBarHidden = true
-        
         return true
     }
     

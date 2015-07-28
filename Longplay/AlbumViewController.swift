@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import FontAwesome_swift
+import FontAwesomeKit
 
 class AlbumViewController: UIViewController {
 
@@ -54,10 +54,7 @@ class AlbumViewController: UIViewController {
         }
         
         let playButtonSize:CGFloat = 50.0
-        playButton.setImage(
-            UIImage.fontAwesomeIconWithName(.Play,
-                textColor: UIColor.whiteColor(),
-                size: CGSizeMake(playButtonSize, playButtonSize)),
+        playButton.setImage(FAKIonIcons.playIconWithSize(playButtonSize).imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
             forState:.Normal)
         playButton.addTarget(self, action: "playAction:", forControlEvents:.TouchUpInside)
         playButton.layer.shadowColor = UIColor.darkGrayColor().CGColor

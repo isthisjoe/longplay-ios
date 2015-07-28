@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import FontAwesome_swift
+import FontAwesomeKit
 import MediaPlayer
 
 class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
@@ -114,26 +114,22 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     func updatePlayButtonToPause() {
         let playButtonSize:CGFloat = 50.0
         playButton.setImage(
-            UIImage.fontAwesomeIconWithName(.Pause,
-                textColor: UIColor.whiteColor(),
-                size: CGSizeMake(playButtonSize, playButtonSize)),
+            FAKIonIcons.pauseIconWithSize(playButtonSize).imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
             forState:.Normal)
     }
     
     func updatePlayButtonToPlay() {
         let playButtonSize:CGFloat = 50.0
         playButton.setImage(
-            UIImage.fontAwesomeIconWithName(.Play,
-                textColor: UIColor.whiteColor(),
-                size: CGSizeMake(playButtonSize, playButtonSize)),
+            FAKIonIcons.playIconWithSize(playButtonSize).imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
             forState:.Normal)
     }
     
     func setupBrowserButton() {
         browserButton = UIButton()
-        browserButton!.titleLabel!.font = UIFont.fontAwesomeOfSize(30)
-        browserButton!.setTitle(String.fontAwesomeIconWithName(.ThLarge), forState: .Normal)
         if let browserButton = browserButton {
+            let icon = FAKIonIcons.naviconRoundIconWithSize(30)
+            browserButton.setAttributedTitle(icon.attributedString(), forState: .Normal)
             view.addSubview(browserButton)
             browserButton.snp_makeConstraints({ (make) -> Void in
                 make.width.equalTo(50)
@@ -151,8 +147,8 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     }
     
     func finishedViewTransition() {
-        if album != nil {
-            playAlbum(album!)
+        if let album = album {
+            playAlbum(album, didStartPlaying: nil)
         }
     }
     
@@ -189,7 +185,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     
     // MARK: - Spotify
     
-    func playAlbum(album:SPTAlbum) {
+    func playAlbum(album:SPTAlbum, didStartPlaying:((firstTrackName:String)->())?) {
         
         if let player = player {
             if player.isPlaying {
@@ -209,9 +205,13 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         if let
             session = session,
             player = player {
+                var firstTrackName:String?
                 var trackURIs = [NSURL]()
                 if let listPage:SPTListPage = album.firstTrackPage,
                     let items = listPage.items as? [SPTPartialTrack] {
+                        if let firstTrack = items.first {
+                            firstTrackName = firstTrack.name
+                        }
                         for item:SPTPartialTrack in items {
                             trackURIs.append(item.playableUri)
                         }
@@ -229,6 +229,18 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
                 }
                 
                 isPlaying = true
+                
+                if let didStartPlaying = didStartPlaying,
+                    firstTrackName = firstTrackName {
+                        didStartPlaying(firstTrackName:firstTrackName)
+                }
+        } else {
+            if session == nil {
+                NSLog("session is nil")
+            }
+            if player == nil {
+                NSLog("player is nil")
+            }
         }
     }
     
@@ -358,6 +370,8 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
                     }
                     callback()
                 })
+            } else {
+                callback()
             }
         } else {
             callback()
