@@ -20,7 +20,7 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
     var flattenedAlbumData: [[String:String]]?
     var data:[[SPTAlbum]]?
     var playAlbumBlock:((album:SPTAlbum) -> ())?
-    var didSelectAlbumBlock:((album:SPTAlbum)->())?
+    var didSelectAlbumBlock:((album:SPTAlbum, about:String)->())?
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -185,10 +185,12 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         if let data = data,
+            flattenedAlbumData = flattenedAlbumData,
             collection = data[indexPath.section] as [SPTAlbum]?,
             album = collection[indexPath.row] as SPTAlbum? {
+                let about = flattenedAlbumData.filter({$0["uri"] == album.uri.absoluteString!}).map({$0["about"]!}).first!
                 if let didSelectAlbumBlock = didSelectAlbumBlock {
-                    didSelectAlbumBlock(album: album)
+                    didSelectAlbumBlock(album: album, about: about)
                 }
         }
     }

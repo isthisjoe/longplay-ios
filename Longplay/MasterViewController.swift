@@ -37,8 +37,8 @@ class MasterViewController: UIViewController {
                     })
                 }
             }
-            albumListViewController.didSelectAlbumBlock = { (album:SPTAlbum) -> () in
-                self.didSelectAlbumForViewing(album)
+            albumListViewController.didSelectAlbumBlock = { (album:SPTAlbum, about:String) -> () in
+                self.didSelectAlbumForViewing(album, about:about)
             }
             browserNavigationController = BrowserNavigationController(rootViewController: albumListViewController)
             if let browserNavigationController = browserNavigationController {
@@ -90,10 +90,10 @@ class MasterViewController: UIViewController {
     
     // MARK: Actions
     
-    func didSelectAlbumForViewing(album:SPTAlbum) {
+    func didSelectAlbumForViewing(album:SPTAlbum, about:String) {
         
         if let browserNavigationController = browserNavigationController {
-            let albumViewController = AlbumViewController(album: album)
+            let albumViewController = AlbumViewController(album: album, about:about)
             albumViewController.playAlbumBlock = { (album:SPTAlbum) -> () in
                 self.playAlbum(album)
             }
