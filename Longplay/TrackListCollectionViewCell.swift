@@ -25,6 +25,21 @@ class TrackListCollectionViewCell: UICollectionViewCell {
     
     let titleLabel = UILabel()
     var didLayoutSubviews = false
+    var highlightedTrack:Bool = false {
+        didSet {
+            if highlightedTrack {
+                titleLabel.textColor = UIColor.primaryColor()
+            } else {
+                titleLabel.textColor = UIColor.lpBlackColor()
+            }
+        }
+    }
+
+    override func prepareForReuse() {
+        
+        self.highlightedTrack = false
+        self.titleLabel.text = nil
+    }
     
     override func layoutSubviews() {
 

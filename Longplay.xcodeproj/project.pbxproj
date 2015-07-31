@@ -36,6 +36,7 @@
 		0DB7A86A1B583C01005AF0ED /* TrackListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB7A8691B583C01005AF0ED /* TrackListCollectionViewCell.swift */; };
 		0DB7A86C1B595978005AF0ED /* AlbumPlayback.swift in Resources */ = {isa = PBXBuildFile; fileRef = 0DB7A86B1B595978005AF0ED /* AlbumPlayback.swift */; };
 		0DC9CB421B5C29ED00EAE84A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC9CB411B5C29ED00EAE84A /* MediaPlayer.framework */; };
+		0DF0A3501B6C23D50030C3D9 /* UIColor_Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF0A34F1B6C23D50030C3D9 /* UIColor_Helper.swift */; };
 		0FF066588D9D565D76F805CD /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F317772594C080FCFF692195 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -83,6 +84,7 @@
 		0DB7A8691B583C01005AF0ED /* TrackListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackListCollectionViewCell.swift; sourceTree = "<group>"; };
 		0DB7A86B1B595978005AF0ED /* AlbumPlayback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumPlayback.swift; sourceTree = "<group>"; };
 		0DC9CB411B5C29ED00EAE84A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		0DF0A34F1B6C23D50030C3D9 /* UIColor_Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor_Helper.swift; sourceTree = "<group>"; };
 		128E7C4710B31CF4C8839A0A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		90B479A16270620E426BEF19 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F317772594C080FCFF692195 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,6 +197,7 @@
 		0DD3E6191B67F46F0080ED38 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0DF0A34F1B6C23D50030C3D9 /* UIColor_Helper.swift */,
 				0D8B45151B67CB17000ED72C /* UIFont.swift */,
 				0D8B45091B657A87000ED72C /* NavigationView.swift */,
 				0D8B451B1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift */,
@@ -422,6 +425,7 @@
 				0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */,
 				0D4D6F4F1B504E4E00F1E576 /* PlayerViewController.swift in Sources */,
 				0D8B450A1B657A87000ED72C /* NavigationView.swift in Sources */,
+				0DF0A3501B6C23D50030C3D9 /* UIColor_Helper.swift in Sources */,
 				0D8B45161B67CB17000ED72C /* UIFont.swift in Sources */,
 				0DB7A8681B58122A005AF0ED /* TrackListViewController.swift in Sources */,
 				0DB7A86A1B583C01005AF0ED /* TrackListCollectionViewCell.swift in Sources */,

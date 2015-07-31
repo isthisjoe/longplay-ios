@@ -29,6 +29,7 @@ class TrackListViewController: UICollectionViewController {
             return nil
         }
     }
+    var highlightedIndexPath:NSIndexPath?
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -85,6 +86,9 @@ class TrackListViewController: UICollectionViewController {
             track = items[indexPath.row] as? SPTPartialTrack {
                 let viewModel = TrackListViewModel(track: track)
                 cell.configureCellWithViewModel(viewModel)
+                if let highlightedIndexPath = highlightedIndexPath {
+                    cell.highlightedTrack = highlightedIndexPath.isEqual(indexPath)
+                }
         }
         return cell
     }

@@ -11,9 +11,8 @@ import SnapKit
 import FontAwesomeKit
 import MediaPlayer
 
-class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
+class PlayerViewController: UIViewController {
 
-    
     var session: SPTSession?
     var album:SPTAlbum? {
         didSet {
@@ -83,8 +82,8 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         }
         
         let progressViewHeight:CGFloat = 10.0
-        progressView.trackTintColor = UIColor(red: 255/255, green: 212/255, blue: 200/255, alpha: 1)
-        progressView.progressTintColor = UIColor(red: 255/255, green: 55/255, blue: 0/255, alpha: 1)
+        progressView.trackTintColor = UIColor.primaryLightColor()
+        progressView.progressTintColor = UIColor.primaryColor()
         view.addSubview(progressView)
         progressView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(albumTrackListingView.snp_bottom)
@@ -102,7 +101,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         }
         
         let browserIcon = FAKIonIcons.naviconRoundIconWithSize(28)
-        browserIcon.setAttributes([NSForegroundColorAttributeName: UIColor.blackColor()])
+        browserIcon.setAttributes([NSForegroundColorAttributeName: UIColor.lpBlackColor()])
         browserButton.setAttributedTitle(browserIcon.attributedString(), forState: .Normal)
         controlView.addSubview(browserButton)
         browserButton.snp_makeConstraints({ (make) -> Void in
@@ -124,7 +123,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     func updatePlayButtonToPause() {
         let playButtonSize:CGFloat = 48
         let icon = FAKIonIcons.pauseIconWithSize(playButtonSize)
-        icon.setAttributes([NSForegroundColorAttributeName:UIColor.blackColor()])
+        icon.setAttributes([NSForegroundColorAttributeName:UIColor.lpBlackColor()])
         playButton.setImage(
             icon.imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
             forState:.Normal)
@@ -133,7 +132,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     func updatePlayButtonToPlay() {
         let playButtonSize:CGFloat = 48
         let icon = FAKIonIcons.playIconWithSize(playButtonSize)
-        icon.setAttributes([NSForegroundColorAttributeName:UIColor.blackColor()])
+        icon.setAttributes([NSForegroundColorAttributeName:UIColor.lpBlackColor()])
         playButton.setImage(
             icon.imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
             forState:.Normal)
@@ -180,7 +179,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         }
     }
     
-    // MARK: - Spotify
+    // MARK: Spotify
     
     func playAlbum(album:SPTAlbum, didStartPlaying:((firstTrackName:String)->())?) {
         
@@ -282,7 +281,7 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
         }
     }
     
-    // MARK: - Album Playback
+    // MARK: Album Playback
     
     func didSetAlbumPlayback() {
   
@@ -383,7 +382,29 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
             MPNowPlayingInfoPropertyPlaybackRate: playbackRate
         ]
     }
-    // MARK: - SPTAudioStreamingDelegate
+    
+    // MARK: Highlight track playing
+    
+    func highlightTrackIndex(index:Int) {
+        
+        let indexPath = NSIndexPath(forRow: index, inSection: 0)
+        var reloadIndexPaths = [indexPath]
+        if let oldIndexPath = trackListingViewController.highlightedIndexPath {
+            reloadIndexPaths.append(oldIndexPath)
+        }
+        NSLog("indexPath: %@", indexPath)
+        trackListingViewController.highlightedIndexPath = indexPath
+        if let collectionView = trackListingViewController.collectionView {
+            NSLog("reloadIndexPaths: %@", reloadIndexPaths)
+            collectionView.reloadItemsAtIndexPaths(reloadIndexPaths)
+        }
+    }
+}
+
+
+// MARK: -
+private typealias PlayerAudioStreamingDelegate = PlayerViewController
+extension PlayerAudioStreamingDelegate: SPTAudioStreamingDelegate {
     
     func audioStreamingDidLogin(audioStreaming: SPTAudioStreamingController!) {
         NSLog("audioStreamingDidLogin")
@@ -404,9 +425,12 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     func audioStreamingDidDisconnect(audioStreaming: SPTAudioStreamingController!) {
         NSLog("audioStreamingDidDisconnect")
     }
-    
-    
-    // MARK: - SPTAudioStreamingPlaybackDelegate
+}
+
+
+// MARK: -
+private typealias PlayerAudioStreamingPlaybackDelegate = PlayerViewController
+extension PlayerAudioStreamingPlaybackDelegate: SPTAudioStreamingPlaybackDelegate {
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
         NSLog("didChangePlaybackStatus: %@", isPlaying)
@@ -433,6 +457,9 @@ class PlayerViewController: UIViewController, SPTAudioStreamingDelegate, SPTAudi
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: NSURL!) {
         NSLog("didStartPlayingTrack: %@", trackUri)
+        if let player = player {
+            self.highlightTrackIndex(Int(player.currentTrackIndex))
+        }
     }
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: NSURL!) {
