@@ -27,8 +27,6 @@ class PlayerViewController: UIViewController {
     var player: SPTAudioStreamingController?
     
     let coverArtImageView = UIImageView()
-    let nameLabel = UILabel()
-    let artistLabel = UILabel()
     let albumTrackListingView = UIView()
     let trackListingViewController = TrackListViewController()
     let progressView = UIProgressView()
@@ -54,30 +52,10 @@ class PlayerViewController: UIViewController {
             make.height.equalTo(view.bounds.size.width)
         }
         
-        let labelSpacing = 8
-        let labelHeight = 30
-        let sideSpacing:CGFloat = 14
-        nameLabel.font = UIFont.primaryBoldFontWithSize(20)
-        view.addSubview(nameLabel)
-        nameLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(coverArtImageView.snp_bottom).offset(labelSpacing)
-            make.left.equalTo(coverArtImageView).offset(sideSpacing)
-            make.right.equalTo(coverArtImageView).offset(-sideSpacing)
-            make.height.equalTo(labelHeight)
-        }
-        
-        artistLabel.font = UIFont.primaryFontWithSize(20)
-        view.addSubview(artistLabel)
-        artistLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(nameLabel.snp_bottom)
-            make.left.right.equalTo(nameLabel)
-            make.height.equalTo(labelHeight)
-        }
-        
         albumTrackListingView.backgroundColor = UIColor.whiteColor()
         view.addSubview(albumTrackListingView)
         albumTrackListingView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(artistLabel.snp_bottom).offset(14)
+            make.top.equalTo(coverArtImageView.snp_bottom)
             make.left.right.equalTo(view)
         }
         
@@ -270,14 +248,6 @@ class PlayerViewController: UIViewController {
         
         if let albumURL = album.largestCover.imageURL {
             self.coverArtImageView.sd_setImageWithURL(albumURL)
-        }
-        
-        self.nameLabel.text = album.name
-        
-        let artists = album.artists
-        if artists.count > 0 {
-            let artist = artists[0] as! SPTPartialArtist
-            artistLabel.text = artist.name
         }
     }
     

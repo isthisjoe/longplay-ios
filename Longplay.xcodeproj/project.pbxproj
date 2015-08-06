@@ -10,6 +10,7 @@
 		0D016E3C1B517FDB001AE58A /* AlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */; };
 		0D016E3E1B5180E6001AE58A /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */; };
 		0D016E401B5191D2001AE58A /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */; };
+		0D2458A71B6D69F0006BCF10 /* TrackListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2458A61B6D69F0006BCF10 /* TrackListHeaderView.swift */; };
 		0D401F581B19F74B00E203B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D401F571B19F74B00E203B0 /* AppDelegate.swift */; };
 		0D401F5F1B19F74B00E203B0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D401F5E1B19F74B00E203B0 /* Images.xcassets */; };
 		0D401F621B19F74B00E203B0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D401F601B19F74B00E203B0 /* LaunchScreen.xib */; };
@@ -54,6 +55,7 @@
 		0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
 		0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
+		0D2458A61B6D69F0006BCF10 /* TrackListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackListHeaderView.swift; sourceTree = "<group>"; };
 		0D401F521B19F74B00E203B0 /* Longplay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Longplay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D401F561B19F74B00E203B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0D401F571B19F74B00E203B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				0D8B45091B657A87000ED72C /* NavigationView.swift */,
 				0D8B451B1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift */,
 				0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */,
+				0D2458A61B6D69F0006BCF10 /* TrackListHeaderView.swift */,
 				0DB7A8691B583C01005AF0ED /* TrackListCollectionViewCell.swift */,
 			);
 			name = Views;
@@ -427,6 +430,7 @@
 				0D8B450A1B657A87000ED72C /* NavigationView.swift in Sources */,
 				0DF0A3501B6C23D50030C3D9 /* UIColor_Helper.swift in Sources */,
 				0D8B45161B67CB17000ED72C /* UIFont.swift in Sources */,
+				0D2458A71B6D69F0006BCF10 /* TrackListHeaderView.swift in Sources */,
 				0DB7A8681B58122A005AF0ED /* TrackListViewController.swift in Sources */,
 				0DB7A86A1B583C01005AF0ED /* TrackListCollectionViewCell.swift in Sources */,
 				0D016E3C1B517FDB001AE58A /* AlbumCollectionViewCell.swift in Sources */,

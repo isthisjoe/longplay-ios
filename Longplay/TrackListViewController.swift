@@ -9,16 +9,21 @@
 import UIKit
 
 let TrackListCollectionViewCellReuseIdentifier = "TrackListCollectionViewCellReuseIdentifier"
+let TrackListHeaderViewReuseIdentifier = "TrackListHeaderViewReuseIdentifier"
 
 class TrackListViewController: UICollectionViewController {
 
     var album:SPTAlbum? {
         didSet {
+            if let album = self.album {
+                self.albumViewModel = AlbumViewModel(album: album)
+            }
             if let collectionView = collectionView {
                 collectionView.reloadData()
             }
         }
     }
+    var albumViewModel:AlbumViewModel?
     var items:Array<AnyObject>? {
         if let
             album = album,
@@ -30,7 +35,10 @@ class TrackListViewController: UICollectionViewController {
         }
     }
     var highlightedIndexPath:NSIndexPath?
-    
+
+    let nameLabel = UILabel()
+    let artistLabel = UILabel()
+
     init() {
         let layout = UICollectionViewFlowLayout()
         let screenWidth = UIScreen.mainScreen().bounds.size.width
@@ -60,14 +68,19 @@ class TrackListViewController: UICollectionViewController {
         
         super.viewDidLoad()
         
-        self.collectionView!.backgroundColor = UIColor.whiteColor()
-
-        // Register cell classes
-        self.collectionView!.registerClass(TrackListCollectionViewCell.self,
-            forCellWithReuseIdentifier: TrackListCollectionViewCellReuseIdentifier)
+        if let collectionView = collectionView {
+            collectionView.backgroundColor = UIColor.whiteColor()
+            collectionView.registerClass(TrackListCollectionViewCell.self,
+                forCellWithReuseIdentifier: TrackListCollectionViewCellReuseIdentifier)
+            collectionView.registerClass(TrackListHeaderView.self,
+                forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                withReuseIdentifier: TrackListHeaderViewReuseIdentifier)
+        }
     }
+}
 
-    // MARK: UICollectionViewDataSource
+private typealias TrackListDataSource = TrackListViewController
+extension TrackListDataSource: UICollectionViewDataSource {
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -91,5 +104,35 @@ class TrackListViewController: UICollectionViewController {
                 }
         }
         return cell
+    }
+    
+    override func collectionView(collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+            
+            var reusableView:UICollectionReusableView?
+            if kind == UICollectionElementKindSectionHeader {
+                if let trackListHeaderView =
+                    collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader,
+                        withReuseIdentifier: TrackListHeaderViewReuseIdentifier,
+                        forIndexPath: indexPath) as? TrackListHeaderView,
+                    albumViewModel = albumViewModel {
+                        trackListHeaderView.nameLabel.text = albumViewModel.title
+                        trackListHeaderView.artistLabel.text = albumViewModel.artistName
+                        reusableView = trackListHeaderView
+                }
+            }
+            return reusableView!
+    }
+}
+
+private typealias TrackListDelegateFlowLayout = TrackListViewController
+extension TrackListDelegateFlowLayout: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if section == 0 {
+            return CGSizeMake(collectionView.bounds.size.width, TrackListHeaderViewHeight)
+        }
+        return CGSizeZero
     }
 }
