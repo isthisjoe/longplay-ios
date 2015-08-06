@@ -97,7 +97,7 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
                                 (error:NSError!, result:AnyObject!) -> Void in
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                     if let result = result as? [SPTAlbum] {
-                                        self.data![index] = result
+                                        self.data![index] = sortAlbums(result)
                                     }
                                     dispatch_group_leave(group)
                                 })
@@ -111,8 +111,29 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
                 })
         }
     }
+}
+
+// sort by release date or release year if the date is not present
+func sortAlbums(albums:[SPTAlbum]) -> [SPTAlbum] {
     
-    // MARK: UICollectionViewDataSource
+    let sortedAlbums = albums.sorted { (alb1, alb2) -> Bool in
+        if alb1.releaseYear != 0 ||
+            alb2.releaseYear != 0 {
+                if let releaseDate1 = alb1.releaseDate,
+                    let releaseDate2 = alb2.releaseDate {
+                        return releaseDate1.compare(releaseDate2) == .OrderedAscending
+                } else {
+                    return alb1.releaseYear < alb2.releaseYear
+                }
+        } else {
+            return false
+        }
+    }
+    return sortedAlbums
+}
+
+private typealias AlbumListCollectionViewDataSource = AlbumListViewController
+extension AlbumListCollectionViewDataSource: UICollectionViewDataSource {
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         if let data = data {
@@ -128,8 +149,10 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
         }
         return 0
     }
-    
-    // MARK: UICollectionViewDelegate
+}
+
+private typealias AlbumListCollectionViewDelegate = AlbumListViewController
+extension AlbumListCollectionViewDelegate: UICollectionViewDelegate {
     
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         
@@ -194,8 +217,10 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
                 }
         }
     }
-    
-    // MARK: UICollectionViewDelegateFlowLayout
+}
+
+private typealias AlbumListDelegateFlowLayout = AlbumListViewController
+extension AlbumListDelegateFlowLayout: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         if let data = data {
