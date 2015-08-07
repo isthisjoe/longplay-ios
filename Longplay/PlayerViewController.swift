@@ -26,8 +26,8 @@ class PlayerViewController: UIViewController {
     }
     var player: SPTAudioStreamingController?
     
-    let coverArtImageView = UIImageView()
     let albumTrackListingView = UIView()
+    var albumTrackListingViewTopOffset:CGFloat = 0
     let trackListingViewController = TrackListViewController()
     let progressView = UIProgressView()
     let controlView = UIView()
@@ -46,17 +46,10 @@ class PlayerViewController: UIViewController {
     func setupViews() {
         view.backgroundColor = UIColor.whiteColor()
         
-        view.addSubview(coverArtImageView)
-        coverArtImageView.snp_makeConstraints { (make) -> Void in
-            make.top.left.right.equalTo(0)
-            make.height.equalTo(view.bounds.size.width)
-        }
-        
         albumTrackListingView.backgroundColor = UIColor.whiteColor()
         view.addSubview(albumTrackListingView)
         albumTrackListingView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(coverArtImageView.snp_bottom)
-            make.left.right.equalTo(view)
+            make.top.left.right.equalTo(view)
         }
         
         let progressViewHeight:CGFloat = 10.0
@@ -126,18 +119,6 @@ class PlayerViewController: UIViewController {
         }
     }
     
-    func setupTrackListing(album:SPTAlbum) {
-        
-        trackListingViewController.album = album
-        trackListingViewController.willMoveToParentViewController(self)
-        addChildViewController(trackListingViewController)
-        trackListingViewController.didMoveToParentViewController(trackListingViewController)
-        albumTrackListingView.addSubview(trackListingViewController.view)
-        trackListingViewController.view.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(albumTrackListingView)
-        }
-    }
-    
     // MARK: Actions
     
     func playAction(sender:AnyObject) {
@@ -166,8 +147,6 @@ class PlayerViewController: UIViewController {
                 return
             }
         }
-        
-        populateAlbumData(album)
         
         setupTrackListing(album)
         
@@ -241,13 +220,6 @@ class PlayerViewController: UIViewController {
                     }
                     playTrackURIs(trackURIs)
             })
-        }
-    }
-    
-    func populateAlbumData(album:SPTAlbum) {
-        
-        if let albumURL = album.largestCover.imageURL {
-            self.coverArtImageView.sd_setImageWithURL(albumURL)
         }
     }
     
@@ -371,6 +343,23 @@ class PlayerViewController: UIViewController {
     }
 }
 
+// MARK: -
+
+private typealias PlayerTrackListing = PlayerViewController
+extension PlayerTrackListing: UICollectionViewDelegate {
+    
+    func setupTrackListing(album:SPTAlbum) {
+        
+        trackListingViewController.album = album
+        trackListingViewController.willMoveToParentViewController(self)
+        addChildViewController(trackListingViewController)
+        trackListingViewController.didMoveToParentViewController(trackListingViewController)
+        albumTrackListingView.addSubview(trackListingViewController.view)
+        trackListingViewController.view.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(albumTrackListingView)
+        }
+    }
+}
 
 // MARK: -
 private typealias PlayerAudioStreamingDelegate = PlayerViewController

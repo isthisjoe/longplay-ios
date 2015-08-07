@@ -8,10 +8,13 @@
 
 import UIKit
 
-let TrackListHeaderViewHeight:CGFloat = 76
+let TrackListHeaderViewCoverArtImageViewHeight:CGFloat = UIScreen.mainScreen().bounds.size.width
+let TrackListHeaderViewLabelSpacing:CGFloat = 8
+let TrackListHeaderViewLabelHeight:CGFloat = 30
 
 class TrackListHeaderView: UICollectionReusableView {
     
+    let coverArtImageView = UIImageView()
     let nameLabel = UILabel()
     let artistLabel = UILabel()
     
@@ -38,16 +41,20 @@ class TrackListHeaderView: UICollectionReusableView {
     
     func setup() {
         
-        let labelSpacing = 8
-        let labelHeight = 30
+        addSubview(coverArtImageView)
+        coverArtImageView.snp_makeConstraints { (make) -> Void in
+            make.top.left.right.equalTo(self)
+            make.height.equalTo(TrackListHeaderViewCoverArtImageViewHeight)
+        }
+        
         let sideSpacing:CGFloat = 14
         nameLabel.font = UIFont.primaryBoldFontWithSize(20)
         addSubview(nameLabel)
         nameLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(labelSpacing)
+            make.top.equalTo(coverArtImageView.snp_bottom).offset(TrackListHeaderViewLabelSpacing)
             make.left.equalTo(self).offset(sideSpacing)
             make.right.equalTo(self).offset(-sideSpacing)
-            make.height.equalTo(labelHeight)
+            make.height.equalTo(TrackListHeaderViewLabelHeight)
         }
         
         artistLabel.font = UIFont.primaryFontWithSize(20)
@@ -55,8 +62,15 @@ class TrackListHeaderView: UICollectionReusableView {
         artistLabel.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(nameLabel.snp_bottom)
             make.left.right.equalTo(nameLabel)
-            make.height.equalTo(labelHeight)
+            make.height.equalTo(TrackListHeaderViewLabelHeight)
         }
     }
-
+    
+    class func calculateHeight() -> CGFloat {
+        return TrackListHeaderViewCoverArtImageViewHeight +
+            TrackListHeaderViewLabelSpacing +
+            TrackListHeaderViewLabelHeight +
+            TrackListHeaderViewLabelHeight +
+        TrackListHeaderViewLabelSpacing
+    }
 }
