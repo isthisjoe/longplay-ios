@@ -34,6 +34,8 @@ class PlayerViewController: UIViewController {
     let browserButton = UIButton()
     let playButton = UIButton()
     var isPlaying:Bool = false
+    
+    let dataStore = DataStore()
 
     // MARK: Views
     
@@ -147,6 +149,8 @@ class PlayerViewController: UIViewController {
                 return
             }
         }
+        
+        dataStore.currentAlbumURI = album.uri
         
         setupTrackListing(album)
         
@@ -341,6 +345,13 @@ class PlayerViewController: UIViewController {
             collectionView.reloadItemsAtIndexPaths(reloadIndexPaths)
         }
     }
+    
+    // MARK: Did play track
+    
+    func didPlayTrack(trackURI:NSURL) {
+        
+        dataStore.currentAlbumTrackURI = trackURI
+    }
 }
 
 // MARK: -
@@ -417,7 +428,8 @@ extension PlayerAudioStreamingPlaybackDelegate: SPTAudioStreamingPlaybackDelegat
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: NSURL!) {
         NSLog("didStartPlayingTrack: %@", trackUri)
         if let player = player {
-            self.highlightTrackIndex(Int(player.currentTrackIndex))
+            highlightTrackIndex(Int(player.currentTrackIndex))
+            didPlayTrack(player.currentTrackURI)
         }
     }
     
