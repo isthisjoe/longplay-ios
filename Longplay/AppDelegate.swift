@@ -44,7 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SPTAuth.defaultInstance().tokenSwapURL = NSURL(string: "https://blooming-hollows-5367.herokuapp.com/swap")
         SPTAuth.defaultInstance().tokenRefreshURL = NSURL(string: "https://blooming-hollows-5367.herokuapp.com/refresh")
 
-        if let sessionValues = NSUserDefaults.standardUserDefaults().objectForKey("SpotifySessionValues") as? NSDictionary {
+        let dataStore = DataStore()
+        if let sessionValues = dataStore.spotifySessionValues {
             if let
                 username = sessionValues["username"] as? String,
                 accessToken = sessionValues["accessToken"] as? String,
@@ -120,7 +121,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let encryptedRefreshToken = session.encryptedRefreshToken {
                 sessionValues["encryptedRefreshToken"] = encryptedRefreshToken
             }
-            NSUserDefaults.standardUserDefaults().setObject(sessionValues, forKey: "SpotifySessionValues")
+            let dataStore = DataStore()
+            dataStore.spotifySessionValues = sessionValues
         }
         transitionToMasterViewController(session)
         if let loginViewController = loginViewController,
