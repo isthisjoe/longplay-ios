@@ -64,7 +64,7 @@ class AlbumViewController: UIViewController {
             make.top.equalTo(view).offset(spacing)
             make.left.equalTo(coverArtImageView.snp_right).offset(spacing)
             make.right.equalTo(view).offset(-spacing)
-            make.height.equalTo(labelHeight)
+            make.height.greaterThanOrEqualTo(labelHeight)
         }
         
         let labelSpacing = 5
@@ -74,7 +74,7 @@ class AlbumViewController: UIViewController {
             make.top.equalTo(nameLabel.snp_bottom).offset(labelSpacing)
             make.left.equalTo(coverArtImageView.snp_right).offset(spacing)
             make.right.equalTo(view).offset(-spacing)
-            make.height.equalTo(labelHeight)
+            make.height.greaterThanOrEqualTo(labelHeight)
         }
         
         aboutLabel.font = UIFont.primaryFontWithSize(14)
@@ -89,13 +89,16 @@ class AlbumViewController: UIViewController {
             coverArtImageView.sd_setImageWithURL(albumURL)
         }
         nameLabel.text = album.name
+        nameLabel.numberOfLines = 2
         let artists = album.artists
         if artists.count > 0 {
             let artist = artists[0] as! SPTPartialArtist
             artistLabel.text = artist.name
+            artistLabel.numberOfLines = 2
         }
         var paragraph = NSMutableParagraphStyle()
         paragraph.lineSpacing = 6
+        paragraph.hyphenationFactor = 1.0
         let aboutAttributedText = NSAttributedString(string: about,
             attributes: [NSParagraphStyleAttributeName:paragraph,
                 NSKernAttributeName:CGFloat(0.1)])
