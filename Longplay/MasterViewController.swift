@@ -200,9 +200,19 @@ class MasterViewController: UIViewController {
                 }
             }
             // right
-            navigationView.hideRightButton()
-            if isAlbumLoadedInPlayer() {
-                navigationView.showPlayInRightButton()
+            if let rightButton = navigationView.rightButton {
+                for target in rightButton.allTargets() {
+                    rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                }
+                if isAlbumLoadedInPlayer() {
+                    if isPlaying() {
+                        navigationView.showPauseInRightButton()
+                        rightButton.addTarget(self, action: "pausePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+                    } else {
+                        navigationView.showPlayInRightButton()
+                        rightButton.addTarget(self, action: "resumePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+                    }
+                }
             }
         }
     }
@@ -225,13 +235,16 @@ class MasterViewController: UIViewController {
         if let navigationView = navigationView {
             // left
             navigationView.hideLeftButton()
-            if let rightButton = navigationView.rightButton {
-                rightButton.addTarget(self, action: "backToBrowserFromSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
-            }
             // middle
             navigationView.hideMiddleButton()
             navigationView.hideAlbumDetails()
             // right
+            if let rightButton = navigationView.rightButton {
+                for target in rightButton.allTargets() {
+                    rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                }
+                rightButton.addTarget(self, action: "backToBrowserFromSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            }
             navigationView.showChevronInRightButton()
         }
     }
@@ -309,6 +322,13 @@ class MasterViewController: UIViewController {
                 player.loadAlbum(album, startTrackIndex: startTrackIndex, autoPlay: autoPlay)
             })
         }
+    }
+    
+    func isPlaying() -> Bool {
+        if let player = player {
+            return player.isPlaying
+        }
+        return false
     }
     
     func isAlbumLoadedInPlayer() -> Bool {
