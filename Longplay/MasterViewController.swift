@@ -90,12 +90,17 @@ class MasterViewController: UIViewController {
                     leftButton.addTarget(self, action: "pushToSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
                 }
                 
-                if hasCurrentAlbumPlaying() {
-                    let albumURI = dataStore.currentAlbumURI!
-                    loadAlbumURI(albumURI, completed: { (album:SPTAlbum) -> () in
-                        self.playAlbum(album)
-                    })
-                }
+                loadCurrentAlbumPlaying()
+        }
+    }
+    
+    func loadCurrentAlbumPlaying() {
+        
+        if hasCurrentAlbumPlaying() {
+            let albumURI = dataStore.currentAlbumURI!
+            fetchAlbum(albumURI, completed: { (album:SPTAlbum) -> () in
+                self.playAlbum(album)
+            })
         }
     }
     
@@ -371,7 +376,7 @@ extension MasterViewController_LoadCurrentAlbum {
         return false
     }
     
-    func loadAlbumURI(albumURI:NSURL, completed:((album:SPTAlbum)->())?) {
+    func fetchAlbum(albumURI:NSURL, completed:((album:SPTAlbum)->())?) {
         
         if let session = session,
             accessToken = session.accessToken {
