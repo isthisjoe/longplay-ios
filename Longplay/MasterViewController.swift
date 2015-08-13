@@ -127,12 +127,17 @@ class MasterViewController: UIViewController {
                     leftButton.addTarget(self, action: "backToBrowserAction:", forControlEvents: UIControlEvents.TouchUpInside)
                 }
                 // middle
-                navigationView.showPlayAlbumInMiddleButton()
-                if let middleButton = navigationView.middleButton {
-                    for target in middleButton.allTargets() {
-                        middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                if !isAlbumLoadedIntoPlayer(album) {
+                    // middle
+                    navigationView.showPlayAlbumInMiddleButton()
+                    if let middleButton = navigationView.middleButton {
+                        for target in middleButton.allTargets() {
+                            middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                        }
+                        middleButton.addTarget(albumViewController, action: "playAction:", forControlEvents: UIControlEvents.TouchUpInside)
                     }
-                    middleButton.addTarget(albumViewController, action: "playAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                    // right
+                    navigationView.hideRightButton()
                 }
             }
         }
@@ -161,6 +166,9 @@ class MasterViewController: UIViewController {
                 }
                 middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
             }
+            if isAlbumLoadedInPlayer() {
+                navigationView.showRightButton()
+            }
         }
     }
     
@@ -181,7 +189,7 @@ class MasterViewController: UIViewController {
                 leftButton.addTarget(self, action: "pushToSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
             }
             // middle
-            if isPlayingAlbum() {
+            if isAlbumLoadedInPlayer() {
                 navigationView.hideMiddleButtonText()
                 navigationView.showAlbumDetails()
                 if let middleButton = navigationView.middleButton {
@@ -193,7 +201,7 @@ class MasterViewController: UIViewController {
             }
             // right
             navigationView.hideRightButton()
-            if isPlayingAlbum() {
+            if isAlbumLoadedInPlayer() {
                 navigationView.showPlayInRightButton()
             }
         }
@@ -303,9 +311,18 @@ class MasterViewController: UIViewController {
         }
     }
     
-    func isPlayingAlbum() -> Bool {
-        if let player = player {
-            return player.isPlaying
+    func isAlbumLoadedInPlayer() -> Bool {
+        if let player = player,
+            playerAlbum = player.album {
+                return true
+        }
+        return false
+    }
+    
+    func isAlbumLoadedIntoPlayer(album:SPTAlbum) -> Bool {
+        if let player = player,
+            playerAlbum = player.album {
+                return album.uri == playerAlbum.uri
         }
         return false
     }

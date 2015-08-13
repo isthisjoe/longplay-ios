@@ -192,6 +192,12 @@ class NavigationView: UIView {
         }
     }
     
+    func showRightButton() {
+        if let rightButton = rightButton {
+            rightButton.alpha = 1.0
+        }
+    }
+    
     func hideRightButton() {
         if let rightButton = rightButton {
             rightButton.alpha = 0.0
