@@ -21,11 +21,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow(frame:UIScreen.mainScreen().bounds)
         if let window = self.window {
+            let launchViewController = LaunchViewController()
+            window.rootViewController = launchViewController
+            window.makeKeyAndVisible()
+
             setupSpotifySession({ (didLogin:Bool, session:SPTSession?) -> () in
                 if !didLogin {
                     self.loginViewController = LoginViewController()
+                    UIView.transitionFromView(window.rootViewController!.view,
+                        toView: self.loginViewController!.view,
+                        duration: 0.3,
+                        options: UIViewAnimationOptions(0),
+                        completion: nil)
                     window.rootViewController = self.loginViewController
-                    window.makeKeyAndVisible()
                 } else {
                     self.transitionToMasterViewController(session)
                     window.makeKeyAndVisible()
@@ -56,8 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         encryptedRefreshToken:encryptedRefreshToken,
                         expirationDate: expirationDate)
                     if session.isValid() {
+                        NSLog("Session valid")
                         callback(didLogin: true, session:session)
                     } else {
+                        NSLog("Session invalid, renewing")
                         SPTAuth.defaultInstance().renewSession(session,
                             callback: {
                                 (error:NSError!, session:SPTSession!) -> Void in
@@ -139,6 +149,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let window = self.window {
             masterViewController = MasterViewController()
             masterViewController!.session = session
+            UIView.transitionFromView(window.rootViewController!.view,
+                toView: self.masterViewController!.view,
+                duration: 0.3,
+                options: UIViewAnimationOptions(0),
+                completion: nil)
             window.rootViewController = masterViewController!
         }
     }
