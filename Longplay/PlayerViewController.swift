@@ -34,8 +34,13 @@ class PlayerViewController: UIViewController {
     let browserButton = UIButton()
     let playButton = UIButton()
     var isPlaying:Bool = false
-    
     let dataStore = DataStore()
+    
+    typealias DidChangeToTrackBlock = ((playerViewController:PlayerViewController, title:String, artist:String)->())
+    var didChangeToTrackBlock:DidChangeToTrackBlock?
+    
+    typealias DidChangePlaybackStatusBlock = ((playerViewController:PlayerViewController, isPlaying:Bool)->())
+    var didChangePlaybackStatusBlock:DidChangePlaybackStatusBlock?
 
     // MARK: Views
     
@@ -418,6 +423,9 @@ extension PlayerAudioStreamingPlaybackDelegate: SPTAudioStreamingPlaybackDelegat
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
         NSLog("didChangePlaybackStatus: %@", isPlaying)
+        if let didChangePlaybackStatusBlock = didChangePlaybackStatusBlock {
+            didChangePlaybackStatusBlock(playerViewController: self, isPlaying: isPlaying)
+        }
     }
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didSeekToOffset offset: NSTimeInterval) {
@@ -431,6 +439,9 @@ extension PlayerAudioStreamingPlaybackDelegate: SPTAudioStreamingPlaybackDelegat
                 title = trackMetadata["SPTAudioStreamingMetadataTrackName"] as? String,
                 artist = trackMetadata["SPTAudioStreamingMetadataArtistName"] as? String {
                     configureNowPlayingInfo(title, artist: artist, playbackRate: 1)
+                    if let didChangeToTrackBlock = didChangeToTrackBlock {
+                        didChangeToTrackBlock(playerViewController:self, title: title, artist: artist)
+                    }
             }
         }
     }

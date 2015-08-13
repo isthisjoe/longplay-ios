@@ -150,6 +150,12 @@ class NavigationView: UIView {
         }
     }
     
+    func showMiddleButton() {
+        if let middleButton = middleButton {
+            middleButton.alpha = 1.0
+        }
+    }
+    
     func hideMiddleButton() {
         if let middleButton = middleButton {
             middleButton.alpha = 0.0
