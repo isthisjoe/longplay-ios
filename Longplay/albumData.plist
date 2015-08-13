@@ -2,7 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<array>
+    <array>
+        <dict>
+            <key>uri</key>
+            <string>spotify:album:1vvFmCrWN1OgYCFqPSKa1o</string>
+            <key>about</key>
+            <string>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</string>
+        </dict>
+		<dict>
+			<key>uri</key>
+			<string>spotify:album:2y8GatSnEm6ZVpSWMWrF6m</string>
+			<key>about</key>
+			<string>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</string>
+		</dict>
 		<dict>
 			<key>uri</key>
 			<string>spotify:album:0fUy6IdLHDpGNwavIlhEsl</string>

@@ -18,7 +18,7 @@ class DataStore {
         }
     }
     
-    var currentAlbumURI:NSURL? = NSUserDefaults.standardUserDefaults().objectForKey("CurrentAlbumURI") as? NSURL {
+    var currentAlbumURI:NSURL? = NSUserDefaults.standardUserDefaults().URLForKey("CurrentAlbumURI") {
         didSet {
             if let currentAlbumURI = self.currentAlbumURI {
                 NSUserDefaults.standardUserDefaults().setURL(currentAlbumURI, forKey: "CurrentAlbumURI")
@@ -28,7 +28,7 @@ class DataStore {
         }
     }
     
-    var currentAlbumTrackURI:NSURL? = NSUserDefaults.standardUserDefaults().objectForKey("CurrentAlbumTrackURI") as? NSURL {
+    var currentAlbumTrackURI:NSURL? = NSUserDefaults.standardUserDefaults().URLForKey("CurrentAlbumTrackURI") {
         didSet {
             if let currentAlbumTrackURI = self.currentAlbumTrackURI {
                 NSUserDefaults.standardUserDefaults().setURL(currentAlbumTrackURI, forKey: "CurrentAlbumTrackURI")

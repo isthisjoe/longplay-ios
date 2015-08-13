@@ -117,7 +117,7 @@ class PlayerViewController: UIViewController {
     
     func finishedViewTransition() {
         if let album = album {
-            playAlbum(album, didStartPlaying: nil)
+            playAlbum(album, startTrackURI:nil, didStartPlaying: nil)
         }
     }
     
@@ -142,7 +142,7 @@ class PlayerViewController: UIViewController {
     
     // MARK: Spotify
     
-    func playAlbum(album:SPTAlbum, didStartPlaying:((firstTrackName:String)->())?) {
+    func playAlbum(album:SPTAlbum, startTrackURI:NSURL?, didStartPlaying:((firstTrackName:String)->())?) {
         
         if let player = player {
             if player.isPlaying {
@@ -172,6 +172,22 @@ class PlayerViewController: UIViewController {
                         for item:SPTPartialTrack in items {
                             trackURIs.append(item.playableUri)
                         }
+                }
+                
+                if let startTrackURI = startTrackURI {
+                    var newTrackURIs:[NSURL]?
+                    for trackURI in trackURIs {
+                        if trackURI == startTrackURI {
+                            newTrackURIs = [trackURI]
+                            continue
+                        }
+                        if newTrackURIs != nil {
+                            newTrackURIs!.append(trackURI)
+                        }
+                    }
+                    if newTrackURIs != nil {
+                        trackURIs = newTrackURIs!
+                    }
                 }
                 
                 playTracks(player, session: session, trackURIs: trackURIs)

@@ -18,6 +18,7 @@ class MasterViewController: UIViewController {
     var player:PlayerViewController?
     var settingsViewController:UIViewController?
     var isShowingPlayer:Bool = false
+    let dataStore = DataStore()
     
     // MARK: Views
     
@@ -87,6 +88,13 @@ class MasterViewController: UIViewController {
                 }
                 if let leftButton = navigationView.leftButton {
                     leftButton.addTarget(self, action: "pushToSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                }
+                
+                if hasCurrentAlbumPlaying() {
+                    let albumURI = dataStore.currentAlbumURI!
+                    loadAlbumURI(albumURI, completed: { (album:SPTAlbum) -> () in
+                        self.playAlbum(album)
+                    })
                 }
         }
     }
@@ -283,7 +291,8 @@ class MasterViewController: UIViewController {
         if let player = player {
             player.album = album
             player.stopPlayback({ () -> () in
-                player.playAlbum(album, didStartPlaying: { (firstTrackName) -> () in
+                var firstTrackURI = self.dataStore.currentAlbumTrackURI
+                player.playAlbum(album, startTrackURI:firstTrackURI, didStartPlaying: { (firstTrackName) -> () in
                     // update navigation
                     if let navigationView = self.navigationView {
                         // middle
@@ -350,3 +359,38 @@ class MasterViewController: UIViewController {
         }
     }
 }
+
+private typealias MasterViewController_LoadCurrentAlbum = MasterViewController
+extension MasterViewController_LoadCurrentAlbum {
+    
+    func hasCurrentAlbumPlaying() -> Bool {
+        
+        if let currentAlbumURI = dataStore.currentAlbumURI {
+            return true
+        }
+        return false
+    }
+    
+    func loadAlbumURI(albumURI:NSURL, completed:((album:SPTAlbum)->())?) {
+        
+        if let session = session,
+            accessToken = session.accessToken {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
+                    SPTAlbum.albumWithURI(albumURI, accessToken: accessToken, market: nil, callback: {
+                        (error:NSError!, result:AnyObject!) -> Void in
+                        println(result)
+                        if error != nil {
+                            NSLog("error: %@", error)
+                        } else {
+                            var album = result as! SPTAlbum
+                            if let completed = completed {
+                                completed(album:album)
+                            }
+                        }
+                    })
+                })
+        }
+    }
+}
+
+
