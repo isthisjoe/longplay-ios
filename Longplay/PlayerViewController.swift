@@ -83,9 +83,9 @@ class PlayerViewController: UIViewController {
         browserButton.setAttributedTitle(browserIcon.attributedString(), forState: .Normal)
         controlView.addSubview(browserButton)
         browserButton.snp_makeConstraints({ (make) -> Void in
-            make.left.equalTo(controlView).offset(29)
-            make.bottom.equalTo(controlView).offset(-19)
-            make.width.height.equalTo(32)
+            make.left.equalTo(controlView).offset(4)
+            make.bottom.equalTo(controlView).offset(0)
+            make.width.height.equalTo(controlViewHeight)
         })
         
         let playButtonSize:CGFloat = 52
