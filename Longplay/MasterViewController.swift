@@ -30,14 +30,6 @@ class MasterViewController: UIViewController {
         if let albumListViewController = albumListViewController {
             albumListViewController.title = "Longplay"
             albumListViewController.session = session
-            albumListViewController.playAlbumBlock = { (album:SPTAlbum) -> () in
-                if let player = self.player {
-                    player.album = album
-                    player.stopPlayback({ () -> () in
-                        //                    self.playerAction(nil)
-                    })
-                }
-            }
             albumListViewController.didSelectAlbumBlock = { (album:SPTAlbum, about:String) -> () in
                 self.didSelectAlbumForViewing(album, about:about)
             }
@@ -98,8 +90,9 @@ class MasterViewController: UIViewController {
         
         if hasCurrentAlbumPlaying() {
             let albumURI = dataStore.currentAlbumURI!
+            var startTrackIndex = self.dataStore.currentAlbumTrackIndex
             fetchAlbum(albumURI, completed: { (album:SPTAlbum) -> () in
-                self.playAlbum(album)
+                self.loadAlbum(album, startTrackIndex:startTrackIndex, autoPlay:false)
             })
         }
     }
@@ -111,7 +104,7 @@ class MasterViewController: UIViewController {
         if let browserNavigationController = browserNavigationController {
             let albumViewController = AlbumViewController(album: album, about:about)
             albumViewController.playAlbumBlock = { (album:SPTAlbum) -> () in
-                self.playAlbum(album)
+                self.loadAlbum(album, startTrackIndex: nil, autoPlay:true)
             }
             browserNavigationController.pushViewController(albumViewController, animated: true)
             // update navigation
@@ -292,35 +285,35 @@ class MasterViewController: UIViewController {
     
     // MARK: Player
     
-    func playAlbum(album:SPTAlbum) {
+    func loadAlbum(album:SPTAlbum, startTrackIndex:Int32?, autoPlay:Bool) {
         if let player = player {
             player.album = album
             player.stopPlayback({ () -> () in
-                var firstTrackURI = self.dataStore.currentAlbumTrackURI
-                player.playAlbum(album, startTrackURI:firstTrackURI, didStartPlaying: { (firstTrackName) -> () in
-                    // update navigation
-                    if let navigationView = self.navigationView {
-                        // middle
-                        let topLabelText = "1. " + firstTrackName
-                        let bottomLabelText = album.name + " - " + album.artists.first!.name
-                        navigationView.populateAlbumDetails(topLabelText, bottomLabelText: bottomLabelText)
-                        navigationView.showAlbumDetails()
-                        if let middleButton = navigationView.middleButton {
-                            for target in middleButton.allTargets() {
-                                middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
-                            }
-                            middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
-                        }
-                        // right
-                        navigationView.showPauseInRightButton()
-                        if let rightButton = navigationView.rightButton {
-                            for target in rightButton.allTargets() {
-                                rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
-                            }
-                            rightButton.addTarget(self, action: "pausePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
-                        }
-                    }
-                })
+                player.loadAlbum(album, startTrackIndex: startTrackIndex, autoPlay: autoPlay)
+//                player.loadAlbum(album, startTrackIndex:startTrackIndex, didStartPlaying: { (firstTrackName) -> () in
+//                    // update navigation
+//                    if let navigationView = self.navigationView {
+//                        // middle
+//                        let topLabelText = "1. " + firstTrackName
+//                        let bottomLabelText = album.name + " - " + album.artists.first!.name
+//                        navigationView.populateAlbumDetails(topLabelText, bottomLabelText: bottomLabelText)
+//                        navigationView.showAlbumDetails()
+//                        if let middleButton = navigationView.middleButton {
+//                            for target in middleButton.allTargets() {
+//                                middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+//                            }
+//                            middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
+//                        }
+//                        // right
+//                        navigationView.showPauseInRightButton()
+//                        if let rightButton = navigationView.rightButton {
+//                            for target in rightButton.allTargets() {
+//                                rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+//                            }
+//                            rightButton.addTarget(self, action: "pausePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+//                        }
+//                    }
+//                })
             })
         }
     }

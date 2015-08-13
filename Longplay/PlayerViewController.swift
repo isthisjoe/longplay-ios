@@ -84,7 +84,6 @@ class PlayerViewController: UIViewController {
         })
         
         let playButtonSize:CGFloat = 52
-        updatePlayButtonToPause()
         playButton.addTarget(self, action: "playAction:", forControlEvents:.TouchUpInside)
         controlView.addSubview(playButton)
         playButton.snp_makeConstraints { (make) -> Void in
@@ -115,12 +114,6 @@ class PlayerViewController: UIViewController {
         browserButton.addTarget(target, action:action, forControlEvents:.TouchUpInside)
     }
     
-    func finishedViewTransition() {
-        if let album = album {
-            playAlbum(album, startTrackURI:nil, didStartPlaying: nil)
-        }
-    }
-    
     // MARK: Actions
     
     func playAction(sender:AnyObject) {
@@ -142,7 +135,8 @@ class PlayerViewController: UIViewController {
     
     // MARK: Spotify
     
-    func playAlbum(album:SPTAlbum, startTrackURI:NSURL?, didStartPlaying:((firstTrackName:String)->())?) {
+//    func loadAlbum(album:SPTAlbum, startTrackIndex:Int32?, didStartPlaying:((displayTrackName:String)->())?) {
+    func loadAlbum(album:SPTAlbum, startTrackIndex:Int32?, autoPlay:Bool) {
         
         if let player = player {
             if player.isPlaying {
@@ -162,35 +156,23 @@ class PlayerViewController: UIViewController {
         if let
             session = session,
             player = player {
-                var firstTrackName:String?
                 var trackURIs = [NSURL]()
                 if let listPage:SPTListPage = album.firstTrackPage,
                     let items = listPage.items as? [SPTPartialTrack] {
-                        if let firstTrack = items.first {
-                            firstTrackName = firstTrack.name
-                        }
                         for item:SPTPartialTrack in items {
                             trackURIs.append(item.playableUri)
                         }
                 }
-                
-                if let startTrackURI = startTrackURI {
-                    var newTrackURIs:[NSURL]?
-                    for trackURI in trackURIs {
-                        if trackURI == startTrackURI {
-                            newTrackURIs = [trackURI]
-                            continue
-                        }
-                        if newTrackURIs != nil {
-                            newTrackURIs!.append(trackURI)
-                        }
+
+                self.loginSession(player, session: session, completed: { () -> () in
+                    self.queueTrackURIs(player,
+                        trackURIs:trackURIs,
+                        trackIndex:startTrackIndex,
+                        autoPlay:autoPlay)
+                    if let startTrackIndex = startTrackIndex {
+                        self.trackListingViewController.highlightedIndexPath = NSIndexPath(forRow: Int(startTrackIndex), inSection: 0)
                     }
-                    if newTrackURIs != nil {
-                        trackURIs = newTrackURIs!
-                    }
-                }
-                
-                playTracks(player, session: session, trackURIs: trackURIs)
+                })
                 
                 if let albumPlayback = albumPlayback {
                     albumPlayback.observeAudioStreamingController(player)
@@ -199,15 +181,6 @@ class PlayerViewController: UIViewController {
 //                        NSLog("%f", progress)
                         self.progressView.setProgress(progress, animated: true)
                     }
-                }
-                
-                isPlaying = true
-                
-                self.updatePlayButtonToPause()
-                
-                if let didStartPlaying = didStartPlaying,
-                    firstTrackName = firstTrackName {
-                        didStartPlaying(firstTrackName:firstTrackName)
                 }
         } else {
             if session == nil {
@@ -219,28 +192,49 @@ class PlayerViewController: UIViewController {
         }
     }
     
-    func playTracks(player:SPTAudioStreamingController, session:SPTSession, trackURIs:Array<NSURL>) {
-
-        let playTrackURIs = { (trackURIs:Array<NSURL>) -> () in
-            player.playURIs(trackURIs, withOptions: nil,
-                callback: { (error:NSError!) -> Void in
-                    if error != nil {
-                        NSLog("error: %@", error)
-                    }
-            })
-        }
-        NSLog("trackURIs: %@", trackURIs)
+    func loginSession(player: SPTAudioStreamingController,
+        session:SPTSession,
+        completed:(()->())) {
+            
         if player.loggedIn {
-            playTrackURIs(trackURIs)
+            completed()
         } else {
             player.loginWithSession(session,
                 callback: { (error:NSError!) -> Void in
                     if error != nil {
                         NSLog("error: %@", error)
                     }
-                    playTrackURIs(trackURIs)
+                    completed()
             })
         }
+    }
+    
+    func queueTrackURIs(player:SPTAudioStreamingController,
+        trackURIs:Array<NSURL>,
+        trackIndex:Int32?,
+        autoPlay:Bool) {
+            
+//        NSLog("trackURIs: %@", trackURIs)
+        let playOptions = SPTPlayOptions()
+        if let trackIndex = trackIndex {
+            playOptions.trackIndex = trackIndex
+        }
+        player.playURIs(trackURIs,
+            withOptions: playOptions,
+            callback: { (error:NSError!) -> Void in
+                if error != nil {
+                    NSLog("playURIs error: %@", error)
+                } else {
+                    if !autoPlay {
+                        self.updatePlayButtonToPlay()
+                        player.setIsPlaying(false, callback: { (error:NSError!) -> Void in
+                            if error != nil {
+                                NSLog("setIsPlaying error: %@", error)
+                            }
+                        })
+                    }
+                }
+        })
     }
     
     // MARK: Album Playback
@@ -345,28 +339,32 @@ class PlayerViewController: UIViewController {
         ]
     }
     
-    // MARK: Highlight track playing
-    
-    func highlightTrackIndex(index:Int) {
-        
-        let indexPath = NSIndexPath(forRow: index, inSection: 0)
-        var reloadIndexPaths = [indexPath]
-        if let oldIndexPath = trackListingViewController.highlightedIndexPath {
-            reloadIndexPaths.append(oldIndexPath)
-        }
-        NSLog("indexPath: %@", indexPath)
-        trackListingViewController.highlightedIndexPath = indexPath
-        if let collectionView = trackListingViewController.collectionView {
-            NSLog("reloadIndexPaths: %@", reloadIndexPaths)
-            collectionView.reloadItemsAtIndexPaths(reloadIndexPaths)
-        }
-    }
-    
     // MARK: Did play track
     
-    func didPlayTrack(trackURI:NSURL) {
+    func didPlayTrack(trackIndex:Int32) {
         
-        dataStore.currentAlbumTrackURI = trackURI
+        highlightTrackIndex(trackIndex)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
+            self.dataStore.currentAlbumTrackIndex = trackIndex
+        })
+    }
+    
+    // MARK: Highlight track playing
+    
+    func highlightTrackIndex(index:Int32) {
+        
+        let indexPath = NSIndexPath(forRow: Int(index), inSection: 0)
+        var reloadIndexPaths = [indexPath]
+        if let oldIndexPath = trackListingViewController.highlightedIndexPath {
+            if oldIndexPath != indexPath {
+                reloadIndexPaths.append(oldIndexPath)
+            }
+        }
+        trackListingViewController.highlightedIndexPath = indexPath
+        if let collectionView = trackListingViewController.collectionView {
+//            NSLog("reloadIndexPaths: %@", reloadIndexPaths)
+            collectionView.reloadItemsAtIndexPaths(reloadIndexPaths)
+        }
     }
 }
 
@@ -444,8 +442,7 @@ extension PlayerAudioStreamingPlaybackDelegate: SPTAudioStreamingPlaybackDelegat
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: NSURL!) {
         NSLog("didStartPlayingTrack: %@", trackUri)
         if let player = player {
-            highlightTrackIndex(Int(player.currentTrackIndex))
-            didPlayTrack(player.currentTrackURI)
+            didPlayTrack(player.currentTrackIndex)
         }
     }
     

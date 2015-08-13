@@ -28,12 +28,12 @@ class DataStore {
         }
     }
     
-    var currentAlbumTrackURI:NSURL? = NSUserDefaults.standardUserDefaults().URLForKey("CurrentAlbumTrackURI") {
+    var currentAlbumTrackIndex:Int32? = Int32(NSUserDefaults.standardUserDefaults().integerForKey("CurrentAlbumTrackIndex")) {
         didSet {
-            if let currentAlbumTrackURI = self.currentAlbumTrackURI {
-                NSUserDefaults.standardUserDefaults().setURL(currentAlbumTrackURI, forKey: "CurrentAlbumTrackURI")
+            if let currentAlbumTrackIndex = self.currentAlbumTrackIndex {
+                NSUserDefaults.standardUserDefaults().setInteger(Int(currentAlbumTrackIndex), forKey: "CurrentAlbumTrackIndex")
             } else {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("CurrentAlbumTrackURI")
+                NSUserDefaults.standardUserDefaults().removeObjectForKey("CurrentAlbumTrackIndex")
             }
         }
     }

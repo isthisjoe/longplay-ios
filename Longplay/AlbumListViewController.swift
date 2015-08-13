@@ -19,7 +19,6 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
     var albumData: [[[String:String]]]?
     var flattenedAlbumData: [[String:String]]?
     var data:[[SPTAlbum]]?
-    var playAlbumBlock:((album:SPTAlbum) -> ())?
     var didSelectAlbumBlock:((album:SPTAlbum, about:String)->())?
     
     init() {
