@@ -299,30 +299,6 @@ class MasterViewController: UIViewController {
             player.album = album
             player.stopPlayback({ () -> () in
                 player.loadAlbum(album, startTrackIndex: startTrackIndex, autoPlay: autoPlay)
-//                player.loadAlbum(album, startTrackIndex:startTrackIndex, didStartPlaying: { (firstTrackName) -> () in
-//                    // update navigation
-//                    if let navigationView = self.navigationView {
-//                        // middle
-//                        let topLabelText = "1. " + firstTrackName
-//                        let bottomLabelText = album.name + " - " + album.artists.first!.name
-//                        navigationView.populateAlbumDetails(topLabelText, bottomLabelText: bottomLabelText)
-//                        navigationView.showAlbumDetails()
-//                        if let middleButton = navigationView.middleButton {
-//                            for target in middleButton.allTargets() {
-//                                middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
-//                            }
-//                            middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
-//                        }
-//                        // right
-//                        navigationView.showPauseInRightButton()
-//                        if let rightButton = navigationView.rightButton {
-//                            for target in rightButton.allTargets() {
-//                                rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
-//                            }
-//                            rightButton.addTarget(self, action: "pausePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
-//                        }
-//                    }
-//                })
             })
         }
     }
