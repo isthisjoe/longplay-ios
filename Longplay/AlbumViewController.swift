@@ -21,7 +21,7 @@ class AlbumViewController: UIViewController {
     let coverArtImageView = UIImageView()
     let nameLabel = UILabel()
     let artistLabel = UILabel()
-    let aboutLabel = UILabel()
+    let aboutTextView = UITextView()
     
     init(album:SPTAlbum, about:String) {
         self.album = album
@@ -77,34 +77,40 @@ class AlbumViewController: UIViewController {
             make.height.greaterThanOrEqualTo(labelHeight)
         }
         
-        aboutLabel.font = UIFont.primaryFontWithSize(14)
-        view.addSubview(aboutLabel)
-        aboutLabel.snp_makeConstraints { (make) -> Void in
+        view.addSubview(aboutTextView)
+        aboutTextView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(coverArtImageView.snp_bottom).offset(14)
             make.left.equalTo(view).offset(10)
             make.right.equalTo(view).offset(-10)
+            make.bottom.equalTo(view).offset(-10)
         }
 
         if let albumURL = album.largestCover.imageURL {
             coverArtImageView.sd_setImageWithURL(albumURL)
         }
+        
         nameLabel.text = album.name
         nameLabel.numberOfLines = 2
+        
         let artists = album.artists
         if artists.count > 0 {
             let artist = artists[0] as! SPTPartialArtist
             artistLabel.text = artist.name
             artistLabel.numberOfLines = 2
         }
+        
         var paragraph = NSMutableParagraphStyle()
         paragraph.lineSpacing = 6
         paragraph.hyphenationFactor = 1.0
         let aboutAttributedText = NSAttributedString(string: about,
             attributes: [NSParagraphStyleAttributeName:paragraph,
-                NSKernAttributeName:CGFloat(0.1)])
-        aboutLabel.numberOfLines = 0
-        aboutLabel.attributedText = aboutAttributedText
-        aboutLabel.sizeToFit()
+                NSKernAttributeName:CGFloat(0.1),
+                NSFontAttributeName:UIFont.primaryFontWithSize(14)])
+        aboutTextView.attributedText = aboutAttributedText
+        aboutTextView.sizeToFit()
+        aboutTextView.editable = false
+        aboutTextView.selectable = false
+        aboutTextView.scrollRangeToVisible(NSRange(location:0, length:0))
     }
     
     // MARK: Actions
