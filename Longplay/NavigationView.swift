@@ -34,6 +34,7 @@ class NavigationView: UIView {
     var albumTopLabel:UILabel?
     var albumBottomLabel:UILabel?
     var rightButton:UIButton?
+    var progressBar:AlbumProgressView?
     
     // MARK: Init
     
@@ -261,6 +262,25 @@ class NavigationView: UIView {
         }
         if let albumBottomLabel = albumBottomLabel {
             albumBottomLabel.text = bottomLabelText
+        }
+    }
+    
+    // Progress View
+    func updateProgressView(progress:Float) {
+        
+        if progressBar == nil {
+            progressBar = AlbumProgressView()
+            if let progressBar = progressBar {
+                addSubview(progressBar)
+                progressBar.snp_makeConstraints({ (make) -> Void in
+                    make.height.equalTo(2)
+                    make.left.right.equalTo(self)
+                    make.top.equalTo(self).offset(-1)
+                })
+            }
+        }
+        if let progressBar = progressBar {
+            progressBar.setProgress(progress, animated: true)
         }
     }
 }

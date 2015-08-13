@@ -72,6 +72,11 @@ class MasterViewController: UIViewController {
                 (playerViewController:PlayerViewController, isPlaying:Bool) in
                 self.playerDidChangePlaybackStatus(isPlaying)
             }
+            // did update album progress
+            player.didUpdateAlbumProgressBlock = {
+                (playerViewController:PlayerViewController, progress:Float) in
+                self.playerDidUpdateAlbumProgress(progress)
+            }
         }
         
         // navigation view
@@ -418,6 +423,13 @@ class MasterViewController: UIViewController {
                     rightButton.addTarget(self, action: "resumePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
                 }
             }
+        }
+    }
+    
+    func playerDidUpdateAlbumProgress(progress:Float) {
+        // update navigation
+        if let navigationView = self.navigationView {
+            navigationView.updateProgressView(progress)
         }
     }
 }

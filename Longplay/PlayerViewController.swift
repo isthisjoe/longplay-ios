@@ -19,17 +19,13 @@ class PlayerViewController: UIViewController {
             albumPlayback = AlbumPlayback(album: self.album!)
         }
     }
-    var albumPlayback:AlbumPlayback? {
-        didSet {
-            self.didSetAlbumPlayback()
-        }
-    }
+    var albumPlayback:AlbumPlayback?
     var player: SPTAudioStreamingController?
     
     let albumTrackListingView = UIView()
     var albumTrackListingViewTopOffset:CGFloat = 0
     let trackListingViewController = TrackListViewController()
-    let progressView = UIProgressView()
+    let progressView = AlbumProgressView()
     let controlView = UIView()
     let browserButton = UIButton()
     let playButton = UIButton()
@@ -41,6 +37,9 @@ class PlayerViewController: UIViewController {
     
     typealias DidChangePlaybackStatusBlock = ((playerViewController:PlayerViewController, isPlaying:Bool)->())
     var didChangePlaybackStatusBlock:DidChangePlaybackStatusBlock?
+    
+    typealias DidUpdateAlbumProgressBlock = ((playerViewController:PlayerViewController, progress:Float)->())
+    var didUpdateAlbumProgressBlock:DidUpdateAlbumProgressBlock?
 
     // MARK: Views
     
@@ -60,8 +59,6 @@ class PlayerViewController: UIViewController {
         }
         
         let progressViewHeight:CGFloat = 10.0
-        progressView.trackTintColor = UIColor.primaryLightColor()
-        progressView.progressTintColor = UIColor.primaryColor()
         view.addSubview(progressView)
         progressView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(albumTrackListingView.snp_bottom)
@@ -179,20 +176,28 @@ class PlayerViewController: UIViewController {
                     }
                 })
                 
-                if let albumPlayback = albumPlayback {
-                    albumPlayback.observeAudioStreamingController(player)
-                    albumPlayback.progressCallback = {
-                        (progress:Float) in
-//                        NSLog("%f", progress)
-                        self.progressView.setProgress(progress, animated: true)
-                    }
-                }
+                observeProgressOnAlbumPlayback(player)
         } else {
             if session == nil {
                 NSLog("session is nil")
             }
             if player == nil {
                 NSLog("player is nil")
+            }
+        }
+    }
+    
+    func observeProgressOnAlbumPlayback(player:SPTAudioStreamingController) {
+        
+        if let albumPlayback = albumPlayback {
+            albumPlayback.observeAudioStreamingController(player)
+            albumPlayback.progressCallback = {
+                (progress:Float) in
+//                NSLog("%f", progress)
+                self.progressView.setProgress(progress, animated: true)
+                if let didUpdateAlbumProgressBlock = self.didUpdateAlbumProgressBlock {
+                    didUpdateAlbumProgressBlock(playerViewController: self, progress: progress)
+                }
             }
         }
     }
@@ -243,10 +248,6 @@ class PlayerViewController: UIViewController {
     }
     
     // MARK: Album Playback
-    
-    func didSetAlbumPlayback() {
-  
-    }
     
     func stopPlayback(callback:(()->())) {
         if let player = player {
@@ -423,6 +424,7 @@ extension PlayerAudioStreamingPlaybackDelegate: SPTAudioStreamingPlaybackDelegat
     
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
         NSLog("didChangePlaybackStatus: %@", isPlaying)
+        self.isPlaying = isPlaying
         if let didChangePlaybackStatusBlock = didChangePlaybackStatusBlock {
             didChangePlaybackStatusBlock(playerViewController: self, isPlaying: isPlaying)
         }
