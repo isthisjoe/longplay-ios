@@ -120,11 +120,6 @@ class PlayerViewController: UIViewController {
     
     func playAction(sender:AnyObject) {
         NSLog("playAction")
-        if isPlaying {
-            updatePlayButtonToPlay()
-        } else {
-            updatePlayButtonToPause()
-        }
         isPlaying = !isPlaying
         if let player = player {
             player.setIsPlaying(isPlaying, callback: { (error:NSError!) -> Void in
@@ -273,7 +268,6 @@ class PlayerViewController: UIViewController {
                     if error != nil {
                         NSLog("play error: %@", error)
                     }
-                    self.updatePlayButtonToPause()
                     if let completedBlock = completedBlock {
                         completedBlock()
                     }                    
@@ -304,11 +298,6 @@ class PlayerViewController: UIViewController {
             player.setIsPlaying(isPlaying, callback: { (error:NSError!) -> Void in
                 if error != nil {
                     NSLog("togglePlayPause error: %@", error)
-                }
-                if isPlaying {
-                    self.updatePlayButtonToPause()
-                } else {
-                    self.updatePlayButtonToPlay()
                 }
             })
         }
@@ -425,6 +414,11 @@ extension PlayerAudioStreamingPlaybackDelegate: SPTAudioStreamingPlaybackDelegat
     func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
         NSLog("didChangePlaybackStatus: %@", isPlaying)
         self.isPlaying = isPlaying
+        if isPlaying {
+            updatePlayButtonToPause()
+        } else {
+            updatePlayButtonToPlay()
+        }
         if let didChangePlaybackStatusBlock = didChangePlaybackStatusBlock {
             didChangePlaybackStatusBlock(playerViewController: self, isPlaying: isPlaying)
         }
