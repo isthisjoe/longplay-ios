@@ -119,6 +119,7 @@ class MasterViewController: UIViewController {
             let albumViewController = AlbumViewController(album: album, about:about)
             albumViewController.playAlbumBlock = { (album:SPTAlbum) -> () in
                 self.loadAlbum(album, startTrackIndex: nil, autoPlay:true)
+                self.showPlayer()
             }
             browserNavigationController.pushViewController(albumViewController, animated: true)
             // update navigation
@@ -255,6 +256,11 @@ class MasterViewController: UIViewController {
     }
     
     func tappedNavigationMiddleButton(sender:AnyObject) {
+        
+        showPlayer()
+    }
+    
+    func showPlayer() {
         
         let damping:CGFloat = 0.85
         if let player = player,
