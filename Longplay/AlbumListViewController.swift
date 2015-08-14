@@ -20,6 +20,7 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
     var flattenedAlbumData: [[String:String]]?
     var data:[[SPTAlbum]]?
     var didSelectAlbumBlock:((album:SPTAlbum, about:String)->())?
+    var albumLoadingView:UIActivityIndicatorView?
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -91,7 +92,7 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                     if let result = result as? [SPTAlbum] {
                                         if self.data == nil {
-                                            // populate data with empty arrays                                            
+                                            // populate data with empty arrays
                                             self.data = []
                                             while self.data!.count < albumData.count {
                                                 self.data!.append([])
@@ -137,11 +138,51 @@ extension AlbumListCollectionViewDataSource: UICollectionViewDataSource {
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         if let data = data {
+            hideAlbumListLoading()
             return data.count
         }
+        showAlbumListLoading()
         return 0
     }
     
+    func showAlbumListLoading() {
+        
+        if albumLoadingView == nil {
+            albumLoadingView = UIActivityIndicatorView(activityIndicatorStyle:.Gray)
+        }
+        if let albumLoadingView = albumLoadingView {
+            if albumLoadingView.superview == nil {
+                view.addSubview(albumLoadingView)
+                albumLoadingView.snp_makeConstraints { (make) -> Void in
+                    make.center.equalTo(view)
+                }
+                albumLoadingView.alpha = 0.0
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    albumLoadingView.alpha = 1.0
+                })
+            }
+            if !albumLoadingView.isAnimating() {
+                albumLoadingView.startAnimating()
+            }
+        }
+    }
+    
+    func hideAlbumListLoading() {
+        
+        if let albumLoadingView = albumLoadingView {
+            if albumLoadingView.alpha == 1.0 {
+                UIView.animateWithDuration(0.3,
+                    animations: { () -> Void in
+                        albumLoadingView.alpha = 1.0
+                    },
+                    completion: { (finished:Bool) -> Void in
+                        albumLoadingView.removeFromSuperview()
+                        self.albumLoadingView = nil
+                })
+            }
+        }
+    }
+
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let data = data,
             collection = data[section] as [SPTAlbum]? {
