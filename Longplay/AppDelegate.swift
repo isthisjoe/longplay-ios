@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    var session: SPTSession?
+    let spotifySession = SpotifySession()
     var loginViewController:LoginViewController?
     var masterViewController:MasterViewController?
 
@@ -24,68 +24,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let launchViewController = LaunchViewController()
             window.rootViewController = launchViewController
             window.makeKeyAndVisible()
-
-            setupSpotifySession({ (didLogin:Bool, session:SPTSession?) -> () in
+            
+            spotifySession.setup {
+                (session:SPTSession?,didLogin:Bool) -> () in
                 if !didLogin {
-                    self.loginViewController = LoginViewController()
-                    UIView.transitionFromView(window.rootViewController!.view,
-                        toView: self.loginViewController!.view,
-                        duration: 0.3,
-                        options: UIViewAnimationOptions(0),
-                        completion: nil)
-                    window.rootViewController = self.loginViewController
+                    self.transitionToLoginViewController()
                 } else {
                     self.transitionToMasterViewController(session)
-                    window.makeKeyAndVisible()
                 }
-            })
+            }
         }
         application.statusBarHidden = true
         return true
-    }
-    
-    func setupSpotifySession(callback:((didLogin:Bool, session:SPTSession?) -> ())) {
-        
-        SPTAuth.defaultInstance().clientID = "d1ee9fb41d4245fe8f7ec6a5a7298c75"
-        SPTAuth.defaultInstance().redirectURL = NSURL(string: "longplay-app://login-callback")
-        SPTAuth.defaultInstance().requestedScopes = [SPTAuthStreamingScope,SPTAuthUserLibraryReadScope,SPTAuthUserLibraryModifyScope]
-        SPTAuth.defaultInstance().tokenSwapURL = NSURL(string: "https://blooming-hollows-5367.herokuapp.com/swap")
-        SPTAuth.defaultInstance().tokenRefreshURL = NSURL(string: "https://blooming-hollows-5367.herokuapp.com/refresh")
-
-        let dataStore = DataStore()
-        if let sessionValues = dataStore.spotifySessionValues {
-            if let
-                username = sessionValues["username"] as? String,
-                accessToken = sessionValues["accessToken"] as? String,
-                encryptedRefreshToken = sessionValues["encryptedRefreshToken"] as? String,
-                expirationDate = sessionValues["expirationDate"] as? NSDate {
-                    let session = SPTSession(userName: username,
-                        accessToken: accessToken,
-                        encryptedRefreshToken:encryptedRefreshToken,
-                        expirationDate: expirationDate)
-                    if session.isValid() {
-                        NSLog("Session valid")
-                        callback(didLogin: true, session:session)
-                    } else {
-                        NSLog("Session invalid, renewing")
-                        SPTAuth.defaultInstance().renewSession(session,
-                            callback: {
-                                (error:NSError!, session:SPTSession!) -> Void in
-                                if error != nil {
-                                    NSLog("error: %@", error)
-                                    callback(didLogin: false, session:session)
-                                } else if session == nil {
-                                    NSLog("session is nil")
-                                    callback(didLogin: false, session:session)
-                                } else {
-                                    callback(didLogin: true, session:session)
-                                }
-                        })
-                    }
-            }
-        } else {
-            callback(didLogin: false, session:session)
-        }
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
@@ -93,26 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (SPTAuth.defaultInstance().canHandleURL(url)) {
             SPTAuth.defaultInstance().handleAuthCallbackWithTriggeredAuthURL(url,
                 callback: { (error:NSError!, session:SPTSession!) -> Void in
-//                    if let session = session {
-//                        NSLog("%@", session)
-//                        NSLog("canonicalUsername: %@", session.canonicalUsername)
-//                        NSLog("accessToken: %@", session.accessToken)
-//                        if let encryptedRefreshToken = session.encryptedRefreshToken {
-//                            NSLog("encryptedRefreshToken: %@", encryptedRefreshToken)
-//                        }
-//                        if let expirationDate = session.expirationDate {
-//                            NSLog("expirationDate: %@", expirationDate)
-//                        }
-//                        if let tokenType = session.tokenType {
-//                            NSLog("tokenType: %@", tokenType)
-//                        }
-//                    }
-//                    if let tokenSwapURL = SPTAuth.defaultInstance().tokenSwapURL {
-//                        NSLog("tokenSwapURL: %@", tokenSwapURL)
-//                    }
-//                    if let tokenRefreshURL = SPTAuth.defaultInstance().tokenRefreshURL {
-//                        NSLog("tokenRefreshURL: %@", tokenRefreshURL)
-//                    }
                     self.handleAuthCallback(session, error: error)
             })
         }
@@ -120,28 +50,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func handleAuthCallback(session:SPTSession?, error:NSError?) {
-        if error != nil {
-            // TODO: handle error
-        }
-        self.session = session
-        if let session = session {
-            var sessionValues = ["username": session.canonicalUsername,
-                "accessToken": session.accessToken,
-                "expirationDate": session.expirationDate]
-            if let encryptedRefreshToken = session.encryptedRefreshToken {
-                sessionValues["encryptedRefreshToken"] = encryptedRefreshToken
+        
+        spotifySession.handleAuthCallback(session, error: error) { (session) -> () in
+            self.transitionToMasterViewController(session)
+            if let loginViewController = self.loginViewController,
+                masterViewController = self.masterViewController{
+                    UIView.transitionFromView(loginViewController.view,
+                        toView: masterViewController.view,
+                        duration: 0.5,
+                        options: UIViewAnimationOptions.TransitionCrossDissolve,
+                        completion: nil)
             }
-            let dataStore = DataStore()
-            dataStore.spotifySessionValues = sessionValues
         }
-        transitionToMasterViewController(session)
-        if let loginViewController = loginViewController,
-            masterViewController = masterViewController{
-                UIView.transitionFromView(loginViewController.view,
-                    toView: masterViewController.view,
-                    duration: 0.5,
-                    options: UIViewAnimationOptions.TransitionCrossDissolve,
-                    completion: nil)
+    }
+    
+    // MARK: Transitions
+    
+    func transitionToLoginViewController() {
+        
+        if let window = self.window {
+            self.loginViewController = LoginViewController()
+            UIView.transitionFromView(window.rootViewController!.view,
+                toView: self.loginViewController!.view,
+                duration: 0.3,
+                options: UIViewAnimationOptions(0),
+                completion: nil)
+            window.rootViewController = self.loginViewController
         }
     }
     
