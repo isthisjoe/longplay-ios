@@ -39,6 +39,8 @@
 		0DB7A86C1B595978005AF0ED /* AlbumPlayback.swift in Resources */ = {isa = PBXBuildFile; fileRef = 0DB7A86B1B595978005AF0ED /* AlbumPlayback.swift */; };
 		0DC9CB421B5C29ED00EAE84A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC9CB411B5C29ED00EAE84A /* MediaPlayer.framework */; };
 		0DDC5BD51B7E515C00D692AF /* SpotifySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDC5BD41B7E515C00D692AF /* SpotifySession.swift */; };
+		0DECDE041B7EA51B003CC515 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DECDE031B7EA51B003CC515 /* SettingsViewController.swift */; };
+		0DECDE061B7EAAE0003CC515 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DECDE051B7EAAE0003CC515 /* DefaultButton.swift */; };
 		0DEE7A631B7D249E00792E41 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE7A621B7D249E00792E41 /* LaunchViewController.swift */; };
 		0DEE7A651B7D392600792E41 /* AlbumProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE7A641B7D392600792E41 /* AlbumProgressView.swift */; };
 		0DF0A3501B6C23D50030C3D9 /* UIColor_Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF0A34F1B6C23D50030C3D9 /* UIColor_Helper.swift */; };
@@ -93,6 +95,8 @@
 		0DB7A86B1B595978005AF0ED /* AlbumPlayback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumPlayback.swift; sourceTree = "<group>"; };
 		0DC9CB411B5C29ED00EAE84A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		0DDC5BD41B7E515C00D692AF /* SpotifySession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifySession.swift; sourceTree = "<group>"; };
+		0DECDE031B7EA51B003CC515 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		0DECDE051B7EAAE0003CC515 /* DefaultButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
 		0DEE7A621B7D249E00792E41 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		0DEE7A641B7D392600792E41 /* AlbumProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumProgressView.swift; sourceTree = "<group>"; };
 		0DF0A34F1B6C23D50030C3D9 /* UIColor_Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor_Helper.swift; sourceTree = "<group>"; };
@@ -211,6 +215,7 @@
 		0DD3E6191B67F46F0080ED38 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0DECDE051B7EAAE0003CC515 /* DefaultButton.swift */,
 				0DEE7A641B7D392600792E41 /* AlbumProgressView.swift */,
 				0DF1F20C1B73FEE800CC83AB /* TrackListCollectionView.swift */,
 				0DF0A34F1B6C23D50030C3D9 /* UIColor_Helper.swift */,
@@ -236,6 +241,7 @@
 				0D4D6F4E1B504E4E00F1E576 /* PlayerViewController.swift */,
 				0DB7A86B1B595978005AF0ED /* AlbumPlayback.swift */,
 				0DB7A8671B58122A005AF0ED /* TrackListViewController.swift */,
+				0DECDE031B7EA51B003CC515 /* SettingsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -439,6 +445,7 @@
 				0D8FB3A41B1A2B3B00A2E91A /* AlbumListViewController.swift in Sources */,
 				0D016E401B5191D2001AE58A /* AlbumViewController.swift in Sources */,
 				0D401F581B19F74B00E203B0 /* AppDelegate.swift in Sources */,
+				0DECDE061B7EAAE0003CC515 /* DefaultButton.swift in Sources */,
 				0D8B451C1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift in Sources */,
 				0D016E3E1B5180E6001AE58A /* AlbumViewModel.swift in Sources */,
 				0D47959D1B596A7600DAD91E /* AlbumPlayback.swift in Sources */,
@@ -447,6 +454,7 @@
 				0D4D6F4F1B504E4E00F1E576 /* PlayerViewController.swift in Sources */,
 				0DDC5BD51B7E515C00D692AF /* SpotifySession.swift in Sources */,
 				0D8B450A1B657A87000ED72C /* NavigationView.swift in Sources */,
+				0DECDE041B7EA51B003CC515 /* SettingsViewController.swift in Sources */,
 				0DEE7A651B7D392600792E41 /* AlbumProgressView.swift in Sources */,
 				0DF0A3501B6C23D50030C3D9 /* UIColor_Helper.swift in Sources */,
 				0D8B45161B67CB17000ED72C /* UIFont.swift in Sources */,

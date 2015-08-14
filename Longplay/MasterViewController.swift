@@ -16,7 +16,7 @@ class MasterViewController: UIViewController {
     var browserNavigationController:BrowserNavigationController?
     var albumListViewController:AlbumListViewController?
     var player:PlayerViewController?
-    var settingsViewController:UIViewController?
+    var settingsViewController:SettingsViewController?
     var isShowingPlayer:Bool = false
     let dataStore = DataStore()
     
@@ -226,11 +226,13 @@ class MasterViewController: UIViewController {
     func pushToSettingsAction(sender:AnyObject) {
         
         if settingsViewController == nil {
-            settingsViewController = UIViewController()
+            settingsViewController = SettingsViewController()
         }
         if let browserNavigationController = browserNavigationController,
             settingsViewController = settingsViewController {
-                settingsViewController.view.backgroundColor = UIColor.darkGrayColor()
+                
+                settingsViewController.session = session
+                
                 let transition = CATransition()
                 transition.duration = 0.3
                 transition.type = kCATransitionPush

@@ -49,14 +49,14 @@ class AlbumPlayback:NSObject {
     }
     
     func observeAudioStreamingController(controller: SPTAudioStreamingController) {
-        //        let options = NSKeyValueObservingOptions([.New, .Old])
+        
         controller.addObserver(self, forKeyPath: "currentPlaybackPosition", options:nil, context: &kvoContext)
         controller.addObserver(self, forKeyPath: "currentTrackIndex", options:nil, context: &kvoContext)
-        
         self.controller = controller
     }
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+        
         if context == &kvoContext {
             if keyPath == "currentPlaybackPosition" {
                 if let player = object as? SPTAudioStreamingController {
