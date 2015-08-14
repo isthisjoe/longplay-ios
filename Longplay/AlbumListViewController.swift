@@ -75,12 +75,6 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
             accessToken = session.accessToken {
                 // flatten the albumData array 
                 self.flattenedAlbumData = albumData.flatMap { $0 }
-                // populate data with empty arrays
-                var collectionCount = 0
-                data = []
-                while data!.count < albumData.count {
-                    data!.append([])
-                }
                 // dispatch group for async processing
                 let group = dispatch_group_create()
                 var count = 0
@@ -96,6 +90,13 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
                                 (error:NSError!, result:AnyObject!) -> Void in
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                     if let result = result as? [SPTAlbum] {
+                                        if self.data == nil {
+                                            // populate data with empty arrays                                            
+                                            self.data = []
+                                            while self.data!.count < albumData.count {
+                                                self.data!.append([])
+                                            }
+                                        }
                                         self.data![index] = sortAlbums(result)
                                     }
                                     dispatch_group_leave(group)
