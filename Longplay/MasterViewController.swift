@@ -42,7 +42,7 @@ class MasterViewController: UIViewController {
                 view.addSubview(browserNavigationController.view)
                 browserNavigationController.view.snp_makeConstraints {
                     (make) -> Void in
-                    make.edges.equalTo(view).insets(UIEdgeInsetsMake(0, 0, NavigationViewHeight, 0))
+                    make.edges.equalTo(view).inset(UIEdgeInsetsMake(0, 0, NavigationViewHeight, 0))
                 }
             }
         }
@@ -86,10 +86,10 @@ class MasterViewController: UIViewController {
                 navigationView.showLogoInLeftButton()
                 navigationView.hideMiddleButton()
                 player.view.addSubview(navigationView)
-                navigationView.snp_makeConstraints({ (make) -> Void in
+                navigationView.snp_makeConstraints { (make) -> Void in
                     make.height.equalTo(NavigationViewHeight)
                     make.top.left.right.equalTo(player.view)
-                })
+                }
                 if let middleButton = navigationView.middleButton {
                     middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
                 }
@@ -272,14 +272,14 @@ class MasterViewController: UIViewController {
                     // hide player
                     // animate player view entering
                     view.layoutIfNeeded()
-                    player.view.snp_remakeConstraints({ (make) -> Void in
+                    player.view.snp_remakeConstraints { (make) -> Void in
                         make.height.equalTo(UIScreen.mainScreen().bounds.size.height)
                         make.left.right.equalTo(view)
                         make.top.equalTo(view.snp_bottom).offset(-NavigationViewHeight)
-                    })
-                    browserNavigationController.view.snp_remakeConstraints({ (make) -> Void in
-                        make.edges.equalTo(view).insets(UIEdgeInsetsMake(0, 0, NavigationViewHeight, 0))
-                    })
+                    }
+                    browserNavigationController.view.snp_remakeConstraints { (make) -> Void in
+                        make.edges.equalTo(view).inset(UIEdgeInsetsMake(0, 0, NavigationViewHeight, 0))
+                    }
                     UIView.animateWithDuration(0.5,
                         delay: 0.0,
                         usingSpringWithDamping: damping,
@@ -295,21 +295,21 @@ class MasterViewController: UIViewController {
                 } else {
                     // show player
                     // expand player height
-                    player.view.snp_remakeConstraints({ (make) -> Void in
+                    player.view.snp_remakeConstraints { (make) -> Void in
                         make.height.equalTo(UIScreen.mainScreen().bounds.size.height)
                         make.left.right.equalTo(view)
                         make.top.equalTo(view.snp_bottom).offset(-NavigationViewHeight)
-                    })
+                    }
                     // animate player view entering
                     view.layoutIfNeeded()
-                    player.view.snp_remakeConstraints({ (make) -> Void in
+                    player.view.snp_remakeConstraints { (make) -> Void in
                         make.edges.equalTo(view)
-                    })
-                    browserNavigationController.view.snp_remakeConstraints({ (make) -> Void in
+                    }
+                    browserNavigationController.view.snp_remakeConstraints { (make) -> Void in
                         make.height.equalTo(UIScreen.mainScreen().bounds.size.height - NavigationViewHeight)
                         make.left.right.equalTo(view)
                         make.bottom.equalTo(player.view.snp_top)
-                    })
+                    }
                     UIView.animateWithDuration(0.5,
                         delay: 0.0,
                         usingSpringWithDamping: damping,

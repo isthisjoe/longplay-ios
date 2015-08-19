@@ -80,9 +80,9 @@ class TrackListViewController: UIViewController {
                 withReuseIdentifier: TrackListHeaderViewReuseIdentifier)
             collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
             view.addSubview(collectionView)
-            collectionView.snp_makeConstraints({ (make) -> Void in
+            collectionView.snp_makeConstraints { (make) -> Void in
                 make.edges.equalTo(view)
-            })
+            }
         }
     }
 }

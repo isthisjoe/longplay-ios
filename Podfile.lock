@@ -14,10 +14,10 @@ PODS:
     - FontAwesomeKit/Core
   - FontAwesomeKit/Zocial (2.2.0):
     - FontAwesomeKit/Core
-  - SDWebImage (3.7.2):
-    - SDWebImage/Core (= 3.7.2)
-  - SDWebImage/Core (3.7.2)
-  - SnapKit (0.12.0)
+  - SDWebImage (3.7.3):
+    - SDWebImage/Core (= 3.7.3)
+  - SDWebImage/Core (3.7.3)
+  - SnapKit (0.13.0)
 
 DEPENDENCIES:
   - FontAwesomeKit (~> 2.2)
@@ -26,7 +26,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   FontAwesomeKit: 025fd4dd1017fe4e3f8d47b03e024deedbb33cd4
-  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
-  SnapKit: 00c388aa3bf1944c1b55472f31e841f75bd83882
+  SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  SnapKit: 69fe274c71511df89a5591c11437a8b826bfa9eb
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

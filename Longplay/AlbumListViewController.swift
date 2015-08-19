@@ -222,9 +222,9 @@ extension AlbumListCollectionViewDelegate: UICollectionViewDelegate {
                     let lineView = UIView()
                     lineView.backgroundColor = UIColor.darkGrayColor()
                     footerView.addSubview(lineView)
-                    lineView.snp_makeConstraints({ (make) -> Void in
-                        make.edges.equalTo(footerView).insets(UIEdgeInsetsMake(0, 10, 0, 10))
-                    })
+                    lineView.snp_makeConstraints { (make) -> Void in
+                        make.edges.equalTo(footerView).inset(UIEdgeInsetsMake(0, 10, 0, 10))
+                    }
                     reusableView = footerView
             }
         }

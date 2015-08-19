@@ -82,30 +82,30 @@ class NavigationView: UIView {
             leftButton.backgroundColor = UIColor.clearColor()
             showLogoInLeftButton()
             addSubview(leftButton)
-            leftButton.snp_makeConstraints({ (make) -> Void in
+            leftButton.snp_makeConstraints { (make) -> Void in
                 make.width.height.equalTo(NavigationViewLeftButtonHeight)
                 make.top.equalTo(backgroundView)
                 make.left.equalTo(backgroundView)
-            })
+            }
         }
         // middle button
         middleButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
         if let middleButton = middleButton {
             middleButton.backgroundColor = UIColor.clearColor()
             addSubview(middleButton)
-            middleButton.snp_makeConstraints({ (make) -> Void in
-                make.edges.equalTo(backgroundView).insets(UIEdgeInsetsMake(0,NavigationViewLeftButtonHeight,0,NavigationViewLeftButtonHeight))
-            })
+            middleButton.snp_makeConstraints { (make) -> Void in
+                make.edges.equalTo(backgroundView).inset(UIEdgeInsetsMake(0,NavigationViewLeftButtonHeight,0,NavigationViewLeftButtonHeight))
+            }
         }
         // right button
         rightButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
         if let rightButton = rightButton {
             rightButton.backgroundColor = UIColor.clearColor()
             addSubview(rightButton)
-            rightButton.snp_makeConstraints({ (make) -> Void in
+            rightButton.snp_makeConstraints { (make) -> Void in
                 make.width.height.equalTo(NavigationViewRightButtonHeight)
                 make.top.right.equalTo(backgroundView)
-            })
+            }
             rightButton.alpha = 0.0
         }
     }
@@ -272,11 +272,11 @@ class NavigationView: UIView {
             progressBar = AlbumProgressView()
             if let progressBar = progressBar {
                 addSubview(progressBar)
-                progressBar.snp_makeConstraints({ (make) -> Void in
+                progressBar.snp_makeConstraints { (make) -> Void in
                     make.height.equalTo(2)
                     make.left.right.equalTo(self)
                     make.top.equalTo(self).offset(-1)
-                })
+                }
             }
         }
         if let progressBar = progressBar {

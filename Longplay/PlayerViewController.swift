@@ -79,11 +79,11 @@ class PlayerViewController: UIViewController {
         browserIcon.setAttributes([NSForegroundColorAttributeName: UIColor.lpBlackColor()])
         browserButton.setAttributedTitle(browserIcon.attributedString(), forState: .Normal)
         controlView.addSubview(browserButton)
-        browserButton.snp_makeConstraints({ (make) -> Void in
+        browserButton.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(controlView).offset(4)
             make.bottom.equalTo(controlView).offset(0)
             make.width.height.equalTo(controlViewHeight)
-        })
+        }
         
         let playButtonSize:CGFloat = 52
         playButton.addTarget(self, action: "playAction:", forControlEvents:.TouchUpInside)
