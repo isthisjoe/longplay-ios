@@ -105,10 +105,53 @@ class MasterViewController: UIViewController {
         if hasCurrentAlbumPlaying() {
             let albumURI = dataStore.currentAlbumURI!
             var startTrackIndex = self.dataStore.currentAlbumTrackIndex
-            fetchAlbum(albumURI, completed: { (album:SPTAlbum) -> () in
-                self.loadAlbum(album, startTrackIndex:startTrackIndex, autoPlay:false)
+            fetchAlbum(albumURI, completed: {
+                (album:SPTAlbum) -> () in
+                
+                self.loadAlbum(album)
+                
+                var progress = self.dataStore.currentAlbumPlaybackProgress
+                
+                // update nav view
+                if let navigationView = self.navigationView {
+                    if let progress = progress {
+                        navigationView.updateProgressView(progress)
+                    }
+                    // find track that will play
+                    if let track = self.trackInAlbum(album, index: startTrackIndex),
+                        artists = track.artists as? [SPTPartialArtist],
+                        firstArtist = artists.first {
+                            // middle
+                            self.playerDidChangeToTrack(track.name, artist:firstArtist.name)
+                            // right
+                            self.navigationViewShowPlayInRightButton()
+                    }
+                }
+                
+                // update player
+                if let player = self.player {
+                    if let startTrackIndex = startTrackIndex {
+                        player.currentTrackIndex = startTrackIndex
+                    }
+                    if let progress = progress {
+                        player.setAlbumPlaybackProgress(progress, animated: false)
+                    }
+                }
             })
         }
+    }
+    
+    func trackInAlbum(album:SPTAlbum, index:Int32?) -> SPTPartialTrack? {
+        var startIndex:Int32? = index
+        if startIndex == nil {
+            startIndex = 0
+        }
+        var track:SPTPartialTrack?
+        if let listPage:SPTListPage = album.firstTrackPage,
+            let items = listPage.items as? [SPTPartialTrack] {
+                track = items[Int(startIndex!)]
+        }
+        return track
     }
     
     // MARK: Actions
@@ -118,7 +161,8 @@ class MasterViewController: UIViewController {
         if let browserNavigationController = browserNavigationController {
             let albumViewController = AlbumViewController(album: album, about:about)
             albumViewController.playAlbumBlock = { (album:SPTAlbum) -> () in
-                self.loadAlbum(album, startTrackIndex: nil, autoPlay:true)
+                self.loadAlbum(album)
+                self.playAlbum(nil)
                 self.showPlayer()
             }
             browserNavigationController.pushViewController(albumViewController, animated: true)
@@ -212,11 +256,9 @@ class MasterViewController: UIViewController {
                 }
                 if isAlbumLoadedInPlayer() {
                     if isPlaying() {
-                        navigationView.showPauseInRightButton()
-                        rightButton.addTarget(self, action: "pausePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+                        navigationViewShowPauseInRightButton()
                     } else {
-                        navigationView.showPlayInRightButton()
-                        rightButton.addTarget(self, action: "resumePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+                        navigationViewShowPlayInRightButton()
                     }
                 }
             }
@@ -328,12 +370,18 @@ class MasterViewController: UIViewController {
     
     // MARK: Player
     
-    func loadAlbum(album:SPTAlbum, startTrackIndex:Int32?, autoPlay:Bool) {
+    func loadAlbum(album:SPTAlbum) {
         if let player = player {
             player.album = album
             player.stopPlayback({ () -> () in
-                player.loadAlbum(album, startTrackIndex: startTrackIndex, autoPlay: autoPlay)
+                player.loadAlbum(album)
             })
+        }
+    }
+    
+    func playAlbum(startTrackIndex:Int32?) {
+        if let player = player {
+            player.playAlbum(startTrackIndex)
         }
     }
     
@@ -363,32 +411,24 @@ class MasterViewController: UIViewController {
     func pausePlayer(sender:AnyObject) {
         if let player = player {
             player.pause({ () -> () in
-                if let navigationView = self.navigationView {
-                    navigationView.showPlayInRightButton()
-                    if let rightButton = navigationView.rightButton {
-                        for target in rightButton.allTargets() {
-                            rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
-                        }
-                        rightButton.addTarget(self, action: "resumePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
-                    }
-                }
+                self.navigationViewShowPlayInRightButton()
             })
         }
     }
     
     func resumePlayer(sender:AnyObject) {
         if let player = player {
-            player.play({ () -> () in
-                if let navigationView = self.navigationView {
-                    navigationView.showPauseInRightButton()
-                    if let rightButton = navigationView.rightButton {
-                        for target in rightButton.allTargets() {
-                            rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
-                        }
-                        rightButton.addTarget(self, action: "pausePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+            NSLog("isPlaying: %@", isPlaying())
+            if player.player!.trackListSize > 0 {
+                player.resume({ () -> () in
+                    if let navigationView = self.navigationView {
+                        self.navigationViewShowPauseInRightButton()
                     }
-                }
-            })
+                })
+            } else {
+                var startTrackIndex = self.dataStore.currentAlbumTrackIndex
+                player.playAlbum(startTrackIndex)
+            }
         }
     }
     
@@ -415,21 +455,9 @@ class MasterViewController: UIViewController {
         if let navigationView = self.navigationView {
             // right
             if isPlaying {
-                navigationView.showPauseInRightButton()
-                if let rightButton = navigationView.rightButton {
-                    for target in rightButton.allTargets() {
-                        rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
-                    }
-                    rightButton.addTarget(self, action: "pausePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
-                }
+                navigationViewShowPauseInRightButton()
             } else {
-                navigationView.showPlayInRightButton()
-                if let rightButton = navigationView.rightButton {
-                    for target in rightButton.allTargets() {
-                        rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
-                    }
-                    rightButton.addTarget(self, action: "resumePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
-                }
+                navigationViewShowPlayInRightButton()
             }
         }
     }
@@ -438,6 +466,34 @@ class MasterViewController: UIViewController {
         // update navigation
         if let navigationView = self.navigationView {
             navigationView.updateProgressView(progress)
+        }
+    }
+    
+    // MARK: Navigation View
+    
+    func navigationViewShowPlayInRightButton() {
+        
+        if let navigationView = navigationView {
+            navigationView.showPlayInRightButton()
+            if let rightButton = navigationView.rightButton {
+                for target in rightButton.allTargets() {
+                    rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                }
+                rightButton.addTarget(self, action: "resumePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+            }
+        }
+    }
+    
+    func navigationViewShowPauseInRightButton() {
+        
+        if let navigationView = navigationView {
+            navigationView.showPauseInRightButton()
+            if let rightButton = navigationView.rightButton {
+                for target in rightButton.allTargets() {
+                    rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                }
+                rightButton.addTarget(self, action: "pausePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+            }
         }
     }
 }

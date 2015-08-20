@@ -31,6 +31,7 @@ class PlayerViewController: UIViewController {
     let playButton = UIButton()
     var isPlaying:Bool = false
     let dataStore = DataStore()
+    var currentTrackIndex:Int32 = 0
     
     typealias DidChangeToTrackBlock = ((playerViewController:PlayerViewController, title:String, artist:String)->())
     var didChangeToTrackBlock:DidChangeToTrackBlock?
@@ -122,18 +123,22 @@ class PlayerViewController: UIViewController {
         NSLog("playAction")
         isPlaying = !isPlaying
         if let player = player {
-            player.setIsPlaying(isPlaying, callback: { (error:NSError!) -> Void in
-                if error != nil {
-                    NSLog("playAction error: %@", error)
-                }
-            })
+            if player.trackListSize > 0 {
+                player.setIsPlaying(isPlaying, callback: { (error:NSError!) -> Void in
+                    if error != nil {
+                        NSLog("playAction error: %@", error)
+                    }
+                })
+            } else {
+                playAlbum(currentTrackIndex)
+            }
         }
     }
     
     // MARK: Spotify
     
 //    func loadAlbum(album:SPTAlbum, startTrackIndex:Int32?, didStartPlaying:((displayTrackName:String)->())?) {
-    func loadAlbum(album:SPTAlbum, startTrackIndex:Int32?, autoPlay:Bool) {
+    func loadAlbum(album:SPTAlbum) {
         
         if let player = player {
             if player.isPlaying {
@@ -141,15 +146,30 @@ class PlayerViewController: UIViewController {
             }
         }
         
-        dataStore.currentAlbumURI = album.uri
-        
-        setupTrackListing(album)
-        
         if player == nil {
             player = SPTAudioStreamingController(clientId: SPTAuth.defaultInstance().clientID)
             player!.delegate = self
             player!.playbackDelegate = self
         }
+        
+        dataStore.currentAlbumURI = album.uri
+        
+        setupTrackListing(album)
+        
+        updatePlayButtonToPlay()
+        
+        updateProgress(0, animated: false)
+    }
+    
+    func playAlbum(startTrackIndex:Int32?) {
+        
+        if let album = album {
+            playAlbum(album, startTrackIndex: startTrackIndex)
+        }
+    }
+    
+    func playAlbum(album:SPTAlbum, startTrackIndex:Int32?) {
+    
         if let
             session = session,
             player = player {
@@ -162,10 +182,9 @@ class PlayerViewController: UIViewController {
                 }
 
                 self.loginSession(player, session: session, completed: { () -> () in
-                    self.queueTrackURIs(player,
+                    self.playTrackURIs(player,
                         trackURIs:trackURIs,
-                        trackIndex:startTrackIndex,
-                        autoPlay:autoPlay)
+                        trackIndex:startTrackIndex)
                     if let startTrackIndex = startTrackIndex {
                         self.trackListingViewController.highlightedIndexPath = NSIndexPath(forRow: Int(startTrackIndex), inSection: 0)
                     }
@@ -178,21 +197,6 @@ class PlayerViewController: UIViewController {
             }
             if player == nil {
                 NSLog("player is nil")
-            }
-        }
-    }
-    
-    func observeProgressOnAlbumPlayback(player:SPTAudioStreamingController) {
-        
-        if let albumPlayback = albumPlayback {
-            albumPlayback.observeAudioStreamingController(player)
-            albumPlayback.progressCallback = {
-                (progress:Float) in
-//                NSLog("%f", progress)
-                self.progressView.setProgress(progress, animated: true)
-                if let didUpdateAlbumProgressBlock = self.didUpdateAlbumProgressBlock {
-                    didUpdateAlbumProgressBlock(playerViewController: self, progress: progress)
-                }
             }
         }
     }
@@ -214,11 +218,10 @@ class PlayerViewController: UIViewController {
         }
     }
     
-    func queueTrackURIs(player:SPTAudioStreamingController,
+    func playTrackURIs(player:SPTAudioStreamingController,
         trackURIs:Array<NSURL>,
-        trackIndex:Int32?,
-        autoPlay:Bool) {
-            
+        trackIndex:Int32?) {
+        
 //        NSLog("trackURIs: %@", trackURIs)
         let playOptions = SPTPlayOptions()
         if let trackIndex = trackIndex {
@@ -229,15 +232,6 @@ class PlayerViewController: UIViewController {
             callback: { (error:NSError!) -> Void in
                 if error != nil {
                     NSLog("playURIs error: %@", error)
-                } else {
-                    if !autoPlay {
-                        self.updatePlayButtonToPlay()
-                        player.setIsPlaying(false, callback: { (error:NSError!) -> Void in
-                            if error != nil {
-                                NSLog("setIsPlaying error: %@", error)
-                            }
-                        })
-                    }
                 }
         })
     }
@@ -261,7 +255,7 @@ class PlayerViewController: UIViewController {
         }
     }
     
-    func play(completedBlock:(()->())?) {
+    func resume(completedBlock:(()->())?) {
         if let player = player {
             if !player.isPlaying {
                 player.setIsPlaying(true, callback: { (error:NSError!) -> Void in
@@ -303,13 +297,43 @@ class PlayerViewController: UIViewController {
         }
     }
     
+    // MARK: Album playback progress
+    
+    func observeProgressOnAlbumPlayback(player:SPTAudioStreamingController) {
+        
+        if let albumPlayback = albumPlayback {
+            albumPlayback.observeAudioStreamingController(player)
+            albumPlayback.progressCallback = {
+                (progress:Float) in
+                //                NSLog("%f", progress)
+                self.updateProgress(progress, animated:true)
+                if let didUpdateAlbumProgressBlock = self.didUpdateAlbumProgressBlock {
+                    didUpdateAlbumProgressBlock(playerViewController: self, progress: progress)
+                }
+            }
+        }
+    }
+    
+    func updateProgress(progress:Float, animated:Bool) {
+        
+        progressView.setProgress(progress, animated: animated)
+    }
+    
+    func setAlbumPlaybackProgress(progress:Float, animated:Bool) {
+        
+        if let albumPlayback = albumPlayback {
+            albumPlayback.currentAlbumPlaybackPosition = NSTimeInterval(progress) * albumPlayback.totalDuration
+            updateProgress(albumPlayback.progress, animated: false)
+        }
+    }
+    
     // MARK: Remote control events
     
     func handleRemoteControlEvents() {
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
         commandCenter.playCommand.addTargetWithHandler {
             (event:MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
-            self.play(nil)
+            self.resume(nil)
             return .Success
         }
         commandCenter.pauseCommand.addTargetWithHandler {
@@ -341,6 +365,7 @@ class PlayerViewController: UIViewController {
         highlightTrackIndex(trackIndex)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
             self.dataStore.currentAlbumTrackIndex = trackIndex
+            self.dataStore.currentAlbumPlaybackProgress = self.progressView.progress
         })
     }
     

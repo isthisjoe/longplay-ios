@@ -36,7 +36,6 @@
 		0D8FB3A81B1A324B00A2E91A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8FB3A71B1A324B00A2E91A /* SystemConfiguration.framework */; };
 		0DB7A8681B58122A005AF0ED /* TrackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB7A8671B58122A005AF0ED /* TrackListViewController.swift */; };
 		0DB7A86A1B583C01005AF0ED /* TrackListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB7A8691B583C01005AF0ED /* TrackListCollectionViewCell.swift */; };
-		0DB7A86C1B595978005AF0ED /* AlbumPlayback.swift in Resources */ = {isa = PBXBuildFile; fileRef = 0DB7A86B1B595978005AF0ED /* AlbumPlayback.swift */; };
 		0DC9CB421B5C29ED00EAE84A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC9CB411B5C29ED00EAE84A /* MediaPlayer.framework */; };
 		0DDC5BD51B7E515C00D692AF /* SpotifySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDC5BD41B7E515C00D692AF /* SpotifySession.swift */; };
 		0DECDE041B7EA51B003CC515 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DECDE031B7EA51B003CC515 /* SettingsViewController.swift */; };
@@ -372,7 +371,6 @@
 				0D8B45121B67CAA9000ED72C /* Frutiger CE 45 Light.ttf in Resources */,
 				0D8B45131B67CAA9000ED72C /* Frutiger LT 87 Extra Black Condensed.ttf in Resources */,
 				0D8B45181B67CE28000ED72C /* Frutiger CE 65 Bold.ttf in Resources */,
-				0DB7A86C1B595978005AF0ED /* AlbumPlayback.swift in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,7 +446,6 @@
 				0DECDE061B7EAAE0003CC515 /* DefaultButton.swift in Sources */,
 				0D8B451C1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift in Sources */,
 				0D016E3E1B5180E6001AE58A /* AlbumViewModel.swift in Sources */,
-				0D47959D1B596A7600DAD91E /* AlbumPlayback.swift in Sources */,
 				0D4D6F511B504E6C00F1E576 /* BrowserNavigationController.swift in Sources */,
 				0DEE7A631B7D249E00792E41 /* LaunchViewController.swift in Sources */,
 				0D4D6F4F1B504E4E00F1E576 /* PlayerViewController.swift in Sources */,
@@ -462,6 +459,7 @@
 				0DB7A8681B58122A005AF0ED /* TrackListViewController.swift in Sources */,
 				0DB7A86A1B583C01005AF0ED /* TrackListCollectionViewCell.swift in Sources */,
 				0D016E3C1B517FDB001AE58A /* AlbumCollectionViewCell.swift in Sources */,
+				0D47959D1B596A7600DAD91E /* AlbumPlayback.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

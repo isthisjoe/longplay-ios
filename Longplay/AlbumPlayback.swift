@@ -1,4 +1,10 @@
-
+//
+//  AlbumPlayback.swift
+//  Longplay
+//
+//  Created by Joe Nguyen on 16/07/2015.
+//  Copyright (c) 2015 onyenjug. All rights reserved.
+//
 
 class AlbumPlayback:NSObject {
     

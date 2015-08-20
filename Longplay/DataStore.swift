@@ -37,4 +37,17 @@ class DataStore {
             }
         }
     }
+    
+    var currentAlbumPlaybackProgress:Float? = Float(NSUserDefaults.standardUserDefaults().floatForKey("CurrentAlbumPlaybackProgress")) {
+        didSet {
+            if let currentAlbumPlaybackProgress = self.currentAlbumPlaybackProgress {
+                NSUserDefaults.standardUserDefaults().setFloat(currentAlbumPlaybackProgress, forKey: "CurrentAlbumPlaybackProgress")
+            } else {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey("CurrentAlbumPlaybackProgress")
+            }
+        }
+    }
 }
+
+
+
