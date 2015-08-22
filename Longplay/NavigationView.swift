@@ -19,6 +19,11 @@ let NavigationViewTopLabelHeight:CGFloat = 20
 let NavigationViewBottomLabelHeight:CGFloat = 15
 let NavigationViewBottomLabelBottomSpacing:CGFloat = 8
 
+let NavigationViewFadeInScale:CGFloat = 9/10
+let NavigationViewFadeInScaleRestore:CGFloat = 10/9
+let NavigationViewFadeOutScale:CGFloat = 8/10
+let NavigationViewFadeOutScaleRestore:CGFloat = 10/8
+
 class NavigationView: UIView {
     
     let logoImage = UIImage(named: "app_logo")
@@ -110,25 +115,83 @@ class NavigationView: UIView {
         }
     }
     
+    // MARK: Show/hide anims
+    
+    func fadeInView(view:UIView) {
+        
+        view.alpha = 0.0
+        UIView.animateWithDefaultDuration({ () -> Void in
+            view.alpha = 1.0
+        })
+    }
+    
+    func fadeInWithScalingView(view:UIView) {
+        
+        fadeInView(view)
+        view.layer.setAffineTransform(CGAffineTransformScale(view.layer.affineTransform(),
+            NavigationViewFadeInScale, NavigationViewFadeInScale))
+        UIView.animateWithDefaultDuration({ () -> Void in
+            view.layer.setAffineTransform(CGAffineTransformScale(view.layer.affineTransform(),
+                NavigationViewFadeInScaleRestore, NavigationViewFadeInScaleRestore))
+        })
+    }
+    
+    func fadeOutView(view:UIView) {
+        
+        UIView.animateWithDefaultDuration({ () -> Void in
+            view.alpha = 0.0
+        })
+    }
+    
+    func fadeOutWithScalingView(view:UIView) {
+        
+        fadeOutView(view)
+        UIView.animateWithDefaultDuration({ () -> Void in
+            view.layer.setAffineTransform(CGAffineTransformScale(view.layer.affineTransform(),
+                NavigationViewFadeOutScale, NavigationViewFadeOutScale))
+            }, completion: { (finished:Bool) -> Void in
+                view.layer.setAffineTransform(CGAffineTransformScale(view.layer.affineTransform(),
+                    NavigationViewFadeOutScaleRestore, NavigationViewFadeOutScaleRestore))
+        })
+    }
+    
+    func fadeOutToBottomView(view:UIView) {
+        
+        let translateY:CGFloat = view.bounds.size.height/7
+        fadeOutVerticallyView(view, startY: -translateY, endY: translateY)
+    }
+    
+    func fadeOutVerticallyView(view:UIView, startY:CGFloat, endY:CGFloat) {
+        
+        fadeInView(view)
+        UIView.animateWithDefaultDuration({ () -> Void in
+            view.layer.setAffineTransform(CGAffineTransformTranslate(view.layer.affineTransform(),
+                0, startY))
+            }, completion: { (finished:Bool) -> Void in
+                view.layer.setAffineTransform(CGAffineTransformTranslate(view.layer.affineTransform(),
+                    0, endY))
+        })
+    }
+    
     // MARK: Left Button
     
     func showLogoInLeftButton() {
         if let leftButton = leftButton {
             leftButton.setImage(logoImage, forState: UIControlState.Normal)
-            leftButton.alpha = 1.0
+            fadeInWithScalingView(leftButton)
         }
     }
     
     func showChevronInLeftButton() {
         if let leftButton = leftButton {
             leftButton.setImage(chevronLeftImage, forState: UIControlState.Normal)
-            leftButton.alpha = 1.0
+            fadeInWithScalingView(leftButton)
         }
     }
     
     func hideLeftButton() {
         if let leftButton = leftButton {
-            leftButton.alpha = 0.0
+            fadeOutView(leftButton)
         }
     }
     
@@ -147,19 +210,19 @@ class NavigationView: UIView {
                 NSAttributedString(string: "  Play This Album",
                     attributes: [NSFontAttributeName: UIFont.buttonFontWithSize(20)]))
             middleButton.setAttributedTitle(attributedTitle, forState: .Normal)
-            middleButton.alpha = 1.0
+            fadeInView(middleButton)
         }
     }
     
     func showMiddleButton() {
         if let middleButton = middleButton {
-            middleButton.alpha = 1.0
+            fadeInView(middleButton)
         }
     }
     
     func hideMiddleButton() {
         if let middleButton = middleButton {
-            middleButton.alpha = 0.0
+            fadeOutToBottomView(middleButton)
         }
     }
     
@@ -175,53 +238,55 @@ class NavigationView: UIView {
     func showChevronInRightButton() {
         if let rightButton = rightButton {
             rightButton.setImage(chevronRightImage, forState: UIControlState.Normal)
-            rightButton.alpha = 1.0
+            fadeInWithScalingView(rightButton)
         }
     }
     
     func showPlayInRightButton() {
         if let rightButton = rightButton {
             rightButton.setImage(playRightImage, forState: UIControlState.Normal)
-            rightButton.alpha = 1.0
+            fadeInWithScalingView(rightButton)
         }
     }
     
     func showPauseInRightButton() {
         if let rightButton = rightButton {
             rightButton.setImage(pauseRightImage, forState: UIControlState.Normal)
-            rightButton.alpha = 1.0
+            fadeInWithScalingView(rightButton)
         }
     }
     
     func showRightButton() {
         if let rightButton = rightButton {
-            rightButton.alpha = 1.0
+            if rightButton.alpha == 0.0 {
+                fadeInWithScalingView(rightButton)
+            }
         }
     }
     
     func hideRightButton() {
         if let rightButton = rightButton {
-            rightButton.alpha = 0.0
+            fadeOutWithScalingView(rightButton)
         }
     }
     
     // MARK: Album Details
     
     func showAlbumDetails() {
-        if let albumTopLabel = albumTopLabel {
-            albumTopLabel.alpha = 1.0
-        }
-        if let albumBottomLabel = albumBottomLabel {
-            albumBottomLabel.alpha = 1.0
+        if let albumTopLabel = albumTopLabel,
+            albumBottomLabel = albumBottomLabel {
+                if albumTopLabel.alpha == 0.0 || albumBottomLabel.alpha == 0.0 {
+                    fadeInView(albumTopLabel)
+                    fadeInView(albumBottomLabel)
+                }
         }
     }
     
     func hideAlbumDetails() {
-        if let albumTopLabel = albumTopLabel {
-            albumTopLabel.alpha = 0.0
-        }
-        if let albumBottomLabel = albumBottomLabel {
-            albumBottomLabel.alpha = 0.0
+        if let albumTopLabel = albumTopLabel,
+            albumBottomLabel = albumBottomLabel {
+                fadeOutToBottomView(albumTopLabel)
+                fadeOutToBottomView(albumBottomLabel)
         }
     }
     

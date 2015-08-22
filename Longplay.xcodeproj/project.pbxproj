@@ -10,6 +10,7 @@
 		0D016E3C1B517FDB001AE58A /* AlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */; };
 		0D016E3E1B5180E6001AE58A /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */; };
 		0D016E401B5191D2001AE58A /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */; };
+		0D16EB951B878238005510E4 /* UIView_Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D16EB941B878238005510E4 /* UIView_Helper.swift */; };
 		0D2458A71B6D69F0006BCF10 /* TrackListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2458A61B6D69F0006BCF10 /* TrackListHeaderView.swift */; };
 		0D401F581B19F74B00E203B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D401F571B19F74B00E203B0 /* AppDelegate.swift */; };
 		0D401F5F1B19F74B00E203B0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D401F5E1B19F74B00E203B0 /* Images.xcassets */; };
@@ -61,6 +62,7 @@
 		0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		0D016E3D1B5180E6001AE58A /* AlbumViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
 		0D016E3F1B5191D2001AE58A /* AlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
+		0D16EB941B878238005510E4 /* UIView_Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView_Helper.swift; sourceTree = "<group>"; };
 		0D2458A61B6D69F0006BCF10 /* TrackListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackListHeaderView.swift; sourceTree = "<group>"; };
 		0D401F521B19F74B00E203B0 /* Longplay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Longplay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D401F561B19F74B00E203B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				0DF0A34F1B6C23D50030C3D9 /* UIColor_Helper.swift */,
 				0D8B45151B67CB17000ED72C /* UIFont.swift */,
 				0D8B45091B657A87000ED72C /* NavigationView.swift */,
+				0D16EB941B878238005510E4 /* UIView_Helper.swift */,
 				0D8B451B1B67E8BA000ED72C /* AlbumCollectionHeaderView.swift */,
 				0D016E3B1B517FDB001AE58A /* AlbumCollectionViewCell.swift */,
 				0D2458A61B6D69F0006BCF10 /* TrackListHeaderView.swift */,
@@ -437,6 +440,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D77AFB01B7BFA8A00CE5984 /* DataStore.swift in Sources */,
+				0D16EB951B878238005510E4 /* UIView_Helper.swift in Sources */,
 				0D4D6F4B1B504E2600F1E576 /* MasterViewController.swift in Sources */,
 				0D401F7A1B19F7D600E203B0 /* LoginViewController.swift in Sources */,
 				0DF1F20D1B73FEE800CC83AB /* TrackListCollectionView.swift in Sources */,

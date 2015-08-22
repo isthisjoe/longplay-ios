@@ -260,6 +260,8 @@ class MasterViewController: UIViewController {
                     } else {
                         navigationViewShowPlayInRightButton()
                     }
+                } else {
+                    navigationView.hideRightButton()
                 }
             }
         }
@@ -285,9 +287,6 @@ class MasterViewController: UIViewController {
         if let navigationView = navigationView {
             // left
             navigationView.hideLeftButton()
-            // middle
-            navigationView.hideMiddleButton()
-            navigationView.hideAlbumDetails()
             // right
             if let rightButton = navigationView.rightButton {
                 for target in rightButton.allTargets() {
