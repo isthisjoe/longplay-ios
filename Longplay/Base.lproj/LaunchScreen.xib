@@ -11,16 +11,22 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ywk-6s-TWj">
-                    <rect key="frame" x="185" y="225" width="110" height="30"/>
+                    <rect key="frame" x="185" y="440" width="110" height="30"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="Ywk-6s-TWj" secondAttribute="centerY" id="D5l-Rp-ZGf"/>
+                <constraint firstAttribute="bottom" secondItem="Ywk-6s-TWj" secondAttribute="bottom" constant="10" id="iM7-cc-deC"/>
                 <constraint firstAttribute="centerX" secondItem="Ywk-6s-TWj" secondAttribute="centerX" id="n8s-6C-vsz"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="D5l-Rp-ZGf"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="548" y="455"/>
         </view>
     </objects>

@@ -200,7 +200,7 @@ class MasterViewController: UIViewController {
         }
         if let navigationView = navigationView {
             // left
-            navigationView.showLogoInLeftButton()
+            navigationView.showLogoInLeftButtonAnimated(true)
             if let leftButton = navigationView.leftButton {
                 for target in leftButton.allTargets() {
                     leftButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
@@ -234,7 +234,7 @@ class MasterViewController: UIViewController {
         }
         if let navigationView = navigationView {
             // left
-            navigationView.showLogoInLeftButton()
+            navigationView.showLogoInLeftButtonAnimated(true)
             if let leftButton = navigationView.leftButton {
                 leftButton.addTarget(self, action: "pushToSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
             }

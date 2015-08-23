@@ -174,11 +174,21 @@ class NavigationView: UIView {
     }
     
     // MARK: Left Button
-    
+
     func showLogoInLeftButton() {
+        
+        showLogoInLeftButtonAnimated(false)
+    }
+
+    func showLogoInLeftButtonAnimated(animated:Bool) {
+        
         if let leftButton = leftButton {
             leftButton.setImage(logoImage, forState: UIControlState.Normal)
-            fadeInWithScalingView(leftButton)
+            if animated {
+                fadeInWithScalingView(leftButton)
+            } else {
+                leftButton.alpha = 1.0
+            }
         }
     }
     
