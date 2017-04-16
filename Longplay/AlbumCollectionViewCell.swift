@@ -19,7 +19,7 @@ class AlbumCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         if !didLayoutSubviews {
             addSubview(thumbImageView)
-            thumbImageView.snp_makeConstraints { (make) -> Void in
+            thumbImageView.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(0)
                 make.left.equalTo(0)
                 make.right.equalTo(0)
@@ -32,17 +32,17 @@ class AlbumCollectionViewCell: UICollectionViewCell {
             
             nameLabel.font = UIFont.primaryBoldFontWithSize(11)
             addSubview(nameLabel)
-            nameLabel.snp_makeConstraints { (make) -> Void in
+            nameLabel.snp.makeConstraints { (make) -> Void in
                 make.left.right.equalTo(thumbImageView)
-                make.top.equalTo(thumbImageView.snp_bottom).offset(labelSpacing)
+                make.top.equalTo(thumbImageView.snp.bottom).offset(labelSpacing)
                 make.height.equalTo(labelHeight)
             }
             
             artistLabel.font = UIFont.primaryFontWithSize(11)
             addSubview(artistLabel)
-            artistLabel.snp_makeConstraints { (make) -> Void in
+            artistLabel.snp.makeConstraints { (make) -> Void in
                 make.left.right.equalTo(nameLabel)
-                make.top.equalTo(nameLabel.snp_bottom)
+                make.top.equalTo(nameLabel.snp.bottom)
                 make.height.equalTo(labelHeight)
             }
             didLayoutSubviews = true

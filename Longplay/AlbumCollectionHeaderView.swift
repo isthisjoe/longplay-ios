@@ -35,7 +35,7 @@ class AlbumCollectionHeaderView: UICollectionReusableView {
         titleLabel.textAlignment = NSTextAlignment.left
         titleLabel.textColor = UIColor.lpBlackColor()
         addSubview(titleLabel)
-        titleLabel.snp_makeConstraints { (make) -> Void in
+        titleLabel.snp.makeConstraints { (make) -> Void in
             make.edges.equalTo(self).inset(UIEdgeInsetsMake(10, 10, 10, 10))
         }
     }

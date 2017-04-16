@@ -55,14 +55,14 @@ class PlayerViewController: UIViewController {
         
         albumTrackListingView.backgroundColor = UIColor.white
         view.addSubview(albumTrackListingView)
-        albumTrackListingView.snp_makeConstraints { (make) -> Void in
+        albumTrackListingView.snp.makeConstraints { (make) -> Void in
             make.top.left.right.equalTo(view)
         }
         
         let progressViewHeight:CGFloat = 10.0
         view.addSubview(progressView)
-        progressView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(albumTrackListingView.snp_bottom)
+        progressView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(albumTrackListingView.snp.bottom)
             make.left.right.equalTo(view)
             make.height.equalTo(progressViewHeight)
         }
@@ -70,8 +70,8 @@ class PlayerViewController: UIViewController {
         let controlViewHeight = 72.0
         controlView.backgroundColor = UIColor.white
         view.addSubview(controlView)
-        controlView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(progressView.snp_bottom)
+        controlView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(progressView.snp.bottom)
             make.left.bottom.right.equalTo(view)
             make.height.equalTo(controlViewHeight)
         }
@@ -80,7 +80,7 @@ class PlayerViewController: UIViewController {
         browserIcon?.setAttributes([NSForegroundColorAttributeName: UIColor.lpBlackColor()])
         browserButton.setAttributedTitle(browserIcon?.attributedString(), for: UIControlState())
         controlView.addSubview(browserButton)
-        browserButton.snp_makeConstraints { (make) -> Void in
+        browserButton.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(controlView).offset(4)
             make.bottom.equalTo(controlView).offset(0)
             make.width.height.equalTo(controlViewHeight)
@@ -89,8 +89,8 @@ class PlayerViewController: UIViewController {
         let playButtonSize:CGFloat = 52
         playButton.addTarget(self, action: #selector(PlayerViewController.playAction(_:)), for:.touchUpInside)
         controlView.addSubview(playButton)
-        playButton.snp_makeConstraints { (make) -> Void in
-            make.center.equalTo(controlView.snp_center)
+        playButton.snp.makeConstraints { (make) -> Void in
+            make.center.equalTo(controlView.snp.center)
             make.width.height.equalTo(playButtonSize)
         }
     }
@@ -123,9 +123,9 @@ class PlayerViewController: UIViewController {
         print("playAction")
         isPlaying = !isPlaying
         if let player = player {
-            if player.trackListSize > 0 {6
+            if player.trackListSize > 0 {
                 player.setIsPlaying(isPlaying, callback: { (error:Error?) -> Void in
-                    if error != nil {
+                    if let error = error {
                         print("playAction error: %@", error)
                     }
                 })
@@ -210,7 +210,7 @@ class PlayerViewController: UIViewController {
         } else {
             player.login(with: session,
                 callback: { (error:Error?) -> Void in
-                    if error != nil {
+                    if let error = error {
                         print("error: %@", error)
                     }
                     completed()
@@ -230,7 +230,7 @@ class PlayerViewController: UIViewController {
         player.playURIs(trackURIs,
             with: playOptions,
             callback: { (error:Error?) -> Void in
-                if error != nil {
+                if let error = error {
                     print("playURIs error: %@", error)
                 }
         })
@@ -242,7 +242,7 @@ class PlayerViewController: UIViewController {
         if let player = player {
             if player.isPlaying {
                 player.stop({ (error:Error?) -> Void in
-                    if error != nil {
+                    if let error = error {
                         print("error: %@", error)
                     }
                     callback()
@@ -259,7 +259,7 @@ class PlayerViewController: UIViewController {
         if let player = player {
             if !player.isPlaying {
                 player.setIsPlaying(true, callback: { (error:Error?) -> Void in
-                    if error != nil {
+                    if let error = error {
                         print("play error: %@", error)
                     }
                     if let completedBlock = completedBlock {
@@ -274,7 +274,7 @@ class PlayerViewController: UIViewController {
         if let player = player {
             if player.isPlaying {
                 player.setIsPlaying(false, callback: { (error:Error?) -> Void in
-                    if error != nil {
+                    if let error = error {
                         print("pause error: %@", error)
                     }
                     self.updatePlayButtonToPlay()
@@ -290,7 +290,7 @@ class PlayerViewController: UIViewController {
         if let player = player {
             let isPlaying = !player.isPlaying
             player.setIsPlaying(isPlaying, callback: { (error:Error?) -> Void in
-                if error != nil {
+                if let error = error {
                     print("togglePlayPause error: %@", error)
                 }
             })
@@ -363,10 +363,10 @@ class PlayerViewController: UIViewController {
     func didPlayTrack(_ trackIndex:Int32) {
         
         highlightTrackIndex(trackIndex)
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: { () -> Void in
+        DispatchQueue.global().async {
             self.dataStore.currentAlbumTrackIndex = trackIndex
             self.dataStore.currentAlbumPlaybackProgress = self.progressView.progress
-        })
+        }
     }
     
     // MARK: Highlight track playing
@@ -400,7 +400,7 @@ extension PlayerTrackListing: UICollectionViewDelegate {
         addChildViewController(trackListingViewController)
         trackListingViewController.didMove(toParentViewController: trackListingViewController)
         albumTrackListingView.addSubview(trackListingViewController.view)
-        trackListingViewController.view.snp_makeConstraints { (make) -> Void in
+        trackListingViewController.view.snp.makeConstraints { (make) -> Void in
             make.edges.equalTo(albumTrackListingView)
         }
     }
@@ -418,7 +418,7 @@ extension PlayerAudioStreamingDelegate: SPTAudioStreamingDelegate {
         print("audioStreamingDidEncounterTemporaryConnectionError")
     }
     
-    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didEncounterError error: NSError!) {
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didEncounterError error: Error!) {
         print("didEncounterError: %@", error)
     }
     

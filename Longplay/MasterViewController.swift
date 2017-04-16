@@ -40,7 +40,7 @@ class MasterViewController: UIViewController {
                 addChildViewController(browserNavigationController)
                 browserNavigationController.didMove(toParentViewController: self)
                 view.addSubview(browserNavigationController.view)
-                browserNavigationController.view.snp_makeConstraints {
+                browserNavigationController.view.snp.makeConstraints {
                     (make) -> Void in
                     make.edges.equalTo(view).inset(UIEdgeInsetsMake(0, 0, NavigationViewHeight, 0))
                 }
@@ -55,13 +55,13 @@ class MasterViewController: UIViewController {
             addChildViewController(player)
             player.didMove(toParentViewController: self)
             view.addSubview(player.view)
-            player.view.snp_makeConstraints {
+            player.view.snp.makeConstraints {
                 (make) -> Void in
                 make.height.equalTo(UIScreen.main.bounds.size.height)
                 make.left.right.equalTo(view)
-                make.top.equalTo(view.snp_bottom).offset(-NavigationViewHeight)
+                make.top.equalTo(view.snp.bottom).offset(-NavigationViewHeight)
             }
-            player.addTargetToBrowserButton(self, action: "tappedNavigationMiddleButton:")
+            player.addTargetToBrowserButton(self, action: #selector(MasterViewController.tappedNavigationMiddleButton(_:)))
             // did change track callback
             player.didChangeToTrackBlock = {
                 (playerViewController:PlayerViewController, title:String, artist:String) in
@@ -86,7 +86,7 @@ class MasterViewController: UIViewController {
                 navigationView.showLogoInLeftButton()
                 navigationView.hideMiddleButton()
                 player.view.addSubview(navigationView)
-                navigationView.snp_makeConstraints { (make) -> Void in
+                navigationView.snp.makeConstraints { (make) -> Void in
                     make.height.equalTo(NavigationViewHeight)
                     make.top.left.right.equalTo(player.view)
                 }
@@ -104,13 +104,13 @@ class MasterViewController: UIViewController {
         
         if hasCurrentAlbumPlaying() {
             let albumURI = dataStore.currentAlbumURI!
-            var startTrackIndex = self.dataStore.currentAlbumTrackIndex
+            let startTrackIndex = self.dataStore.currentAlbumTrackIndex
             fetchAlbum(albumURI as URL, completed: {
                 (album:SPTAlbum) -> () in
                 
                 self.loadAlbum(album)
                 
-                var progress = self.dataStore.currentAlbumPlaybackProgress
+                let progress = self.dataStore.currentAlbumPlaybackProgress
                 
                 // update nav view
                 if let navigationView = self.navigationView {
@@ -184,7 +184,7 @@ class MasterViewController: UIViewController {
                         for target in middleButton.allTargets {
                             middleButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                         }
-                        middleButton.addTarget(albumViewController, action: "playAction:", for: UIControlEvents.touchUpInside)
+                        middleButton.addTarget(albumViewController, action: #selector(AlbumViewController.playAction), for: .touchUpInside)
                     }
                     // right
                     navigationView.hideRightButton()
@@ -313,12 +313,12 @@ class MasterViewController: UIViewController {
                     // hide player
                     // animate player view entering
                     view.layoutIfNeeded()
-                    player.view.snp_remakeConstraints { (make) -> Void in
+                    player.view.snp.remakeConstraints { (make) -> Void in
                         make.height.equalTo(UIScreen.main.bounds.size.height)
                         make.left.right.equalTo(view)
-                        make.top.equalTo(view.snp_bottom).offset(-NavigationViewHeight)
+                        make.top.equalTo(view.snp.bottom).offset(-NavigationViewHeight)
                     }
-                    browserNavigationController.view.snp_remakeConstraints { (make) -> Void in
+                    browserNavigationController.view.snp.remakeConstraints { (make) -> Void in
                         make.edges.equalTo(view).inset(UIEdgeInsetsMake(0, 0, NavigationViewHeight, 0))
                     }
                     UIView.animate(withDuration: 0.5,
@@ -336,20 +336,20 @@ class MasterViewController: UIViewController {
                 } else {
                     // show player
                     // expand player height
-                    player.view.snp_remakeConstraints { (make) -> Void in
+                    player.view.snp.remakeConstraints { (make) -> Void in
                         make.height.equalTo(UIScreen.main.bounds.size.height)
                         make.left.right.equalTo(view)
-                        make.top.equalTo(view.snp_bottom).offset(-NavigationViewHeight)
+                        make.top.equalTo(view.snp.bottom).offset(-NavigationViewHeight)
                     }
                     // animate player view entering
                     view.layoutIfNeeded()
-                    player.view.snp_remakeConstraints { (make) -> Void in
+                    player.view.snp.remakeConstraints { (make) -> Void in
                         make.edges.equalTo(view)
                     }
-                    browserNavigationController.view.snp_remakeConstraints { (make) -> Void in
+                    browserNavigationController.view.snp.remakeConstraints { (make) -> Void in
                         make.height.equalTo(UIScreen.main.bounds.size.height - NavigationViewHeight)
                         make.left.right.equalTo(view)
-                        make.bottom.equalTo(player.view.snp_top)
+                        make.bottom.equalTo(player.view.snp.top)
                     }
                     UIView.animate(withDuration: 0.5,
                         delay: 0.0,
@@ -393,7 +393,7 @@ class MasterViewController: UIViewController {
     
     func isAlbumLoadedInPlayer() -> Bool {
         if let player = player,
-            let playerAlbum = player.album {
+            let _ = player.album {
                 return true
         }
         return false
@@ -420,12 +420,12 @@ class MasterViewController: UIViewController {
             print("isPlaying: %@", isPlaying())
             if player.player!.trackListSize > 0 {
                 player.resume({ () -> () in
-                    if let navigationView = self.navigationView {
+                    if self.navigationView != nil {
                         self.navigationViewShowPauseInRightButton()
                     }
                 })
             } else {
-                var startTrackIndex = self.dataStore.currentAlbumTrackIndex
+                let startTrackIndex = self.dataStore.currentAlbumTrackIndex
                 player.playAlbum(startTrackIndex)
             }
         }
@@ -451,7 +451,7 @@ class MasterViewController: UIViewController {
     
     func playerDidChangePlaybackStatus(_ isPlaying:Bool) {
         // update navigation
-        if let navigationView = self.navigationView {
+        if self.navigationView != nil {
             // right
             if isPlaying {
                 navigationViewShowPauseInRightButton()
@@ -502,7 +502,7 @@ extension MasterViewController_LoadCurrentAlbum {
     
     func hasCurrentAlbumPlaying() -> Bool {
         
-        if let currentAlbumURI = dataStore.currentAlbumURI {
+        if dataStore.currentAlbumURI != nil {
             return true
         }
         return false
@@ -512,16 +512,16 @@ extension MasterViewController_LoadCurrentAlbum {
         
         if let session = session,
             let accessToken = session.accessToken {
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: { () -> Void in
+            DispatchQueue.global().async(execute: { () -> Void in
                 SPTAlbum.album(withURI: albumURI,
                                accessToken: accessToken,
                                market: nil,
                                callback: { (error: Error?, result:Any?) in
-                                print(result)
-                                if error != nil {
+                                print(result!)
+                                if let error = error {
                                     print("error: %@", error)
                                 } else {
-                                    var album = result as! SPTAlbum
+                                    let album = result as! SPTAlbum
                                     if let completed = completed {
                                         completed(album)
                                     }

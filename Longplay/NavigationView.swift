@@ -64,45 +64,45 @@ class NavigationView: UIView {
         // top line separator
         topLineSeparator.backgroundColor = UIColor.darkGray.withAlphaComponent(0.7)
         addSubview(topLineSeparator)
-        topLineSeparator.snp_makeConstraints { (make) -> Void in
+        topLineSeparator.snp.makeConstraints { (make) -> Void in
             make.top.left.right.equalTo(self)
             make.height.equalTo(0.5)
         }
         // white bg view
         backgroundView.backgroundColor = UIColor.white
         addSubview(backgroundView)
-        backgroundView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(topLineSeparator.snp_bottom)
+        backgroundView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(topLineSeparator.snp.bottom)
             make.left.bottom.right.equalTo(self)
         }
         
         // left button
-        leftButton = UIButton(type:UIButtonType.custom) as? UIButton
+        leftButton = UIButton(type:UIButtonType.custom)
         if let leftButton = leftButton {
             leftButton.backgroundColor = UIColor.clear
             showLogoInLeftButton()
             addSubview(leftButton)
-            leftButton.snp_makeConstraints { (make) -> Void in
+            leftButton.snp.makeConstraints { (make) -> Void in
                 make.width.height.equalTo(NavigationViewLeftButtonHeight)
                 make.top.equalTo(backgroundView)
                 make.left.equalTo(backgroundView)
             }
         }
         // middle button
-        middleButton = UIButton(type:UIButtonType.custom) as? UIButton
+        middleButton = UIButton(type:UIButtonType.custom)
         if let middleButton = middleButton {
             middleButton.backgroundColor = UIColor.clear
             addSubview(middleButton)
-            middleButton.snp_makeConstraints { (make) -> Void in
+            middleButton.snp.makeConstraints { (make) -> Void in
                 make.edges.equalTo(backgroundView).inset(UIEdgeInsetsMake(0,NavigationViewLeftButtonHeight,0,NavigationViewLeftButtonHeight))
             }
         }
         // right button
-        rightButton = UIButton(type:UIButtonType.custom) as? UIButton
+        rightButton = UIButton(type:UIButtonType.custom)
         if let rightButton = rightButton {
             rightButton.backgroundColor = UIColor.clear
             addSubview(rightButton)
-            rightButton.snp_makeConstraints { (make) -> Void in
+            rightButton.snp.makeConstraints { (make) -> Void in
                 make.width.height.equalTo(NavigationViewRightButtonHeight)
                 make.top.right.equalTo(backgroundView)
             }
@@ -300,9 +300,9 @@ class NavigationView: UIView {
                 let rightButton = rightButton {
                     albumTopLabel.font = UIFont.buttonFontWithSize(16)
                     addSubview(albumTopLabel)
-                    albumTopLabel.snp_makeConstraints { (make) -> Void in
-                        make.left.equalTo(leftButton.snp_right).offset(NavigationViewTopLabelSideSpacing)
-                        make.right.equalTo(rightButton.snp_left).offset(-NavigationViewTopLabelSideSpacing)
+                    albumTopLabel.snp.makeConstraints { (make) -> Void in
+                        make.left.equalTo(leftButton.snp.right).offset(NavigationViewTopLabelSideSpacing)
+                        make.right.equalTo(rightButton.snp.left).offset(-NavigationViewTopLabelSideSpacing)
                         make.top.equalTo(self).offset(NavigationViewTopLabelTopSpacing)
                         make.height.equalTo(NavigationViewTopLabelHeight)
                     }
@@ -314,7 +314,7 @@ class NavigationView: UIView {
                 let albumTopLabel = albumTopLabel {
                     albumBottomLabel.font = UIFont.buttonFontWithSize(13)
                     addSubview(albumBottomLabel)
-                    albumBottomLabel.snp_makeConstraints { (make) -> Void in
+                    albumBottomLabel.snp.makeConstraints { (make) -> Void in
                         make.left.right.equalTo(albumTopLabel)
                         make.bottom.equalTo(self).offset(-NavigationViewBottomLabelBottomSpacing)
                         make.height.equalTo(NavigationViewBottomLabelHeight)
@@ -336,7 +336,7 @@ class NavigationView: UIView {
             progressBar = AlbumProgressView()
             if let progressBar = progressBar {
                 addSubview(progressBar)
-                progressBar.snp_makeConstraints { (make) -> Void in
+                progressBar.snp.makeConstraints { (make) -> Void in
                     make.height.equalTo(2)
                     make.left.right.equalTo(self)
                     make.top.equalTo(self).offset(-1)

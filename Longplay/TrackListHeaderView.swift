@@ -40,7 +40,7 @@ class TrackListHeaderView: UICollectionReusableView {
     func setup() {
         
         addSubview(coverArtImageView)
-        coverArtImageView.snp_makeConstraints { (make) -> Void in
+        coverArtImageView.snp.makeConstraints { (make) -> Void in
             make.top.left.right.equalTo(self)
             make.height.equalTo(TrackListHeaderViewCoverArtImageViewHeight)
         }
@@ -48,8 +48,8 @@ class TrackListHeaderView: UICollectionReusableView {
         let sideSpacing:CGFloat = 14
         nameLabel.font = UIFont.primaryBoldFontWithSize(20)
         addSubview(nameLabel)
-        nameLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(coverArtImageView.snp_bottom).offset(TrackListHeaderViewLabelSpacing)
+        nameLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(coverArtImageView.snp.bottom).offset(TrackListHeaderViewLabelSpacing)
             make.left.equalTo(self).offset(sideSpacing)
             make.right.equalTo(self).offset(-sideSpacing)
             make.height.equalTo(TrackListHeaderViewLabelHeight)
@@ -57,8 +57,8 @@ class TrackListHeaderView: UICollectionReusableView {
         
         artistLabel.font = UIFont.primaryFontWithSize(20)
         addSubview(artistLabel)
-        artistLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(nameLabel.snp_bottom)
+        artistLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(nameLabel.snp.bottom)
             make.left.right.equalTo(nameLabel)
             make.height.equalTo(TrackListHeaderViewLabelHeight)
         }

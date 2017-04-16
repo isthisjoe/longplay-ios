@@ -50,8 +50,8 @@ class AlbumPlayback:NSObject {
                     totalDuration += item.duration
                 }
         }
-        NSLog("trackDurations: %@", trackDurations)
-        NSLog("totalDuration: %f", totalDuration)
+        print("trackDurations: %@", trackDurations)
+        print("totalDuration: %f", totalDuration)
     }
     
     func observeAudioStreamingController(_ controller: SPTAudioStreamingController) {
@@ -61,8 +61,9 @@ class AlbumPlayback:NSObject {
         self.controller = controller
     }
     
-    func observeValue(forKeyPath keyPath: String, of object: Any, change: [AnyHashable: Any], context: UnsafeMutableRawPointer) {
-        
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+//    func observeValue(forKeyPath keyPath: String, of object: Any, change: [AnyHashable: Any], context: UnsafeMutableRawPointer) {
+    
         if context == &kvoContext {
             if keyPath == "currentPlaybackPosition" {
                 if let player = object as? SPTAudioStreamingController {
@@ -70,25 +71,25 @@ class AlbumPlayback:NSObject {
                         if previousPlaybackPosition == 0 {
                             previousPlaybackPosition = player.currentPlaybackPosition
                             currentAlbumPlaybackPosition += player.currentPlaybackPosition
-//                            NSLog("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
+//                            print("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
                         } else {
                             let delta:TimeInterval = player.currentPlaybackPosition - previousPlaybackPosition
                             currentAlbumPlaybackPosition += delta
-//                            NSLog("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
+//                            print("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
                             previousPlaybackPosition = player.currentPlaybackPosition
                         }
                     } else {
-//                        NSLog("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
+//                        print("%f %f %f", currentAlbumPlaybackPosition, player.currentPlaybackPosition, previousPlaybackPosition)
                     }
                 }
             }
             else if keyPath == "currentTrackIndex" {
                 if object is SPTAudioStreamingController {
-//                    NSLog("currentTrackIndex: %d", player.currentTrackIndex)
+//                    print("currentTrackIndex: %d", player.currentTrackIndex)
                 }
                 previousPlaybackPosition = 0
             }
-//            NSLog("progress: %f", progress)
+//            print("progress: %f", progress)
             if let progressCallback = progressCallback {
                 progressCallback(progress)
             }

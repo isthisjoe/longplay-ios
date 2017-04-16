@@ -47,7 +47,7 @@ class TrackListCollectionViewCell: UICollectionViewCell {
             titleLabel.font = UIFont.primaryFontWithSize(14)
             addSubview(titleLabel)
             let titleLabelOffset:CGFloat = 2.0
-            titleLabel.snp_makeConstraints { (make) -> Void in
+            titleLabel.snp.makeConstraints { (make) -> Void in
                 make.edges.equalTo(self).inset(UIEdgeInsetsMake(titleLabelOffset, 14, titleLabelOffset, 14))
             }
         }

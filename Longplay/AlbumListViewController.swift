@@ -26,7 +26,7 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
         let layout = UICollectionViewFlowLayout()
         let screenWidth = UIScreen.main.bounds.size.width
         let spacing:CGFloat = 10
-        let sectionSpacing:CGFloat = 10
+//        let sectionSpacing:CGFloat = 10
         let numberOfItemsPerRow:CGFloat = 3
         let itemSizeWidth:CGFloat = (screenWidth - (spacing * (numberOfItemsPerRow + 1)))/numberOfItemsPerRow
         let itemSizeHeight:CGFloat = itemSizeWidth + (itemSizeWidth * 0.3)
@@ -83,7 +83,7 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
                 group.enter()
                 let albumURIs = collection.map({URL(string:$0["uri"]! as String)!})
                 let index = count
-                DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: { () -> Void in
+                DispatchQueue.global().async {
                     SPTAlbum.albums(withURIs: albumURIs,
                                     accessToken: accessToken,
                                     market: nil,
@@ -102,7 +102,7 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
                                             group.leave()
                                         })
                     })
-                })
+                }
                 count += 1
             }
             // reload data when all album data received
@@ -152,7 +152,7 @@ extension AlbumListCollectionViewDataSource {
         if let albumLoadingView = albumLoadingView {
             if albumLoadingView.superview == nil {
                 view.addSubview(albumLoadingView)
-                albumLoadingView.snp_makeConstraints { (make) -> Void in
+                albumLoadingView.snp.makeConstraints { (make) -> Void in
                     make.center.equalTo(view)
                 }
                 albumLoadingView.alpha = 0.0
@@ -199,33 +199,32 @@ extension AlbumListCollectionViewDelegate {
         var reusableView:UICollectionReusableView? = nil
         if kind == UICollectionElementKindSectionHeader {
             if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader,
-                withReuseIdentifier: AlbumCollectionHeaderViewReuseIdentifier,
-                for: indexPath) as? AlbumCollectionHeaderView {
-                    switch indexPath.section {
-                    case 0:
-                        headerView.titleLabel.text = "LATEST"
-                        break
-                    case 1:
-                        headerView.titleLabel.text = "CLASSICS"
-                        break
-                    default:
-                        break
-                    }
-                    reusableView = headerView
+                                                                                withReuseIdentifier: AlbumCollectionHeaderViewReuseIdentifier,
+                                                                                for: indexPath) as? AlbumCollectionHeaderView {
+                switch indexPath.section {
+                case 0:
+                    headerView.titleLabel.text = "LATEST"
+                    break
+                case 1:
+                    headerView.titleLabel.text = "CLASSICS"
+                    break
+                default:
+                    break
+                }
+                reusableView = headerView
             }
         }
         if kind == UICollectionElementKindSectionFooter {
-            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter,
-                withReuseIdentifier: AlbumCollectionFooterViewReuseIdentifier,
-                for: indexPath) as? UICollectionReusableView {
-                    let lineView = UIView()
-                    lineView.backgroundColor = UIColor.darkGray
-                    footerView.addSubview(lineView)
-                    lineView.snp_makeConstraints { (make) -> Void in
-                        make.edges.equalTo(footerView).inset(UIEdgeInsetsMake(0, 10, 0, 10))
-                    }
-                    reusableView = footerView
+            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter,
+                                                                             withReuseIdentifier: AlbumCollectionFooterViewReuseIdentifier,
+                                                                             for: indexPath)
+            let lineView = UIView()
+            lineView.backgroundColor = UIColor.darkGray
+            footerView.addSubview(lineView)
+            lineView.snp.makeConstraints { (make) -> Void in
+                make.edges.equalTo(footerView).inset(UIEdgeInsetsMake(0, 10, 0, 10))
             }
+            reusableView = footerView
         }
         return reusableView!
     }

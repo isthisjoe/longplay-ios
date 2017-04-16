@@ -52,7 +52,7 @@ class AlbumViewController: UIViewController {
         let spacing = 10
         
         view.addSubview(coverArtImageView)
-        coverArtImageView.snp_makeConstraints { (make) -> Void in
+        coverArtImageView.snp.makeConstraints { (make) -> Void in
             make.top.left.equalTo(view).offset(spacing)
             make.width.height.equalTo(AlbumViewControllerCoverArtImageViewSize)
         }
@@ -60,9 +60,9 @@ class AlbumViewController: UIViewController {
         let labelHeight = 20
         nameLabel.font = UIFont.primaryBoldFontWithSize(20)
         view.addSubview(nameLabel)
-        nameLabel.snp_makeConstraints { (make) -> Void in
+        nameLabel.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(view).offset(spacing)
-            make.left.equalTo(coverArtImageView.snp_right).offset(spacing)
+            make.left.equalTo(coverArtImageView.snp.right).offset(spacing)
             make.right.equalTo(view).offset(-spacing)
             make.height.greaterThanOrEqualTo(labelHeight)
         }
@@ -70,16 +70,16 @@ class AlbumViewController: UIViewController {
         let labelSpacing = 5
         artistLabel.font = UIFont.primaryFontWithSize(20)
         view.addSubview(artistLabel)
-        artistLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(nameLabel.snp_bottom).offset(labelSpacing)
-            make.left.equalTo(coverArtImageView.snp_right).offset(spacing)
+        artistLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(nameLabel.snp.bottom).offset(labelSpacing)
+            make.left.equalTo(coverArtImageView.snp.right).offset(spacing)
             make.right.equalTo(view).offset(-spacing)
             make.height.greaterThanOrEqualTo(labelHeight)
         }
         
         view.addSubview(aboutTextView)
-        aboutTextView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(coverArtImageView.snp_bottom).offset(14)
+        aboutTextView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(coverArtImageView.snp.bottom).offset(14)
             make.left.equalTo(view).offset(10)
             make.right.equalTo(view).offset(-10)
             make.bottom.equalTo(view).offset(-10)
@@ -99,7 +99,7 @@ class AlbumViewController: UIViewController {
             artistLabel.numberOfLines = 2
         }
         
-        var paragraph = NSMutableParagraphStyle()
+        let paragraph = NSMutableParagraphStyle()
         paragraph.lineSpacing = 6
         paragraph.hyphenationFactor = 1.0
         let aboutAttributedText = NSAttributedString(string: about,

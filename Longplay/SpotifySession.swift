@@ -32,11 +32,11 @@ class SpotifySession {
                                          encryptedRefreshToken:encryptedRefreshToken,
                                          expirationDate: expirationDate)
                 if (session?.isValid())! {
-                    NSLog("Session valid")
+                    print("Session valid")
                     completed(session, true)
                 } else {
                     print("expirationDate: %@", expirationDate)
-                    NSLog("Session invalid, renewing")
+                    print("Session invalid, renewing")
                     SPTAuth.defaultInstance().renewSession(
                         session,
                         callback: { (error:Error?, session:SPTSession?) in
@@ -48,7 +48,7 @@ class SpotifySession {
                                 print("error: %@", error)
                                 completed(session, false)
                             } else if session == nil {
-                                NSLog("session is nil")
+                                print("session is nil")
                                 completed(session, false)
                             } else {
                                 completed(session, true)
@@ -57,7 +57,7 @@ class SpotifySession {
                 }
             }
         } else {
-            NSLog("spotifySessionValues not found")
+            print("spotifySessionValues not found")
             completed(session, false)
         }
     }
@@ -78,7 +78,7 @@ class SpotifySession {
         completed:((_ session:SPTSession?)->())?) {
             if error != nil {
                 // TODO: handle error
-                NSLog("error: %@", error!)
+                print("error: %@", error!)
             }
             self.session = session
             if let session = session {

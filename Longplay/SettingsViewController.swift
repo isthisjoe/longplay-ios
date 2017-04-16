@@ -25,7 +25,7 @@ class SettingsViewController: UIViewController {
         
         view.backgroundColor = UIColor.white
         view.addSubview(textLabel)
-        textLabel.snp_makeConstraints { (make) -> Void in
+        textLabel.snp.makeConstraints { (make) -> Void in
             make.top.left.equalTo(view).offset(15)
             make.right.equalTo(view).offset(-15)
             make.height.greaterThanOrEqualTo(100)
@@ -62,8 +62,8 @@ class SettingsViewController: UIViewController {
         textLabel.sizeToFit()
         
         view.addSubview(logoutButton)
-        logoutButton.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(textLabel.snp_bottom).offset(25)
+        logoutButton.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(textLabel.snp.bottom).offset(25)
             make.left.equalTo(textLabel)
             make.width.equalTo(91)
             make.height.equalTo(29)
