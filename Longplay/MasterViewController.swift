@@ -36,9 +36,9 @@ class MasterViewController: UIViewController {
             browserNavigationController = BrowserNavigationController(rootViewController: albumListViewController)
             if let browserNavigationController = browserNavigationController {
                 browserNavigationController.setNavigationBarHidden(true, animated: false)
-                browserNavigationController.willMoveToParentViewController(self)
+                browserNavigationController.willMove(toParentViewController: self)
                 addChildViewController(browserNavigationController)
-                browserNavigationController.didMoveToParentViewController(self)
+                browserNavigationController.didMove(toParentViewController: self)
                 view.addSubview(browserNavigationController.view)
                 browserNavigationController.view.snp_makeConstraints {
                     (make) -> Void in
@@ -51,13 +51,13 @@ class MasterViewController: UIViewController {
         player = PlayerViewController()
         if let player = player {
             player.session = session
-            player.willMoveToParentViewController(self)
+            player.willMove(toParentViewController: self)
             addChildViewController(player)
-            player.didMoveToParentViewController(self)
+            player.didMove(toParentViewController: self)
             view.addSubview(player.view)
             player.view.snp_makeConstraints {
                 (make) -> Void in
-                make.height.equalTo(UIScreen.mainScreen().bounds.size.height)
+                make.height.equalTo(UIScreen.main.bounds.size.height)
                 make.left.right.equalTo(view)
                 make.top.equalTo(view.snp_bottom).offset(-NavigationViewHeight)
             }
@@ -82,7 +82,7 @@ class MasterViewController: UIViewController {
         // navigation view
         navigationView = NavigationView()
         if let navigationView = navigationView,
-            player = player {
+            let player = player {
                 navigationView.showLogoInLeftButton()
                 navigationView.hideMiddleButton()
                 player.view.addSubview(navigationView)
@@ -91,10 +91,10 @@ class MasterViewController: UIViewController {
                     make.top.left.right.equalTo(player.view)
                 }
                 if let middleButton = navigationView.middleButton {
-                    middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
+                    middleButton.addTarget(self, action: #selector(MasterViewController.tappedNavigationMiddleButton(_:)), for: UIControlEvents.touchUpInside)
                 }
                 if let leftButton = navigationView.leftButton {
-                    leftButton.addTarget(self, action: "pushToSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                    leftButton.addTarget(self, action: #selector(MasterViewController.pushToSettingsAction(_:)), for: UIControlEvents.touchUpInside)
                 }
                 loadCurrentAlbumPlaying()
         }
@@ -105,7 +105,7 @@ class MasterViewController: UIViewController {
         if hasCurrentAlbumPlaying() {
             let albumURI = dataStore.currentAlbumURI!
             var startTrackIndex = self.dataStore.currentAlbumTrackIndex
-            fetchAlbum(albumURI, completed: {
+            fetchAlbum(albumURI as URL, completed: {
                 (album:SPTAlbum) -> () in
                 
                 self.loadAlbum(album)
@@ -119,8 +119,8 @@ class MasterViewController: UIViewController {
                     }
                     // find track that will play
                     if let track = self.trackInAlbum(album, index: startTrackIndex),
-                        artists = track.artists as? [SPTPartialArtist],
-                        firstArtist = artists.first {
+                        let artists = track.artists as? [SPTPartialArtist],
+                        let firstArtist = artists.first {
                             // middle
                             self.playerDidChangeToTrack(track.name, artist:firstArtist.name)
                             // right
@@ -141,7 +141,7 @@ class MasterViewController: UIViewController {
         }
     }
     
-    func trackInAlbum(album:SPTAlbum, index:Int32?) -> SPTPartialTrack? {
+    func trackInAlbum(_ album:SPTAlbum, index:Int32?) -> SPTPartialTrack? {
         var startIndex:Int32? = index
         if startIndex == nil {
             startIndex = 0
@@ -156,7 +156,7 @@ class MasterViewController: UIViewController {
     
     // MARK: Actions
     
-    func didSelectAlbumForViewing(album:SPTAlbum, about:String) {
+    func didSelectAlbumForViewing(_ album:SPTAlbum, about:String) {
         
         if let browserNavigationController = browserNavigationController {
             let albumViewController = AlbumViewController(album: album, about:about)
@@ -171,20 +171,20 @@ class MasterViewController: UIViewController {
                 // left
                 navigationView.showChevronInLeftButton()
                 if let leftButton = navigationView.leftButton {
-                    for target in leftButton.allTargets() {
-                        leftButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                    for target in leftButton.allTargets {
+                        leftButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                     }
-                    leftButton.addTarget(self, action: "backToBrowserAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                    leftButton.addTarget(self, action: #selector(MasterViewController.backToBrowserAction(_:)), for: UIControlEvents.touchUpInside)
                 }
                 // middle
                 if !isAlbumLoadedIntoPlayer(album) {
                     // middle
                     navigationView.showPlayAlbumInMiddleButton()
                     if let middleButton = navigationView.middleButton {
-                        for target in middleButton.allTargets() {
-                            middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                        for target in middleButton.allTargets {
+                            middleButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                         }
-                        middleButton.addTarget(albumViewController, action: "playAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                        middleButton.addTarget(albumViewController, action: "playAction:", for: UIControlEvents.touchUpInside)
                     }
                     // right
                     navigationView.hideRightButton()
@@ -193,28 +193,28 @@ class MasterViewController: UIViewController {
         }
     }
     
-    func backToBrowserAction(sender:AnyObject) {
+    func backToBrowserAction(_ sender:AnyObject) {
         
         if let browserNavigationController = browserNavigationController {
-            browserNavigationController.popToRootViewControllerAnimated(true)
+            browserNavigationController.popToRootViewController(animated: true)
         }
         if let navigationView = navigationView {
             // left
             navigationView.showLogoInLeftButtonAnimated(true)
             if let leftButton = navigationView.leftButton {
-                for target in leftButton.allTargets() {
-                    leftButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                for target in leftButton.allTargets {
+                    leftButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                 }
-                leftButton.addTarget(self, action: "pushToSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                leftButton.addTarget(self, action: #selector(MasterViewController.pushToSettingsAction(_:)), for: UIControlEvents.touchUpInside)
             }
             // middle
             navigationView.hideMiddleButtonText()
             navigationView.showAlbumDetails()
             if let middleButton = navigationView.middleButton {
-                for target in middleButton.allTargets() {
-                    middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                for target in middleButton.allTargets {
+                    middleButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                 }
-                middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
+                middleButton.addTarget(self, action: #selector(MasterViewController.tappedNavigationMiddleButton(_:)), for: UIControlEvents.touchUpInside)
             }
             if isAlbumLoadedInPlayer() {
                 navigationView.showRightButton()
@@ -222,37 +222,37 @@ class MasterViewController: UIViewController {
         }
     }
     
-    func backToBrowserFromSettingsAction(sender:AnyObject) {
+    func backToBrowserFromSettingsAction(_ sender:AnyObject) {
         
         if let browserNavigationController = browserNavigationController {
             let transition = CATransition()
             transition.duration = 0.3
             transition.type = kCATransitionPush
             transition.subtype = kCATransitionFromRight
-            browserNavigationController.view.layer.addAnimation(transition, forKey: kCATransition)
-            browserNavigationController.popToRootViewControllerAnimated(false)
+            browserNavigationController.view.layer.add(transition, forKey: kCATransition)
+            browserNavigationController.popToRootViewController(animated: false)
         }
         if let navigationView = navigationView {
             // left
             navigationView.showLogoInLeftButtonAnimated(true)
             if let leftButton = navigationView.leftButton {
-                leftButton.addTarget(self, action: "pushToSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                leftButton.addTarget(self, action: #selector(MasterViewController.pushToSettingsAction(_:)), for: UIControlEvents.touchUpInside)
             }
             // middle
             if isAlbumLoadedInPlayer() {
                 navigationView.hideMiddleButtonText()
                 navigationView.showAlbumDetails()
                 if let middleButton = navigationView.middleButton {
-                    for target in middleButton.allTargets() {
-                        middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                    for target in middleButton.allTargets {
+                        middleButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                     }
-                    middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
+                    middleButton.addTarget(self, action: #selector(MasterViewController.tappedNavigationMiddleButton(_:)), for: UIControlEvents.touchUpInside)
                 }
             }
             // right
             if let rightButton = navigationView.rightButton {
-                for target in rightButton.allTargets() {
-                    rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                for target in rightButton.allTargets {
+                    rightButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                 }
                 if isAlbumLoadedInPlayer() {
                     if isPlaying() {
@@ -267,13 +267,13 @@ class MasterViewController: UIViewController {
         }
     }
     
-    func pushToSettingsAction(sender:AnyObject) {
+    func pushToSettingsAction(_ sender:AnyObject) {
         
         if settingsViewController == nil {
             settingsViewController = SettingsViewController()
         }
         if let browserNavigationController = browserNavigationController,
-            settingsViewController = settingsViewController {
+            let settingsViewController = settingsViewController {
                 
                 settingsViewController.session = session
                 
@@ -281,7 +281,7 @@ class MasterViewController: UIViewController {
                 transition.duration = 0.3
                 transition.type = kCATransitionPush
                 transition.subtype = kCATransitionFromLeft
-                browserNavigationController.view.layer.addAnimation(transition, forKey: kCATransition)
+                browserNavigationController.view.layer.add(transition, forKey: kCATransition)
                 browserNavigationController.pushViewController(settingsViewController, animated: false)
         }
         if let navigationView = navigationView {
@@ -289,16 +289,16 @@ class MasterViewController: UIViewController {
             navigationView.hideLeftButton()
             // right
             if let rightButton = navigationView.rightButton {
-                for target in rightButton.allTargets() {
-                    rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                for target in rightButton.allTargets {
+                    rightButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                 }
-                rightButton.addTarget(self, action: "backToBrowserFromSettingsAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                rightButton.addTarget(self, action: #selector(MasterViewController.backToBrowserFromSettingsAction(_:)), for: UIControlEvents.touchUpInside)
             }
             navigationView.showChevronInRightButton()
         }
     }
     
-    func tappedNavigationMiddleButton(sender:AnyObject) {
+    func tappedNavigationMiddleButton(_ sender:AnyObject) {
         
         showPlayer()
     }
@@ -307,25 +307,25 @@ class MasterViewController: UIViewController {
         
         let damping:CGFloat = 0.85
         if let player = player,
-            browserNavigationController = browserNavigationController,
-            navigationView = navigationView {
+            let browserNavigationController = browserNavigationController,
+            let navigationView = navigationView {
                 if isShowingPlayer {
                     // hide player
                     // animate player view entering
                     view.layoutIfNeeded()
                     player.view.snp_remakeConstraints { (make) -> Void in
-                        make.height.equalTo(UIScreen.mainScreen().bounds.size.height)
+                        make.height.equalTo(UIScreen.main.bounds.size.height)
                         make.left.right.equalTo(view)
                         make.top.equalTo(view.snp_bottom).offset(-NavigationViewHeight)
                     }
                     browserNavigationController.view.snp_remakeConstraints { (make) -> Void in
                         make.edges.equalTo(view).inset(UIEdgeInsetsMake(0, 0, NavigationViewHeight, 0))
                     }
-                    UIView.animateWithDuration(0.5,
+                    UIView.animate(withDuration: 0.5,
                         delay: 0.0,
                         usingSpringWithDamping: damping,
                         initialSpringVelocity: 0.0,
-                        options: UIViewAnimationOptions(0),
+                        options: UIViewAnimationOptions(rawValue: 0),
                         animations: { () -> Void in
                             self.view.layoutIfNeeded()
                             // show navigation
@@ -337,7 +337,7 @@ class MasterViewController: UIViewController {
                     // show player
                     // expand player height
                     player.view.snp_remakeConstraints { (make) -> Void in
-                        make.height.equalTo(UIScreen.mainScreen().bounds.size.height)
+                        make.height.equalTo(UIScreen.main.bounds.size.height)
                         make.left.right.equalTo(view)
                         make.top.equalTo(view.snp_bottom).offset(-NavigationViewHeight)
                     }
@@ -347,15 +347,15 @@ class MasterViewController: UIViewController {
                         make.edges.equalTo(view)
                     }
                     browserNavigationController.view.snp_remakeConstraints { (make) -> Void in
-                        make.height.equalTo(UIScreen.mainScreen().bounds.size.height - NavigationViewHeight)
+                        make.height.equalTo(UIScreen.main.bounds.size.height - NavigationViewHeight)
                         make.left.right.equalTo(view)
                         make.bottom.equalTo(player.view.snp_top)
                     }
-                    UIView.animateWithDuration(0.5,
+                    UIView.animate(withDuration: 0.5,
                         delay: 0.0,
                         usingSpringWithDamping: damping,
                         initialSpringVelocity: 0.0,
-                        options: UIViewAnimationOptions(0),
+                        options: UIViewAnimationOptions(rawValue: 0),
                         animations: { () -> Void in
                             self.view.layoutIfNeeded()
                             // hide navigation
@@ -369,7 +369,7 @@ class MasterViewController: UIViewController {
     
     // MARK: Player
     
-    func loadAlbum(album:SPTAlbum) {
+    func loadAlbum(_ album:SPTAlbum) {
         if let player = player {
             player.album = album
             player.stopPlayback({ () -> () in
@@ -378,7 +378,7 @@ class MasterViewController: UIViewController {
         }
     }
     
-    func playAlbum(startTrackIndex:Int32?) {
+    func playAlbum(_ startTrackIndex:Int32?) {
         if let player = player {
             player.playAlbum(startTrackIndex)
         }
@@ -393,21 +393,21 @@ class MasterViewController: UIViewController {
     
     func isAlbumLoadedInPlayer() -> Bool {
         if let player = player,
-            playerAlbum = player.album {
+            let playerAlbum = player.album {
                 return true
         }
         return false
     }
     
-    func isAlbumLoadedIntoPlayer(album:SPTAlbum) -> Bool {
+    func isAlbumLoadedIntoPlayer(_ album:SPTAlbum) -> Bool {
         if let player = player,
-            playerAlbum = player.album {
+            let playerAlbum = player.album {
                 return album.uri == playerAlbum.uri
         }
         return false
     }
     
-    func pausePlayer(sender:AnyObject) {
+    func pausePlayer(_ sender:AnyObject) {
         if let player = player {
             player.pause({ () -> () in
                 self.navigationViewShowPlayInRightButton()
@@ -415,9 +415,9 @@ class MasterViewController: UIViewController {
         }
     }
     
-    func resumePlayer(sender:AnyObject) {
+    func resumePlayer(_ sender:AnyObject) {
         if let player = player {
-            NSLog("isPlaying: %@", isPlaying())
+            print("isPlaying: %@", isPlaying())
             if player.player!.trackListSize > 0 {
                 player.resume({ () -> () in
                     if let navigationView = self.navigationView {
@@ -431,7 +431,7 @@ class MasterViewController: UIViewController {
         }
     }
     
-    func playerDidChangeToTrack(title:String, artist:String) {
+    func playerDidChangeToTrack(_ title:String, artist:String) {
         // update navigation
         if let navigationView = self.navigationView {
             // middle
@@ -440,16 +440,16 @@ class MasterViewController: UIViewController {
             navigationView.populateAlbumDetails(topLabelText, bottomLabelText: bottomLabelText)
             navigationView.showAlbumDetails()
             if let middleButton = navigationView.middleButton {
-                for target in middleButton.allTargets() {
-                    middleButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                for target in middleButton.allTargets {
+                    middleButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                 }
-                middleButton.addTarget(self, action: "tappedNavigationMiddleButton:", forControlEvents: UIControlEvents.TouchUpInside)
+                middleButton.addTarget(self, action: #selector(MasterViewController.tappedNavigationMiddleButton(_:)), for: UIControlEvents.touchUpInside)
             }
             navigationView.showMiddleButton() 
         }
     }
     
-    func playerDidChangePlaybackStatus(isPlaying:Bool) {
+    func playerDidChangePlaybackStatus(_ isPlaying:Bool) {
         // update navigation
         if let navigationView = self.navigationView {
             // right
@@ -461,7 +461,7 @@ class MasterViewController: UIViewController {
         }
     }
     
-    func playerDidUpdateAlbumProgress(progress:Float) {
+    func playerDidUpdateAlbumProgress(_ progress:Float) {
         // update navigation
         if let navigationView = self.navigationView {
             navigationView.updateProgressView(progress)
@@ -475,10 +475,10 @@ class MasterViewController: UIViewController {
         if let navigationView = navigationView {
             navigationView.showPlayInRightButton()
             if let rightButton = navigationView.rightButton {
-                for target in rightButton.allTargets() {
-                    rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                for target in rightButton.allTargets {
+                    rightButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                 }
-                rightButton.addTarget(self, action: "resumePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+                rightButton.addTarget(self, action: #selector(MasterViewController.resumePlayer(_:)), for: UIControlEvents.touchUpInside)
             }
         }
     }
@@ -488,10 +488,10 @@ class MasterViewController: UIViewController {
         if let navigationView = navigationView {
             navigationView.showPauseInRightButton()
             if let rightButton = navigationView.rightButton {
-                for target in rightButton.allTargets() {
-                    rightButton.removeTarget(target, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+                for target in rightButton.allTargets {
+                    rightButton.removeTarget(target, action: nil, for: UIControlEvents.touchUpInside)
                 }
-                rightButton.addTarget(self, action: "pausePlayer:", forControlEvents: UIControlEvents.TouchUpInside)
+                rightButton.addTarget(self, action: #selector(MasterViewController.pausePlayer(_:)), for: UIControlEvents.touchUpInside)
             }
         }
     }
@@ -508,24 +508,26 @@ extension MasterViewController_LoadCurrentAlbum {
         return false
     }
     
-    func fetchAlbum(albumURI:NSURL, completed:((album:SPTAlbum)->())?) {
+    func fetchAlbum(_ albumURI:URL, completed:((_ album:SPTAlbum)->())?) {
         
         if let session = session,
-            accessToken = session.accessToken {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
-                    SPTAlbum.albumWithURI(albumURI, accessToken: accessToken, market: nil, callback: {
-                        (error:NSError!, result:AnyObject!) -> Void in
-                        println(result)
-                        if error != nil {
-                            NSLog("error: %@", error)
-                        } else {
-                            var album = result as! SPTAlbum
-                            if let completed = completed {
-                                completed(album:album)
-                            }
-                        }
-                    })
+            let accessToken = session.accessToken {
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: { () -> Void in
+                SPTAlbum.album(withURI: albumURI,
+                               accessToken: accessToken,
+                               market: nil,
+                               callback: { (error: Error?, result:Any?) in
+                                print(result)
+                                if error != nil {
+                                    print("error: %@", error)
+                                } else {
+                                    var album = result as! SPTAlbum
+                                    if let completed = completed {
+                                        completed(album)
+                                    }
+                                }
                 })
+            })
         }
     }
 }

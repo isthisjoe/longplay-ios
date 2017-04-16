@@ -17,10 +17,8 @@ class AlbumCollectionHeaderView: UICollectionReusableView {
     
     // MARK: Init
     
-    required init(coder aDecoder: NSCoder) {
-        
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         self.setup()
     }
     
@@ -34,7 +32,7 @@ class AlbumCollectionHeaderView: UICollectionReusableView {
     func setup() {
         
         titleLabel.font = UIFont.titleFontWithSize(18)
-        titleLabel.textAlignment = NSTextAlignment.Left
+        titleLabel.textAlignment = NSTextAlignment.left
         titleLabel.textColor = UIColor.lpBlackColor()
         addSubview(titleLabel)
         titleLabel.snp_makeConstraints { (make) -> Void in

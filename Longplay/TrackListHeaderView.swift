@@ -8,7 +8,7 @@
 
 import UIKit
 
-let TrackListHeaderViewCoverArtImageViewHeight:CGFloat = UIScreen.mainScreen().bounds.size.width
+let TrackListHeaderViewCoverArtImageViewHeight:CGFloat = UIScreen.main.bounds.size.width
 let TrackListHeaderViewLabelSpacing:CGFloat = 8
 let TrackListHeaderViewLabelHeight:CGFloat = 30
 
@@ -22,13 +22,11 @@ class TrackListHeaderView: UICollectionReusableView {
     
     init() {
         
-        super.init(frame:CGRectZero)
+        super.init(frame:CGRect.zero)
     }
     
-    required init(coder aDecoder: NSCoder) {
-        
-        super.init(coder: aDecoder)
-        
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
         self.setup()
     }
     

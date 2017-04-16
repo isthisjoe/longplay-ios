@@ -27,10 +27,10 @@ let NavigationViewFadeOutScaleRestore:CGFloat = 10/8
 class NavigationView: UIView {
     
     let logoImage = UIImage(named: "app_logo")
-    let chevronLeftImage = FAKIonIcons.chevronLeftIconWithSize(20).imageWithSize(CGSizeMake(20, 20))
-    let chevronRightImage = FAKIonIcons.chevronRightIconWithSize(20).imageWithSize(CGSizeMake(20, 20))
-    let playRightImage = FAKIonIcons.playIconWithSize(20).imageWithSize(CGSizeMake(20, 20))
-    let pauseRightImage = FAKIonIcons.pauseIconWithSize(20).imageWithSize(CGSizeMake(20, 20))
+    let chevronLeftImage = FAKIonIcons.chevronLeftIcon(withSize: 20).image(with: CGSize(width: 20, height: 20))
+    let chevronRightImage = FAKIonIcons.chevronRightIcon(withSize: 20).image(with: CGSize(width: 20, height: 20))
+    let playRightImage = FAKIonIcons.playIcon(withSize: 20).image(with: CGSize(width: 20, height: 20))
+    let pauseRightImage = FAKIonIcons.pauseIcon(withSize: 20).image(with: CGSize(width: 20, height: 20))
     
     let topLineSeparator = UIView()
     let backgroundView = UIView()
@@ -44,37 +44,32 @@ class NavigationView: UIView {
     // MARK: Init
     
     convenience init() {
-        
-        self.init(frame:CGRectZero)
+        self.init(frame:CGRect.zero)
     }
     
-    required init(coder aDecoder: NSCoder) {
-        
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         self.setup()
     }
     
     override init(frame: CGRect) {
-        
         super.init(frame: frame)
-        
         self.setup()
     }
     
     func setup() {
         
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clear
         
         // top line separator
-        topLineSeparator.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.7)
+        topLineSeparator.backgroundColor = UIColor.darkGray.withAlphaComponent(0.7)
         addSubview(topLineSeparator)
         topLineSeparator.snp_makeConstraints { (make) -> Void in
             make.top.left.right.equalTo(self)
             make.height.equalTo(0.5)
         }
         // white bg view
-        backgroundView.backgroundColor = UIColor.whiteColor()
+        backgroundView.backgroundColor = UIColor.white
         addSubview(backgroundView)
         backgroundView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(topLineSeparator.snp_bottom)
@@ -82,9 +77,9 @@ class NavigationView: UIView {
         }
         
         // left button
-        leftButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
+        leftButton = UIButton(type:UIButtonType.custom) as? UIButton
         if let leftButton = leftButton {
-            leftButton.backgroundColor = UIColor.clearColor()
+            leftButton.backgroundColor = UIColor.clear
             showLogoInLeftButton()
             addSubview(leftButton)
             leftButton.snp_makeConstraints { (make) -> Void in
@@ -94,18 +89,18 @@ class NavigationView: UIView {
             }
         }
         // middle button
-        middleButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
+        middleButton = UIButton(type:UIButtonType.custom) as? UIButton
         if let middleButton = middleButton {
-            middleButton.backgroundColor = UIColor.clearColor()
+            middleButton.backgroundColor = UIColor.clear
             addSubview(middleButton)
             middleButton.snp_makeConstraints { (make) -> Void in
                 make.edges.equalTo(backgroundView).inset(UIEdgeInsetsMake(0,NavigationViewLeftButtonHeight,0,NavigationViewLeftButtonHeight))
             }
         }
         // right button
-        rightButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
+        rightButton = UIButton(type:UIButtonType.custom) as? UIButton
         if let rightButton = rightButton {
-            rightButton.backgroundColor = UIColor.clearColor()
+            rightButton.backgroundColor = UIColor.clear
             addSubview(rightButton)
             rightButton.snp_makeConstraints { (make) -> Void in
                 make.width.height.equalTo(NavigationViewRightButtonHeight)
@@ -117,7 +112,7 @@ class NavigationView: UIView {
     
     // MARK: Show/hide anims
     
-    func fadeInView(view:UIView) {
+    func fadeInView(_ view:UIView) {
         
         view.alpha = 0.0
         UIView.animateWithDefaultDuration({ () -> Void in
@@ -125,51 +120,45 @@ class NavigationView: UIView {
         })
     }
     
-    func fadeInWithScalingView(view:UIView) {
+    func fadeInWithScalingView(_ view:UIView) {
         
         fadeInView(view)
-        view.layer.setAffineTransform(CGAffineTransformScale(view.layer.affineTransform(),
-            NavigationViewFadeInScale, NavigationViewFadeInScale))
+        view.layer.setAffineTransform(view.layer.affineTransform().scaledBy(x: NavigationViewFadeInScale, y: NavigationViewFadeInScale))
         UIView.animateWithDefaultDuration({ () -> Void in
-            view.layer.setAffineTransform(CGAffineTransformScale(view.layer.affineTransform(),
-                NavigationViewFadeInScaleRestore, NavigationViewFadeInScaleRestore))
+            view.layer.setAffineTransform(view.layer.affineTransform().scaledBy(x: NavigationViewFadeInScaleRestore, y: NavigationViewFadeInScaleRestore))
         })
     }
     
-    func fadeOutView(view:UIView) {
+    func fadeOutView(_ view:UIView) {
         
         UIView.animateWithDefaultDuration({ () -> Void in
             view.alpha = 0.0
         })
     }
     
-    func fadeOutWithScalingView(view:UIView) {
+    func fadeOutWithScalingView(_ view:UIView) {
         
         fadeOutView(view)
         UIView.animateWithDefaultDuration({ () -> Void in
-            view.layer.setAffineTransform(CGAffineTransformScale(view.layer.affineTransform(),
-                NavigationViewFadeOutScale, NavigationViewFadeOutScale))
+            view.layer.setAffineTransform(view.layer.affineTransform().scaledBy(x: NavigationViewFadeOutScale, y: NavigationViewFadeOutScale))
             }, completion: { (finished:Bool) -> Void in
-                view.layer.setAffineTransform(CGAffineTransformScale(view.layer.affineTransform(),
-                    NavigationViewFadeOutScaleRestore, NavigationViewFadeOutScaleRestore))
+                view.layer.setAffineTransform(view.layer.affineTransform().scaledBy(x: NavigationViewFadeOutScaleRestore, y: NavigationViewFadeOutScaleRestore))
         })
     }
     
-    func fadeOutToBottomView(view:UIView) {
+    func fadeOutToBottomView(_ view:UIView) {
         
         let translateY:CGFloat = view.bounds.size.height/7
         fadeOutVerticallyView(view, startY: -translateY, endY: translateY)
     }
     
-    func fadeOutVerticallyView(view:UIView, startY:CGFloat, endY:CGFloat) {
+    func fadeOutVerticallyView(_ view:UIView, startY:CGFloat, endY:CGFloat) {
         
         fadeInView(view)
         UIView.animateWithDefaultDuration({ () -> Void in
-            view.layer.setAffineTransform(CGAffineTransformTranslate(view.layer.affineTransform(),
-                0, startY))
+            view.layer.setAffineTransform(view.layer.affineTransform().translatedBy(x: 0, y: startY))
             }, completion: { (finished:Bool) -> Void in
-                view.layer.setAffineTransform(CGAffineTransformTranslate(view.layer.affineTransform(),
-                    0, endY))
+                view.layer.setAffineTransform(view.layer.affineTransform().translatedBy(x: 0, y: endY))
         })
     }
     
@@ -180,10 +169,10 @@ class NavigationView: UIView {
         showLogoInLeftButtonAnimated(false)
     }
 
-    func showLogoInLeftButtonAnimated(animated:Bool) {
+    func showLogoInLeftButtonAnimated(_ animated:Bool) {
         
         if let leftButton = leftButton {
-            leftButton.setImage(logoImage, forState: UIControlState.Normal)
+            leftButton.setImage(logoImage, for: UIControlState())
             if animated {
                 fadeInWithScalingView(leftButton)
             } else {
@@ -194,7 +183,7 @@ class NavigationView: UIView {
     
     func showChevronInLeftButton() {
         if let leftButton = leftButton {
-            leftButton.setImage(chevronLeftImage, forState: UIControlState.Normal)
+            leftButton.setImage(chevronLeftImage, for: UIControlState())
             fadeInWithScalingView(leftButton)
         }
     }
@@ -209,17 +198,17 @@ class NavigationView: UIView {
     
     func showPlayAlbumInMiddleButton() {
         if let albumTopLabel = albumTopLabel,
-            albumBottomLabel = albumBottomLabel {
+            let albumBottomLabel = albumBottomLabel {
                 albumTopLabel.alpha = 0.0
                 albumBottomLabel.alpha = 0.0
         }
         if let middleButton = middleButton {
-            let icon = FAKIonIcons.playIconWithSize(17)
-            let attributedTitle = NSMutableAttributedString(attributedString: icon.attributedString())
-            attributedTitle.appendAttributedString(
+            let icon = FAKIonIcons.playIcon(withSize: 17)
+            let attributedTitle = NSMutableAttributedString(attributedString: (icon?.attributedString())!)
+            attributedTitle.append(
                 NSAttributedString(string: "  Play This Album",
                     attributes: [NSFontAttributeName: UIFont.buttonFontWithSize(20)]))
-            middleButton.setAttributedTitle(attributedTitle, forState: .Normal)
+            middleButton.setAttributedTitle(attributedTitle, for: UIControlState())
             fadeInView(middleButton)
         }
     }
@@ -238,7 +227,7 @@ class NavigationView: UIView {
     
     func hideMiddleButtonText() {
         if let middleButton = middleButton {
-            middleButton.setAttributedTitle(nil, forState: UIControlState.Normal)
+            middleButton.setAttributedTitle(nil, for: UIControlState())
             middleButton.alpha = 1.0
         }
     }
@@ -247,21 +236,21 @@ class NavigationView: UIView {
     
     func showChevronInRightButton() {
         if let rightButton = rightButton {
-            rightButton.setImage(chevronRightImage, forState: UIControlState.Normal)
+            rightButton.setImage(chevronRightImage, for: UIControlState())
             fadeInWithScalingView(rightButton)
         }
     }
     
     func showPlayInRightButton() {
         if let rightButton = rightButton {
-            rightButton.setImage(playRightImage, forState: UIControlState.Normal)
+            rightButton.setImage(playRightImage, for: UIControlState())
             fadeInWithScalingView(rightButton)
         }
     }
     
     func showPauseInRightButton() {
         if let rightButton = rightButton {
-            rightButton.setImage(pauseRightImage, forState: UIControlState.Normal)
+            rightButton.setImage(pauseRightImage, for: UIControlState())
             fadeInWithScalingView(rightButton)
         }
     }
@@ -284,7 +273,7 @@ class NavigationView: UIView {
     
     func showAlbumDetails() {
         if let albumTopLabel = albumTopLabel,
-            albumBottomLabel = albumBottomLabel {
+            let albumBottomLabel = albumBottomLabel {
                 if albumTopLabel.alpha == 0.0 || albumBottomLabel.alpha == 0.0 {
                     fadeInView(albumTopLabel)
                     fadeInView(albumBottomLabel)
@@ -294,21 +283,21 @@ class NavigationView: UIView {
     
     func hideAlbumDetails() {
         if let albumTopLabel = albumTopLabel,
-            albumBottomLabel = albumBottomLabel {
+            let albumBottomLabel = albumBottomLabel {
                 fadeOutToBottomView(albumTopLabel)
                 fadeOutToBottomView(albumBottomLabel)
         }
     }
     
-    func populateAlbumDetails(topLabelText:String, bottomLabelText:String) {
+    func populateAlbumDetails(_ topLabelText:String, bottomLabelText:String) {
         if let middleButton = middleButton {
-            middleButton.setAttributedTitle(nil, forState: UIControlState.Normal)
+            middleButton.setAttributedTitle(nil, for: UIControlState())
         }
         if albumTopLabel == nil {
             albumTopLabel = UILabel()
             if let albumTopLabel = albumTopLabel,
-                leftButton = leftButton,
-                rightButton = rightButton {
+                let leftButton = leftButton,
+                let rightButton = rightButton {
                     albumTopLabel.font = UIFont.buttonFontWithSize(16)
                     addSubview(albumTopLabel)
                     albumTopLabel.snp_makeConstraints { (make) -> Void in
@@ -322,7 +311,7 @@ class NavigationView: UIView {
         if albumBottomLabel == nil {
             albumBottomLabel = UILabel()
             if let albumBottomLabel = albumBottomLabel,
-                albumTopLabel = albumTopLabel {
+                let albumTopLabel = albumTopLabel {
                     albumBottomLabel.font = UIFont.buttonFontWithSize(13)
                     addSubview(albumBottomLabel)
                     albumBottomLabel.snp_makeConstraints { (make) -> Void in
@@ -341,7 +330,7 @@ class NavigationView: UIView {
     }
     
     // Progress View
-    func updateProgressView(progress:Float) {
+    func updateProgressView(_ progress:Float) {
         
         if progressBar == nil {
             progressBar = AlbumProgressView()

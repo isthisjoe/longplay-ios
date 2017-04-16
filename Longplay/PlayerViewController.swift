@@ -33,13 +33,13 @@ class PlayerViewController: UIViewController {
     let dataStore = DataStore()
     var currentTrackIndex:Int32 = 0
     
-    typealias DidChangeToTrackBlock = ((playerViewController:PlayerViewController, title:String, artist:String)->())
+    typealias DidChangeToTrackBlock = ((_ playerViewController:PlayerViewController, _ title:String, _ artist:String)->())
     var didChangeToTrackBlock:DidChangeToTrackBlock?
     
-    typealias DidChangePlaybackStatusBlock = ((playerViewController:PlayerViewController, isPlaying:Bool)->())
+    typealias DidChangePlaybackStatusBlock = ((_ playerViewController:PlayerViewController, _ isPlaying:Bool)->())
     var didChangePlaybackStatusBlock:DidChangePlaybackStatusBlock?
     
-    typealias DidUpdateAlbumProgressBlock = ((playerViewController:PlayerViewController, progress:Float)->())
+    typealias DidUpdateAlbumProgressBlock = ((_ playerViewController:PlayerViewController, _ progress:Float)->())
     var didUpdateAlbumProgressBlock:DidUpdateAlbumProgressBlock?
 
     // MARK: Views
@@ -51,9 +51,9 @@ class PlayerViewController: UIViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         
-        albumTrackListingView.backgroundColor = UIColor.whiteColor()
+        albumTrackListingView.backgroundColor = UIColor.white
         view.addSubview(albumTrackListingView)
         albumTrackListingView.snp_makeConstraints { (make) -> Void in
             make.top.left.right.equalTo(view)
@@ -68,7 +68,7 @@ class PlayerViewController: UIViewController {
         }
         
         let controlViewHeight = 72.0
-        controlView.backgroundColor = UIColor.whiteColor()
+        controlView.backgroundColor = UIColor.white
         view.addSubview(controlView)
         controlView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(progressView.snp_bottom)
@@ -76,9 +76,9 @@ class PlayerViewController: UIViewController {
             make.height.equalTo(controlViewHeight)
         }
         
-        let browserIcon = FAKIonIcons.naviconRoundIconWithSize(28)
-        browserIcon.setAttributes([NSForegroundColorAttributeName: UIColor.lpBlackColor()])
-        browserButton.setAttributedTitle(browserIcon.attributedString(), forState: .Normal)
+        let browserIcon = FAKIonIcons.naviconRoundIcon(withSize: 28)
+        browserIcon?.setAttributes([NSForegroundColorAttributeName: UIColor.lpBlackColor()])
+        browserButton.setAttributedTitle(browserIcon?.attributedString(), for: UIControlState())
         controlView.addSubview(browserButton)
         browserButton.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(controlView).offset(4)
@@ -87,7 +87,7 @@ class PlayerViewController: UIViewController {
         }
         
         let playButtonSize:CGFloat = 52
-        playButton.addTarget(self, action: "playAction:", forControlEvents:.TouchUpInside)
+        playButton.addTarget(self, action: #selector(PlayerViewController.playAction(_:)), for:.touchUpInside)
         controlView.addSubview(playButton)
         playButton.snp_makeConstraints { (make) -> Void in
             make.center.equalTo(controlView.snp_center)
@@ -97,36 +97,36 @@ class PlayerViewController: UIViewController {
     
     func updatePlayButtonToPause() {
         let playButtonSize:CGFloat = 48
-        let icon = FAKIonIcons.pauseIconWithSize(playButtonSize)
-        icon.setAttributes([NSForegroundColorAttributeName:UIColor.lpBlackColor()])
+        let icon = FAKIonIcons.pauseIcon(withSize: playButtonSize)
+        icon?.setAttributes([NSForegroundColorAttributeName:UIColor.lpBlackColor()])
         playButton.setImage(
-            icon.imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
-            forState:.Normal)
+            icon?.image(with: CGSize(width: playButtonSize, height: playButtonSize)),
+            for:UIControlState())
     }
     
     func updatePlayButtonToPlay() {
         let playButtonSize:CGFloat = 48
-        let icon = FAKIonIcons.playIconWithSize(playButtonSize)
-        icon.setAttributes([NSForegroundColorAttributeName:UIColor.lpBlackColor()])
+        let icon = FAKIonIcons.playIcon(withSize: playButtonSize)
+        icon?.setAttributes([NSForegroundColorAttributeName:UIColor.lpBlackColor()])
         playButton.setImage(
-            icon.imageWithSize(CGSizeMake(playButtonSize, playButtonSize)),
-            forState:.Normal)
+            icon?.image(with: CGSize(width: playButtonSize, height: playButtonSize)),
+            for:UIControlState())
     }
     
-    func addTargetToBrowserButton(target:AnyObject, action:Selector) {
-        browserButton.addTarget(target, action:action, forControlEvents:.TouchUpInside)
+    func addTargetToBrowserButton(_ target:AnyObject, action:Selector) {
+        browserButton.addTarget(target, action:action, for:.touchUpInside)
     }
     
     // MARK: Actions
     
-    func playAction(sender:AnyObject) {
-        NSLog("playAction")
+    func playAction(_ sender:AnyObject) {
+        print("playAction")
         isPlaying = !isPlaying
         if let player = player {
-            if player.trackListSize > 0 {
-                player.setIsPlaying(isPlaying, callback: { (error:NSError!) -> Void in
+            if player.trackListSize > 0 {6
+                player.setIsPlaying(isPlaying, callback: { (error:Error?) -> Void in
                     if error != nil {
-                        NSLog("playAction error: %@", error)
+                        print("playAction error: %@", error)
                     }
                 })
             } else {
@@ -138,7 +138,7 @@ class PlayerViewController: UIViewController {
     // MARK: Spotify
     
 //    func loadAlbum(album:SPTAlbum, startTrackIndex:Int32?, didStartPlaying:((displayTrackName:String)->())?) {
-    func loadAlbum(album:SPTAlbum) {
+    func loadAlbum(_ album:SPTAlbum) {
         
         if let player = player {
             if player.isPlaying {
@@ -161,19 +161,19 @@ class PlayerViewController: UIViewController {
         updateProgress(0, animated: false)
     }
     
-    func playAlbum(startTrackIndex:Int32?) {
+    func playAlbum(_ startTrackIndex:Int32?) {
         
         if let album = album {
             playAlbum(album, startTrackIndex: startTrackIndex)
         }
     }
     
-    func playAlbum(album:SPTAlbum, startTrackIndex:Int32?) {
+    func playAlbum(_ album:SPTAlbum, startTrackIndex:Int32?) {
     
         if let
             session = session,
-            player = player {
-                var trackURIs = [NSURL]()
+            let player = player {
+                var trackURIs = [URL]()
                 if let listPage:SPTListPage = album.firstTrackPage,
                     let items = listPage.items as? [SPTPartialTrack] {
                         for item:SPTPartialTrack in items {
@@ -186,64 +186,64 @@ class PlayerViewController: UIViewController {
                         trackURIs:trackURIs,
                         trackIndex:startTrackIndex)
                     if let startTrackIndex = startTrackIndex {
-                        self.trackListingViewController.highlightedIndexPath = NSIndexPath(forRow: Int(startTrackIndex), inSection: 0)
+                        self.trackListingViewController.highlightedIndexPath = IndexPath(row: Int(startTrackIndex), section: 0)
                     }
                 })
                 
                 observeProgressOnAlbumPlayback(player)
         } else {
             if session == nil {
-                NSLog("session is nil")
+                print("session is nil")
             }
             if player == nil {
-                NSLog("player is nil")
+                print("player is nil")
             }
         }
     }
     
-    func loginSession(player: SPTAudioStreamingController,
+    func loginSession(_ player: SPTAudioStreamingController,
         session:SPTSession,
-        completed:(()->())) {
+        completed:@escaping (()->())) {
             
         if player.loggedIn {
             completed()
         } else {
-            player.loginWithSession(session,
-                callback: { (error:NSError!) -> Void in
+            player.login(with: session,
+                callback: { (error:Error?) -> Void in
                     if error != nil {
-                        NSLog("error: %@", error)
+                        print("error: %@", error)
                     }
                     completed()
             })
         }
     }
     
-    func playTrackURIs(player:SPTAudioStreamingController,
-        trackURIs:Array<NSURL>,
+    func playTrackURIs(_ player:SPTAudioStreamingController,
+        trackURIs:Array<URL>,
         trackIndex:Int32?) {
         
-//        NSLog("trackURIs: %@", trackURIs)
+//        print("trackURIs: %@", trackURIs)
         let playOptions = SPTPlayOptions()
         if let trackIndex = trackIndex {
             playOptions.trackIndex = trackIndex
         }
         player.playURIs(trackURIs,
-            withOptions: playOptions,
-            callback: { (error:NSError!) -> Void in
+            with: playOptions,
+            callback: { (error:Error?) -> Void in
                 if error != nil {
-                    NSLog("playURIs error: %@", error)
+                    print("playURIs error: %@", error)
                 }
         })
     }
     
     // MARK: Album Playback
     
-    func stopPlayback(callback:(()->())) {
+    func stopPlayback(_ callback:@escaping (()->())) {
         if let player = player {
             if player.isPlaying {
-                player.stop({ (error:NSError!) -> Void in
+                player.stop({ (error:Error?) -> Void in
                     if error != nil {
-                        NSLog("error: %@", error)
+                        print("error: %@", error)
                     }
                     callback()
                 })
@@ -255,12 +255,12 @@ class PlayerViewController: UIViewController {
         }
     }
     
-    func resume(completedBlock:(()->())?) {
+    func resume(_ completedBlock:(()->())?) {
         if let player = player {
             if !player.isPlaying {
-                player.setIsPlaying(true, callback: { (error:NSError!) -> Void in
+                player.setIsPlaying(true, callback: { (error:Error?) -> Void in
                     if error != nil {
-                        NSLog("play error: %@", error)
+                        print("play error: %@", error)
                     }
                     if let completedBlock = completedBlock {
                         completedBlock()
@@ -270,12 +270,12 @@ class PlayerViewController: UIViewController {
         }
     }
     
-    func pause(completedBlock:(()->())?) {
+    func pause(_ completedBlock:(()->())?) {
         if let player = player {
             if player.isPlaying {
-                player.setIsPlaying(false, callback: { (error:NSError!) -> Void in
+                player.setIsPlaying(false, callback: { (error:Error?) -> Void in
                     if error != nil {
-                        NSLog("pause error: %@", error)
+                        print("pause error: %@", error)
                     }
                     self.updatePlayButtonToPlay()
                     if let completedBlock = completedBlock {
@@ -289,9 +289,9 @@ class PlayerViewController: UIViewController {
     func togglePlayPause() {
         if let player = player {
             let isPlaying = !player.isPlaying
-            player.setIsPlaying(isPlaying, callback: { (error:NSError!) -> Void in
+            player.setIsPlaying(isPlaying, callback: { (error:Error?) -> Void in
                 if error != nil {
-                    NSLog("togglePlayPause error: %@", error)
+                    print("togglePlayPause error: %@", error)
                 }
             })
         }
@@ -299,30 +299,30 @@ class PlayerViewController: UIViewController {
     
     // MARK: Album playback progress
     
-    func observeProgressOnAlbumPlayback(player:SPTAudioStreamingController) {
+    func observeProgressOnAlbumPlayback(_ player:SPTAudioStreamingController) {
         
         if let albumPlayback = albumPlayback {
             albumPlayback.observeAudioStreamingController(player)
             albumPlayback.progressCallback = {
                 (progress:Float) in
-                //                NSLog("%f", progress)
+                //                print("%f", progress)
                 self.updateProgress(progress, animated:true)
                 if let didUpdateAlbumProgressBlock = self.didUpdateAlbumProgressBlock {
-                    didUpdateAlbumProgressBlock(playerViewController: self, progress: progress)
+                    didUpdateAlbumProgressBlock(self, progress)
                 }
             }
         }
     }
     
-    func updateProgress(progress:Float, animated:Bool) {
+    func updateProgress(_ progress:Float, animated:Bool) {
         
         progressView.setProgress(progress, animated: animated)
     }
     
-    func setAlbumPlaybackProgress(progress:Float, animated:Bool) {
+    func setAlbumPlaybackProgress(_ progress:Float, animated:Bool) {
         
         if let albumPlayback = albumPlayback {
-            albumPlayback.currentAlbumPlaybackPosition = NSTimeInterval(progress) * albumPlayback.totalDuration
+            albumPlayback.currentAlbumPlaybackPosition = TimeInterval(progress) * albumPlayback.totalDuration
             updateProgress(albumPlayback.progress, animated: false)
         }
     }
@@ -330,28 +330,28 @@ class PlayerViewController: UIViewController {
     // MARK: Remote control events
     
     func handleRemoteControlEvents() {
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
-        commandCenter.playCommand.addTargetWithHandler {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.addTarget (handler: {
             (event:MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
             self.resume(nil)
-            return .Success
-        }
-        commandCenter.pauseCommand.addTargetWithHandler {
+            return .success
+        })
+        commandCenter.pauseCommand.addTarget (handler: {
             (event:MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
             self.pause(nil)
-            return .Success
-        }
-        commandCenter.togglePlayPauseCommand.addTargetWithHandler {
+            return .success
+        })
+        commandCenter.togglePlayPauseCommand.addTarget (handler: {
             (event:MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
             self.togglePlayPause()
-            return .Success
-        }
+            return .success
+        })
     }
     
     // MARK: Now Playing Info Center
     
-    func configureNowPlayingInfo(title:String, artist:String, playbackRate:Int) {
-        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = [
+    func configureNowPlayingInfo(_ title:String, artist:String, playbackRate:Int) {
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
             MPMediaItemPropertyTitle: title,
             MPMediaItemPropertyArtist: artist,
             MPNowPlayingInfoPropertyPlaybackRate: playbackRate
@@ -360,10 +360,10 @@ class PlayerViewController: UIViewController {
     
     // MARK: Did play track
     
-    func didPlayTrack(trackIndex:Int32) {
+    func didPlayTrack(_ trackIndex:Int32) {
         
         highlightTrackIndex(trackIndex)
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: { () -> Void in
             self.dataStore.currentAlbumTrackIndex = trackIndex
             self.dataStore.currentAlbumPlaybackProgress = self.progressView.progress
         })
@@ -371,9 +371,9 @@ class PlayerViewController: UIViewController {
     
     // MARK: Highlight track playing
     
-    func highlightTrackIndex(index:Int32) {
+    func highlightTrackIndex(_ index:Int32) {
         
-        let indexPath = NSIndexPath(forRow: Int(index), inSection: 0)
+        let indexPath = IndexPath(row: Int(index), section: 0)
         var reloadIndexPaths = [indexPath]
         if let oldIndexPath = trackListingViewController.highlightedIndexPath {
             if oldIndexPath != indexPath {
@@ -382,8 +382,8 @@ class PlayerViewController: UIViewController {
         }
         trackListingViewController.highlightedIndexPath = indexPath
         if let collectionView = trackListingViewController.collectionView {
-//            NSLog("reloadIndexPaths: %@", reloadIndexPaths)
-            collectionView.reloadItemsAtIndexPaths(reloadIndexPaths)
+//            print("reloadIndexPaths: %@", reloadIndexPaths)
+            collectionView.reloadItems(at: reloadIndexPaths)
         }
     }
 }
@@ -393,12 +393,12 @@ class PlayerViewController: UIViewController {
 private typealias PlayerTrackListing = PlayerViewController
 extension PlayerTrackListing: UICollectionViewDelegate {
     
-    func setupTrackListing(album:SPTAlbum) {
+    func setupTrackListing(_ album:SPTAlbum) {
         
         trackListingViewController.album = album
-        trackListingViewController.willMoveToParentViewController(self)
+        trackListingViewController.willMove(toParentViewController: self)
         addChildViewController(trackListingViewController)
-        trackListingViewController.didMoveToParentViewController(trackListingViewController)
+        trackListingViewController.didMove(toParentViewController: trackListingViewController)
         albumTrackListingView.addSubview(trackListingViewController.view)
         trackListingViewController.view.snp_makeConstraints { (make) -> Void in
             make.edges.equalTo(albumTrackListingView)
@@ -410,24 +410,24 @@ extension PlayerTrackListing: UICollectionViewDelegate {
 private typealias PlayerAudioStreamingDelegate = PlayerViewController
 extension PlayerAudioStreamingDelegate: SPTAudioStreamingDelegate {
     
-    func audioStreamingDidLogin(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidLogin")
+    func audioStreamingDidLogin(_ audioStreaming: SPTAudioStreamingController!) {
+        print("audioStreamingDidLogin")
     }
     
-    func audioStreamingDidEncounterTemporaryConnectionError(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidEncounterTemporaryConnectionError")
+    func audioStreamingDidEncounterTemporaryConnectionError(_ audioStreaming: SPTAudioStreamingController!) {
+        print("audioStreamingDidEncounterTemporaryConnectionError")
     }
     
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didEncounterError error: NSError!) {
-        NSLog("didEncounterError: %@", error)
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didEncounterError error: NSError!) {
+        print("didEncounterError: %@", error)
     }
     
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didReceiveMessage message: String!) {
-        NSLog("didReceiveMessage: %@", message)
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didReceiveMessage message: String!) {
+        print("didReceiveMessage: %@", message)
     }
     
-    func audioStreamingDidDisconnect(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidDisconnect")
+    func audioStreamingDidDisconnect(_ audioStreaming: SPTAudioStreamingController!) {
+        print("audioStreamingDidDisconnect")
     }
 }
 
@@ -436,8 +436,8 @@ extension PlayerAudioStreamingDelegate: SPTAudioStreamingDelegate {
 private typealias PlayerAudioStreamingPlaybackDelegate = PlayerViewController
 extension PlayerAudioStreamingPlaybackDelegate: SPTAudioStreamingPlaybackDelegate {
     
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
-        NSLog("didChangePlaybackStatus: %@", isPlaying)
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
+        print("didChangePlaybackStatus: %@", isPlaying)
         self.isPlaying = isPlaying
         if isPlaying {
             updatePlayButtonToPause()
@@ -445,56 +445,56 @@ extension PlayerAudioStreamingPlaybackDelegate: SPTAudioStreamingPlaybackDelegat
             updatePlayButtonToPlay()
         }
         if let didChangePlaybackStatusBlock = didChangePlaybackStatusBlock {
-            didChangePlaybackStatusBlock(playerViewController: self, isPlaying: isPlaying)
+            didChangePlaybackStatusBlock(self, isPlaying)
         }
     }
     
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didSeekToOffset offset: NSTimeInterval) {
-        NSLog("didSeekToOffset: %f", offset)
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didSeekToOffset offset: TimeInterval) {
+        print("didSeekToOffset: %f", offset)
     }
     
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangeToTrack trackMetadata: [NSObject : AnyObject]!) {
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangeToTrack trackMetadata: [AnyHashable: Any]!) {
         if trackMetadata != nil {
-            NSLog("didChangeToTrack: %@", trackMetadata)
+            print("didChangeToTrack: %@", trackMetadata)
             if let
                 title = trackMetadata["SPTAudioStreamingMetadataTrackName"] as? String,
-                artist = trackMetadata["SPTAudioStreamingMetadataArtistName"] as? String {
+                let artist = trackMetadata["SPTAudioStreamingMetadataArtistName"] as? String {
                     configureNowPlayingInfo(title, artist: artist, playbackRate: 1)
                     if let didChangeToTrackBlock = didChangeToTrackBlock {
-                        didChangeToTrackBlock(playerViewController:self, title: title, artist: artist)
+                        didChangeToTrackBlock(self, title, artist)
                     }
             }
         }
     }
     
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didFailToPlayTrack trackUri: NSURL!) {
-        NSLog("didFailToPlayTrack: %@", trackUri)
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didFailToPlayTrack trackUri: URL!) {
+        print("didFailToPlayTrack: %@", trackUri)
     }
     
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: NSURL!) {
-        NSLog("didStartPlayingTrack: %@", trackUri)
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: URL!) {
+        print("didStartPlayingTrack: %@", trackUri)
         if let player = player {
             didPlayTrack(player.currentTrackIndex)
         }
     }
     
-    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: NSURL!) {
-        NSLog("didStopPlayingTrack: %@", trackUri)
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: URL!) {
+        print("didStopPlayingTrack: %@", trackUri)
     }
     
-    func audioStreamingDidSkipToNextTrack(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidSkipToNextTrack")
+    func audioStreamingDidSkip(toNextTrack audioStreaming: SPTAudioStreamingController!) {
+        print("audioStreamingDidSkipToNextTrack")
     }
     
-    func audioStreamingDidBecomeActivePlaybackDevice(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidBecomeActivePlaybackDevice")
+    func audioStreamingDidBecomeActivePlaybackDevice(_ audioStreaming: SPTAudioStreamingController!) {
+        print("audioStreamingDidBecomeActivePlaybackDevice")
     }
     
-    func audioStreamingDidLosePermissionForPlayback(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidLosePermissionForPlayback")
+    func audioStreamingDidLosePermission(forPlayback audioStreaming: SPTAudioStreamingController!) {
+        print("audioStreamingDidLosePermissionForPlayback")
     }
     
-    func audioStreamingDidPopQueue(audioStreaming: SPTAudioStreamingController!) {
-        NSLog("audioStreamingDidPopQueue")
+    func audioStreamingDidPopQueue(_ audioStreaming: SPTAudioStreamingController!) {
+        print("audioStreamingDidPopQueue")
     }
 }

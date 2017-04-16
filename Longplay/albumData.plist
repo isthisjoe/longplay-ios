@@ -15,6 +15,30 @@
 <!--			<key>about</key>-->
 <!--			<string>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</string>-->
 <!--		</dict>-->
+        <dict>
+            <key>uri</key>
+            <string>spotify:album:7rSESybi14vAuEVzkipODD</string>
+            <key>about</key>
+            <string>M3LL155X, a five-song EP by FKA twigs accompanied by a 16-minute music video/film, dropped last week, just over a year after the release of twigs' high profile debut, LP1. As a creative package the EP is unimpeachable; a high-concept, intellectually curious piece of work that's evocative, accessible and transgressive enough to satisfy the competing demands of a newly broadened fanbase and her existing audience of Tumblr-educated aesthetes. M3LL155X (pronounced 'Melissa') builds on her previous work, exploring ideas of psychic and interpersonal dominance and submission, but drills down almost completely into self. The EP takes that ur-feminist mantra "the personal is political" as a starting point, and if we need a feminist pop star, then twigs is it.</string>
+        </dict>
+        <dict>
+            <key>uri</key>
+            <string>spotify:album:35vTE3hx3AAXtM6okpJIIt</string>
+            <key>about</key>
+            <string>Beach House's newest album, Depression Cherry, might have the silliest, or at least the most inexplicable, title in their catalog, but in every other sense it’s another impeccably measured step forward. Some minor tweaks result in a sound that retains the band’s grand theatricality, but also lets you smell the grease paint a little more, feel the itch of the Victorian-era fabrics on your skin. Victoria Legrand and Alex Scally have grown so adept at spinning dreams that they can turn all the lights on the set and still dazzle us.</string>
+        </dict>
+        <dict>
+            <key>uri</key>
+            <string>spotify:album:0X32RgsNanozjRrRd2DRLK</string>
+            <key>about</key>
+            <string></string>
+        </dict>
+        <dict>
+            <key>uri</key>
+            <string>spotify:album:</string>
+            <key>about</key>
+            <string></string>
+        </dict>
 		<dict>
 			<key>uri</key>
 			<string>spotify:album:0fUy6IdLHDpGNwavIlhEsl</string>

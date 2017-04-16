@@ -23,7 +23,7 @@ class SettingsViewController: UIViewController {
     
     func setupViews() {
         
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         view.addSubview(textLabel)
         textLabel.snp_makeConstraints { (make) -> Void in
             make.top.left.equalTo(view).offset(15)
@@ -34,19 +34,19 @@ class SettingsViewController: UIViewController {
         let boldFont = UIFont.primaryBoldFontWithSize(14)
         let font = UIFont.primaryFontWithSize(14)
         let attributedText = NSMutableAttributedString()
-        attributedText.appendAttributedString(
+        attributedText.append(
             NSAttributedString(string: "Longplay",
                 attributes: [NSFontAttributeName: boldFont,
                     NSForegroundColorAttributeName: UIColor.lpBlackColor(),
                     NSKernAttributeName: 0.1]))
-        attributedText.appendAttributedString(
+        attributedText.append(
             NSAttributedString(string: " is a music player that plays\nwhole albums from start to finish.\n\nNo skipping, no shuffling.\n\nAlbums are selected weekly from\nlegit music peeps and publications.\n\nYou logged in to Spotify with username:\n",
                 attributes: [NSFontAttributeName: font,
                     NSForegroundColorAttributeName: UIColor.lpBlackColor(),
                     NSKernAttributeName: 0.1]))
         if let session = session,
-            username = session.canonicalUsername {
-                attributedText.appendAttributedString(
+            let username = session.canonicalUsername {
+                attributedText.append(
                     NSAttributedString(string: username,
                         attributes: [NSFontAttributeName: boldFont,
                             NSForegroundColorAttributeName: UIColor.lpBlackColor(),
@@ -68,12 +68,12 @@ class SettingsViewController: UIViewController {
             make.width.equalTo(91)
             make.height.equalTo(29)
         }
-        logoutButton.addTarget(self, action: "logoutAction:", forControlEvents: .TouchUpInside)
+        logoutButton.addTarget(self, action: #selector(SettingsViewController.logoutAction(_:)), for: .touchUpInside)
     }
     
     // MARK: Actions
     
-    func logoutAction(sender:AnyObject) {
+    func logoutAction(_ sender:AnyObject) {
         
     }
 }

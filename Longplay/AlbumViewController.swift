@@ -16,7 +16,7 @@ class AlbumViewController: UIViewController {
 
     let album:SPTAlbum
     let about:String
-    var playAlbumBlock:((album:SPTAlbum) -> ())?
+    var playAlbumBlock:((_ album:SPTAlbum) -> ())?
     
     let coverArtImageView = UIImageView()
     let nameLabel = UILabel()
@@ -29,13 +29,13 @@ class AlbumViewController: UIViewController {
         super.init(nibName:nil, bundle:nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         self.album = SPTAlbum()
         self.about = ""
         super.init(coder:aDecoder)
     }
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         self.album = SPTAlbum()
         self.about = ""
         super.init(nibName:nibNameOrNil, bundle:nibBundleOrNil)
@@ -48,7 +48,7 @@ class AlbumViewController: UIViewController {
     
     func setupViews() {
         
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         let spacing = 10
         
         view.addSubview(coverArtImageView)
@@ -86,15 +86,15 @@ class AlbumViewController: UIViewController {
         }
 
         if let albumURL = album.largestCover.imageURL {
-            coverArtImageView.sd_setImageWithURL(albumURL)
+            coverArtImageView.sd_setImage(with: albumURL)
         }
         
         nameLabel.text = album.name
         nameLabel.numberOfLines = 2
         
         let artists = album.artists
-        if artists.count > 0 {
-            let artist = artists[0] as! SPTPartialArtist
+        if (artists?.count)! > 0 {
+            let artist = artists?[0] as! SPTPartialArtist
             artistLabel.text = artist.name
             artistLabel.numberOfLines = 2
         }
@@ -108,17 +108,17 @@ class AlbumViewController: UIViewController {
                 NSFontAttributeName:UIFont.primaryFontWithSize(14)])
         aboutTextView.attributedText = aboutAttributedText
         aboutTextView.sizeToFit()
-        aboutTextView.editable = false
-        aboutTextView.selectable = false
+        aboutTextView.isEditable = false
+        aboutTextView.isSelectable = false
         aboutTextView.scrollRangeToVisible(NSRange(location:0, length:0))
     }
     
     // MARK: Actions
     
-    func playAction(sender:AnyObject?) {
+    func playAction(_ sender:AnyObject?) {
         if let
             playAlbumBlock = playAlbumBlock {
-            playAlbumBlock(album: album)
+            playAlbumBlock(album)
         }
     }
 }

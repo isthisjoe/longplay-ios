@@ -14,14 +14,12 @@ class DefaultButton: UIButton {
     
     convenience init(title:String) {
         
-        self.init(frame:CGRectZero)
-        setTitle(title, forState: .Normal)
+        self.init(frame:CGRect.zero)
+        setTitle(title, for: UIControlState())
     }
     
-    required init(coder aDecoder: NSCoder) {
-        
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         self.setup()
     }
     
@@ -34,11 +32,11 @@ class DefaultButton: UIButton {
     
     func setup() {
         
-        backgroundColor = UIColor.whiteColor()
-        layer.borderColor = UIColor.primaryColor().CGColor
+        backgroundColor = UIColor.white
+        layer.borderColor = UIColor.primaryColor().cgColor
         layer.borderWidth = 0.5
         titleLabel!.font = UIFont.buttonFontWithSize(14)
-        setTitleColor(UIColor.primaryColor(), forState: .Normal)
+        setTitleColor(UIColor.primaryColor(), for: UIControlState())
     }
 
 }

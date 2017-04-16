@@ -29,30 +29,30 @@ class TrackListViewController: UIViewController {
     var items:Array<AnyObject>? {
         if let
             album = album,
-            firstTrackPage = album.firstTrackPage,
-            items = firstTrackPage.items {
-                return items
+            let firstTrackPage = album.firstTrackPage,
+            let items = firstTrackPage.items {
+                return items as Array<AnyObject>?
         } else {
             return nil
         }
     }
-    var highlightedIndexPath:NSIndexPath?
+    var highlightedIndexPath:IndexPath?
 
     class func createFlowLayout() -> UICollectionViewFlowLayout {
         
         let flowLayout = UICollectionViewFlowLayout()
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
+        let screenWidth = UIScreen.main.bounds.size.width
         let spacing:CGFloat = 10
         let itemSizeWidth:CGFloat = screenWidth
         let itemSizeHeight:CGFloat = 20.0
-        flowLayout.itemSize = CGSizeMake(itemSizeWidth, itemSizeHeight)
+        flowLayout.itemSize = CGSize(width: itemSizeWidth, height: itemSizeHeight)
         flowLayout.minimumLineSpacing = spacing
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 14, 0)
         return flowLayout
     }
     
-    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!) {
         super.init(nibName:nibNameOrNil, bundle:nibBundleOrNil)
     }
     
@@ -66,19 +66,19 @@ class TrackListViewController: UIViewController {
         
         flowLayout = TrackListViewController.createFlowLayout()
         
-        collectionView = TrackListCollectionView(frame:CGRectZero, collectionViewLayout:flowLayout!)
+        collectionView = TrackListCollectionView(frame:CGRect.zero, collectionViewLayout:flowLayout!)
         if let collectionView = collectionView {
             collectionView.delaysContentTouches = false
             collectionView.canCancelContentTouches = true
             collectionView.delegate = self
             collectionView.dataSource = self
-            collectionView.backgroundColor = UIColor.whiteColor()
-            collectionView.registerClass(TrackListCollectionViewCell.self,
+            collectionView.backgroundColor = UIColor.white
+            collectionView.register(TrackListCollectionViewCell.self,
                 forCellWithReuseIdentifier: TrackListCollectionViewCellReuseIdentifier)
-            collectionView.registerClass(TrackListHeaderView.self,
+            collectionView.register(TrackListHeaderView.self,
                 forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
                 withReuseIdentifier: TrackListHeaderViewReuseIdentifier)
-            collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            collectionView.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(collectionView)
             collectionView.snp_makeConstraints { (make) -> Void in
                 make.edges.equalTo(view)
@@ -90,7 +90,7 @@ class TrackListViewController: UIViewController {
 private typealias TrackListDataSource = TrackListViewController
 extension TrackListDataSource: UICollectionViewDataSource {
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         var count = 0
         if let items = items {
@@ -99,33 +99,33 @@ extension TrackListDataSource: UICollectionViewDataSource {
         return count
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrackListCollectionViewCellReuseIdentifier, forIndexPath: indexPath) as! TrackListCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackListCollectionViewCellReuseIdentifier, for: indexPath) as! TrackListCollectionViewCell
         if let
             items = items,
-            track = items[indexPath.row] as? SPTPartialTrack {
+            let track = items[indexPath.row] as? SPTPartialTrack {
                 let viewModel = TrackListViewModel(track: track)
                 cell.configureCellWithViewModel(viewModel)
                 if let highlightedIndexPath = highlightedIndexPath {
-                    cell.highlightedTrack = highlightedIndexPath.isEqual(indexPath)
+                    cell.highlightedTrack = highlightedIndexPath == indexPath
                 }
         }
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
         viewForSupplementaryElementOfKind kind: String,
-        atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        at indexPath: IndexPath) -> UICollectionReusableView {
             
             var reusableView:UICollectionReusableView?
             if kind == UICollectionElementKindSectionHeader {
                 if let trackListHeaderView =
-                    collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader,
+                    collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader,
                         withReuseIdentifier: TrackListHeaderViewReuseIdentifier,
-                        forIndexPath: indexPath) as? TrackListHeaderView,
-                    albumViewModel = albumViewModel {
-                        trackListHeaderView.coverArtImageView.sd_setImageWithURL(albumViewModel.coverThumbURL)
+                        for: indexPath) as? TrackListHeaderView,
+                    let albumViewModel = albumViewModel {
+                        trackListHeaderView.coverArtImageView.sd_setImage(with: albumViewModel.coverThumbURL as URL!)
                         trackListHeaderView.nameLabel.text = albumViewModel.title
                         trackListHeaderView.artistLabel.text = albumViewModel.artistName
                         reusableView = trackListHeaderView
@@ -138,11 +138,11 @@ extension TrackListDataSource: UICollectionViewDataSource {
 private typealias TrackListDelegateFlowLayout = TrackListViewController
 extension TrackListDelegateFlowLayout: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if section == 0 {
-            return CGSizeMake(collectionView.bounds.size.width, TrackListHeaderView.calculateHeight())
+            return CGSize(width: collectionView.bounds.size.width, height: TrackListHeaderView.calculateHeight())
         }
-        return CGSizeZero
+        return CGSize.zero
     }
 }
 

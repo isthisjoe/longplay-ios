@@ -53,7 +53,7 @@ class TrackListCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configureCellWithViewModel(viewModel:TrackListViewModel) {
+    func configureCellWithViewModel(_ viewModel:TrackListViewModel) {
         
         titleLabel.text = viewModel.title
     }

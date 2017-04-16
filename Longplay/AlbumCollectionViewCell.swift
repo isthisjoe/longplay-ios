@@ -49,9 +49,9 @@ class AlbumCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configureCellWithViewModel(viewModel:AlbumViewModel) {
+    func configureCellWithViewModel(_ viewModel:AlbumViewModel) {
         
-        self.thumbImageView.sd_setImageWithURL(viewModel.coverThumbURL)
+        self.thumbImageView.sd_setImage(with: viewModel.coverThumbURL as URL!)
         self.nameLabel.text = viewModel.title
         self.artistLabel.text = viewModel.artistName
     }

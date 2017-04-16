@@ -10,18 +10,13 @@ import UIKit
 
 class AlbumProgressView: UIProgressView {
 
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
     
-    override init(progressViewStyle style: UIProgressViewStyle) {
-        super.init(progressViewStyle:style)
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
         setup()
     }
     

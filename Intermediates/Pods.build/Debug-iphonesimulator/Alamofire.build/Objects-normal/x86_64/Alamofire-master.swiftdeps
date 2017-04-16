@@ -1,0 +1,14 @@
+version: "Apple Swift version 2.0 (swiftlang-700.0.59 clang-700.0.72)"
+options: "9c89a295ba5855abb66f33eade387188"
+build_time: [495917994, 666826000]
+inputs: 
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/Request.swift": !dirty [493678150, 0]
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/Upload.swift": !dirty [493678150, 0]
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/Manager.swift": !dirty [493678150, 0]
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/ServerTrustPolicy.swift": !dirty [493678150, 0]
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/Alamofire.swift": !dirty [493678150, 0]
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/Validation.swift": !dirty [493678150, 0]
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/MultipartFormData.swift": !dirty [493678150, 0]
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/ParameterEncoding.swift": !dirty [493678150, 0]
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/Download.swift": !dirty [493678150, 0]
+	"/Users/oneyenjug/dev/projects/Longplay/Pods/Alamofire/Source/ResponseSerialization.swift": !dirty [493678150, 0]

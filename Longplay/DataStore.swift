@@ -8,42 +8,42 @@
 
 class DataStore {
     
-    var spotifySessionValues:[String:AnyObject]? = NSUserDefaults.standardUserDefaults().objectForKey("SpotifySessionValues") as? [String:AnyObject] {
+    var spotifySessionValues:[String:AnyObject]? = UserDefaults.standard.object(forKey: "SpotifySessionValues") as? [String:AnyObject] {
         didSet {
             if let spotifySessionValues = self.spotifySessionValues {
-                NSUserDefaults.standardUserDefaults().setObject(spotifySessionValues, forKey: "SpotifySessionValues")
+                UserDefaults.standard.set(spotifySessionValues, forKey: "SpotifySessionValues")
             } else {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("SpotifySessionValues")
+                UserDefaults.standard.removeObject(forKey: "SpotifySessionValues")
             }
         }
     }
     
-    var currentAlbumURI:NSURL? = NSUserDefaults.standardUserDefaults().URLForKey("CurrentAlbumURI") {
+    var currentAlbumURI:URL? = UserDefaults.standard.url(forKey: "CurrentAlbumURI") {
         didSet {
             if let currentAlbumURI = self.currentAlbumURI {
-                NSUserDefaults.standardUserDefaults().setURL(currentAlbumURI, forKey: "CurrentAlbumURI")
+                UserDefaults.standard.set(currentAlbumURI, forKey: "CurrentAlbumURI")
             } else {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("CurrentAlbumURI")
+                UserDefaults.standard.removeObject(forKey: "CurrentAlbumURI")
             }
         }
     }
     
-    var currentAlbumTrackIndex:Int32? = Int32(NSUserDefaults.standardUserDefaults().integerForKey("CurrentAlbumTrackIndex")) {
+    var currentAlbumTrackIndex:Int32? = Int32(UserDefaults.standard.integer(forKey: "CurrentAlbumTrackIndex")) {
         didSet {
             if let currentAlbumTrackIndex = self.currentAlbumTrackIndex {
-                NSUserDefaults.standardUserDefaults().setInteger(Int(currentAlbumTrackIndex), forKey: "CurrentAlbumTrackIndex")
+                UserDefaults.standard.set(Int(currentAlbumTrackIndex), forKey: "CurrentAlbumTrackIndex")
             } else {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("CurrentAlbumTrackIndex")
+                UserDefaults.standard.removeObject(forKey: "CurrentAlbumTrackIndex")
             }
         }
     }
     
-    var currentAlbumPlaybackProgress:Float? = Float(NSUserDefaults.standardUserDefaults().floatForKey("CurrentAlbumPlaybackProgress")) {
+    var currentAlbumPlaybackProgress:Float? = Float(UserDefaults.standard.float(forKey: "CurrentAlbumPlaybackProgress")) {
         didSet {
             if let currentAlbumPlaybackProgress = self.currentAlbumPlaybackProgress {
-                NSUserDefaults.standardUserDefaults().setFloat(currentAlbumPlaybackProgress, forKey: "CurrentAlbumPlaybackProgress")
+                UserDefaults.standard.set(currentAlbumPlaybackProgress, forKey: "CurrentAlbumPlaybackProgress")
             } else {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("CurrentAlbumPlaybackProgress")
+                UserDefaults.standard.removeObject(forKey: "CurrentAlbumPlaybackProgress")
             }
         }
     }

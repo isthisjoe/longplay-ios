@@ -16,7 +16,7 @@ class LoginViewController: UIViewController {
     }
     
     func setupSpotify() {
-        var loginURL:NSURL = SPTAuth.defaultInstance().loginURL
-        UIApplication.sharedApplication().openURL(loginURL)
+        let loginURL:URL = SPTAuth.defaultInstance().loginURL
+        UIApplication.shared.openURL(loginURL)
     }
 }

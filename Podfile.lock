@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (4.4.0)
   - FontAwesomeKit (2.2.0):
     - FontAwesomeKit/Core (= 2.2.0)
     - FontAwesomeKit/FontAwesome (= 2.2.0)
@@ -14,19 +15,28 @@ PODS:
     - FontAwesomeKit/Core
   - FontAwesomeKit/Zocial (2.2.0):
     - FontAwesomeKit/Core
-  - SDWebImage (3.7.3):
-    - SDWebImage/Core (= 3.7.3)
-  - SDWebImage/Core (3.7.3)
-  - SnapKit (0.13.0)
+  - Mantle (2.1.0):
+    - Mantle/extobjc (= 2.1.0)
+  - Mantle/extobjc (2.1.0)
+  - SDWebImage (4.0.0):
+    - SDWebImage/Core (= 4.0.0)
+  - SDWebImage/Core (4.0.0)
+  - SnapKit (3.2.0)
 
 DEPENDENCIES:
+  - Alamofire (= 4.4)
   - FontAwesomeKit (~> 2.2)
-  - SDWebImage (~> 3.7)
-  - SnapKit (~> 0.12)
+  - Mantle (~> 2.1)
+  - SDWebImage (~> 4.0)
+  - SnapKit (~> 3.2)
 
 SPEC CHECKSUMS:
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   FontAwesomeKit: 025fd4dd1017fe4e3f8d47b03e024deedbb33cd4
-  SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
-  SnapKit: 69fe274c71511df89a5591c11437a8b826bfa9eb
+  Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
+  SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
 
-COCOAPODS: 0.38.2
+PODFILE CHECKSUM: 5d77c054630408be560ddd447643914c9af9d213
+
+COCOAPODS: 1.2.1

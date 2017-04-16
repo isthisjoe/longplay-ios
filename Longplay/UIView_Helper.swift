@@ -8,17 +8,17 @@
 
 import UIKit
 
-let UIViewDefaultAnimationDuration:NSTimeInterval = 0.3
+let UIViewDefaultAnimationDuration:TimeInterval = 0.3
 
 extension UIView {
     
-    class func animateWithDefaultDuration(animations: () -> Void) {
-        UIView.animateWithDuration(UIViewDefaultAnimationDuration, animations: animations)
+    class func animateWithDefaultDuration(_ animations: @escaping () -> Void) {
+        UIView.animate(withDuration: UIViewDefaultAnimationDuration, animations: animations)
     }
     
-    class func animateWithDefaultDuration(animations: () -> Void,
+    class func animateWithDefaultDuration(_ animations: @escaping () -> Void,
         completion: ((Bool) -> Void)?) {
-            UIView.animateWithDuration(UIViewDefaultAnimationDuration,
+            UIView.animate(withDuration: UIViewDefaultAnimationDuration,
                 animations: animations,
                 completion: completion)
     }

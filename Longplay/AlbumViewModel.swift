@@ -10,7 +10,7 @@ import UIKit
 
 class AlbumViewModel: NSObject {
 
-    var coverThumbURL:NSURL?
+    var coverThumbURL:URL?
     var title:String?
     var artistName:String?
     
@@ -18,8 +18,8 @@ class AlbumViewModel: NSObject {
         super.init()
         if album.largestCover != nil {
             let smallestCover = album.largestCover
-            if smallestCover.imageURL != nil {
-                let imageURL = smallestCover.imageURL as NSURL
+            if smallestCover?.imageURL != nil {
+                let imageURL = (smallestCover?.imageURL)! as URL
                 coverThumbURL = imageURL
             }
         }

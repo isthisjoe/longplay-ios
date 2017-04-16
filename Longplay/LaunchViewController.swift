@@ -15,7 +15,7 @@ class LaunchViewController: UIViewController {
 
     override func viewDidLoad() {
         
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         view.addSubview(launchImageView)
         launchImageView.snp_makeConstraints { (make) -> Void in
             make.center.equalTo(view)
