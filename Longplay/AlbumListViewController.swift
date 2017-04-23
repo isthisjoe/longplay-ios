@@ -82,6 +82,7 @@ class AlbumListViewController: UICollectionViewController, UICollectionViewDeleg
             for collection in albumData {
                 group.enter()
                 let albumURIs = collection.map({URL(string:$0["uri"]! as String)!})
+                print(albumURIs)
                 let index = count
                 DispatchQueue.global().async {
                     SPTAlbum.albums(withURIs: albumURIs,
